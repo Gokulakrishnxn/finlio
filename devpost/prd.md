@@ -24,13 +24,13 @@ Source: `scope.md > The Core Loop`, `scope.md > What "Working" Looks Like`.
 ## Screens and Layout
 Layout inspired by Link (`scope.md > Inspiration & Identity`): a left sidebar, a large greeting, rounded cards on a calm background.
 
-- **Sidebar:** Finlio logo; **Dashboard** (home); **Holdings**; **Expenses**; **Assets**; **Analytics**; **Privacy**. A small footer note: "Your data stays in this browser."
+- **Sidebar:** Finlio logo; **Dashboard** (home); **News**; **Holdings**; **Expenses**; **Assets**; **Analytics**. Privacy lives in Settings → Privacy. A small footer note: "Your data stays in this browser."
 - **Today (home):** greeting ("Good morning" plus date), the brief card with its three sections, and a compact holdings card with the portfolio total and today's change.
 - **Holdings:** a list of all holdings, an **Add stock** button, edit and delete per row.
 - **Holding detail** (panel that slides over the current screen): price, position, gain or loss, "Why it moved", and the list of headlines with links.
 - **Add / edit stock** (dialog): search, buy date, buy price, quantity.
 - **Expenses:** Continue with Google (first time), then spent this month, spending by category, and recent transactions, with Sync and Disconnect.
-- **Privacy:** what Finlio stores, what it sends to the AI, and **Clear all my data**.
+- **Settings → Privacy** (was a page): what Finlio stores, what it sends, and **Sign out**.
 - **Welcome** (first use only): one sentence about Finlio, **Add your first stock**, **Try a sample portfolio**.
 
 ## Look and Feel
@@ -125,6 +125,13 @@ Source: `scope.md > The POC Boundary` (whole-money dashboard, added after approv
 ### Analytics
 - [ ] Allocation across stocks, cash, deposits, gold, retirement, property and other, as a bar with percentages.
 - [ ] **Explain my money** asks Gemini for a short plain-English summary from totals only (category totals, allocation percentages, month in and out). No buy/sell advice.
+
+### News and sign out
+Source: learner's request after approval.
+- [ ] Today's brief lives on its own **News** page in the sidebar (no longer on the Dashboard); with no stocks it explains why and links to Holdings.
+- [ ] Privacy moved from a page into **Settings → Privacy** (what stays in the browser, what is sent and to whom, counts of what is stored). `/privacy` redirects to the same list in the Terms.
+- [ ] **Sign out** (profile menu, Settings sidebar, Privacy tab, Data controls) asks first, offers **Download backup**, then disconnects Google and erases Finlio from this browser, returning to the welcome screen. It replaces "Clear all my data".
+- [ ] Analytics charts group categories under 5% into "Other" (donut: up to 5 slices; money flow: up to 4 categories plus Saved) and fit their cards.
 
 ### Welcome and setup
 Source: learner's request after approval (India and the United States).

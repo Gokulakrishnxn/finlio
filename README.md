@@ -20,7 +20,8 @@ When your money moves, nobody tells you why, so you spend hours connecting the d
 | **Today** | A greeting, **today's brief** for the stocks you own, your portfolio's worth, today's change and gain since you bought |
 | **Holdings** | Every NSE stock you own with live price, today's move, value and gain; open one to see *why it moved* and the headlines behind it |
 | **Expenses** | Sign in with Google and Finlio reads your bank and UPI alert emails (read-only) to show what you spent this month, by category |
-| **Privacy** | Exactly what is stored and what is sent, and **Clear all my data** |
+| **News** | Today's brief: why the stocks you own moved, in plain words, with sources |
+| **Settings → Privacy** | Exactly what is stored and what is sent, and **Sign out** (erases Finlio from this browser) |
 
 Today's brief has three parts:
 
@@ -92,7 +93,7 @@ On first visit Finlio asks for your name and country (India or United States), a
 2. Press **Get today's brief**, then open any source chip to see the headline behind a sentence.
 3. Open a holding to see its position and *why it moved*.
 4. On **Expenses**, press **Continue with Google**, then **Sync**.
-5. On **Privacy**, **Clear all my data** returns Finlio to a fresh start.
+5. **Sign out** (profile menu or Settings) disconnects Google and erases Finlio from this browser, back to the welcome screen; download a backup first to restore later.
 
 ## Built with
 

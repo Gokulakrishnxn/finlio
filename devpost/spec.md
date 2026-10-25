@@ -139,7 +139,8 @@ PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual inc
 - AI routes accept `country` and adapt wording (`lib/ai-locale.ts`).
 - `components/onboarding/onboarding.tsx`: full-screen setup over the app until `profile.onboardedAt` is set; stores `name`, `country`, `termsVersion` (`lib/terms.ts`), `tourDone`.
 - `components/tour/tour.tsx`: spotlight tour over elements marked `data-tour`.
-- `app/terms/page.tsx`: static Terms page.
+- `app/terms/page.tsx`: static Terms page; lists `lib/privacy.ts` (`SHARING`).
+- `app/news/page.tsx`: today's brief (moved off the Dashboard). Settings gains a Privacy tab (`components/settings/privacy-panel.tsx`) and a shared Sign out confirmation in `SettingsProvider` (disconnect Google → `clearAll()` → welcome); `lib/backup.ts` downloads the backup.
 PRD ref: `prd.md > Welcome and setup`, `prd.md > Country`, `prd.md > Screen tour`, `prd.md > Terms & Conditions`, `prd.md > Responsive`.
 
 ## Data Model
