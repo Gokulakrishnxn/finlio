@@ -59,6 +59,16 @@ Build mode: fast
   Learner check: Clear your data, start from the welcome, and run the whole demo once as you would on camera.
   Commit: `Add sample portfolio, privacy screen, and demo polish`
 
+- [ ] **6. Sign in with Google and see where your money went**
+  Becomes usable: Expenses screen with Continue with Google; after sign-in, Sync reads bank and UPI alerts from Gmail and shows spent this month, categories and recent transactions, saved in the browser; Disconnect revokes access.
+  Why now: Added by the learner after scope approval; built after the core screens so it can't break them.
+  PRD ref: `prd.md > Expenses`, `prd.md > Screens and Layout`
+  Spec ref: `spec.md > Google sign-in (helper)`, `spec.md > Expense sync (helper)`, `spec.md > Expenses view`, `spec.md > Google`, `spec.md > Data Model`
+  Build: Hand-written Google OAuth routes with an encrypted httpOnly session cookie; Gmail search + metadata fetch; Gemini JSON extraction validated by zod; Expenses page; store field for expenses; Clear all also clears expenses.
+  Verify (mechanical): `pnpm build` and `pnpm lint` pass; `/api/auth/session` reports signed out; without Google keys, Continue with Google shows a clear "not set up" message; with keys, sign in as a test user, Sync, and confirm amounts match a few real alert emails.
+  Learner check: Sign in with your Gmail, press Sync, and check three transactions against your bank alerts.
+  Commit: `Add Expenses with Google sign-in and Gmail alerts`
+
 ## Hands-on Checkpoints
 
 - [ ] Early usable behavior explored — after slice 2 (the brief, the kernel)
@@ -87,3 +97,4 @@ Activity mode:
 - Default model changed from `gemini-3.8-flash` to `gemini-3.5-flash` (overridable with `GEMINI_MODEL`) — 3.8 timed out on a plain call in testing while 3.5 answered.
 - Slices 3 and 5 built and verified except live prices: no `UPSTOX_ANALYTICS_TOKEN` yet, so only the "Prices aren't set up yet" + Retry path was observed. Sample portfolio, Privacy screen, Clear all, edit, merge (45 ITC at ₹497.78 average, earlier date kept) and delete were verified in the browser. Tick 3 and 5 once real Upstox prices show.
 - Layout tightened for narrower windows (220px sidebar below xl, smaller value columns) after the browser check showed horizontal overflow at ~780px.
+- Slice 6 (Expenses with Google sign-in and Gmail reading) added at the learner's request after scope approval; scope, PRD and spec updated to match, accepting Google test mode and deadline risk.

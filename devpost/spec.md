@@ -19,6 +19,9 @@ The helper only ever sends **stock names and symbols** out. Your quantities, pri
 
 Why this shape: no database, no login, no cloud to secure. It's the smallest system that proves the kernel with real data and keeps the privacy promise true.
 
+### Expenses, in plain language
+Expenses adds Google sign-in. When you press **Continue with Google**, Google asks whether Finlio may *read* your email. If you agree, Google gives the helper a key, which the helper keeps in an encrypted cookie in your browser (still no Finlio database). On **Sync**, the helper searches your Gmail for bank and UPI alerts from the last 60 days, sends only those alerts' sender, subject, date and preview text to Gemini to pull out amount, merchant and category, and returns the list. The browser saves it. Nothing else in your inbox is read.
+
 ## The Core Journey Through the System
 PRD ref: `prd.md > The Core Journey`.
 
@@ -44,6 +47,8 @@ PRD ref: `prd.md > The Core Journey`.
 - Other UI references (rareui, transitions.dev, beautifului, obsidianui, uiarc, beui): borrow patterns only where the license allows copying into an MIT repo; check each before use. Charts are not in the PoC.
 
 Unverified, check in the first build step: the exact Gemini model name (docs currently show `gemini-3.8-flash`), the citation format in the response, and Upstox analytics-token access to the quote endpoint.
+
+- **Google OAuth 2.0 + Gmail API (REST)** for Expenses — learner's choice; hand-written OAuth (no auth library) to avoid version risk with Next.js 16. https://developers.google.com/identity/protocols/oauth2/web-server · https://developers.google.com/gmail/api/reference/rest
 
 ## Where It Runs and How Someone Tries It
 - Runs locally: Node 20+ and pnpm.
@@ -107,6 +112,18 @@ PRD ref: `prd.md > Holding detail`.
 Plain list of what's stored and what's sent; **Clear all my data** with confirmation.
 PRD ref: `prd.md > Privacy`.
 
+### Google sign-in (helper)
+`GET /api/auth/google` redirects to Google with scopes `openid email profile https://www.googleapis.com/auth/gmail.readonly`, `access_type=offline`, and a random `state` cookie. `GET /api/auth/callback/google` checks `state`, exchanges the code, and stores `{ accessToken, refreshToken, expiresAt, email, name, picture }` AES-256-GCM-encrypted (key from `AUTH_SECRET`) in an httpOnly cookie. `GET /api/auth/session` returns who is signed in; `POST /api/auth/signout` revokes the token and clears the cookie. Access tokens are refreshed when expired.
+PRD ref: `prd.md > Expenses`.
+
+### Expense sync (helper)
+`POST /api/expenses/sync`: Gmail search `newer_than:60d (debited OR spent OR "paid to" OR UPI OR "debit card" OR txn) -category:promotions`, up to 60 messages, fetched as metadata (From, Subject, Date) plus snippet. Gemini (`gemini-3.5-flash`, JSON output, no search tool) extracts `{ id, date, amount, merchant, category, kind: "spend" | "ignore" }`; zod validates; spends are returned.
+PRD ref: `prd.md > Expenses`.
+
+### Expenses view
+Sign-in card, Sync, spent this month vs last month, category bars, recent transactions, Disconnect.
+PRD ref: `prd.md > Expenses`.
+
 ## Data Model
 All in browser `localStorage` under one key, `finlio:v1`:
 
@@ -133,7 +150,10 @@ type Brief = {
   noNews: string[];      // symbols
 };
 
-type Store = { holdings: Holding[]; brief?: Brief };
+type Expense = { id: string; date: string; amount: number; merchant: string; category: string };
+type ExpenseSnapshot = { account: string; syncedAt: string; expenses: Expense[] };
+
+type Store = { holdings: Holding[]; brief?: Brief; expenses?: ExpenseSnapshot };
 ```
 
 Prices are not stored; they're fetched again on every visit. Clearing data removes the key. The helper stores nothing.
@@ -191,10 +211,17 @@ finlio/
 - Terms: show Google's search suggestions with grounded results.
 - Docs: https://ai.google.dev/gemini-api/docs/google-search
 
+### Google
+- OAuth client (Web) in a Google Cloud project with the Gmail API enabled; consent screen in **Testing** with the learner's Gmail added as a test user. Redirect URI `http://localhost:3000/api/auth/callback/google`.
+- Keys: `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, plus a local random `AUTH_SECRET`.
+- `gmail.readonly` is a restricted scope: public use needs Google verification and a security assessment, so the PoC stays in test mode (up to 100 invited users, "unverified app" warning).
+- Docs: https://developers.google.com/gmail/api/auth/scopes
+
 ## Important Failure Modes
 - **Upstox quote fails or the token is missing** → last known prices stay with "Couldn't update prices" and Retry; the brief still works.
 - **Gemini returns malformed output or no citations** → retry once; then "Couldn't write today's brief" with Try again. Lines without a source are dropped, never shown.
 - **No news for a stock** → listed under "No news today" instead of a made-up reason.
+- **Google sign-in refused, not configured, or token revoked** → Expenses shows a plain message and Continue with Google again.
 
 ## What Was Simplified and Why
 - **Browser storage** instead of a database and accounts — keeps data on the device and removes login. A multi-device version would need encrypted sync.
@@ -204,7 +231,7 @@ finlio/
 - **Sample portfolio** uses real NSE stocks and live prices; only the buy details are examples, and they're labelled "Sample".
 
 ## Decisions and Open Issues
-- **Learner choices:** web app, Next.js, Tailwind, shadcn/ui, GSAP, lucide-react, Gemini, no account, data in the browser.
+- **Learner choices:** web app, Next.js, Tailwind, shadcn/ui, GSAP, lucide-react, Gemini, no Finlio account, data in the browser; after approval, Expenses with Google sign-in and Gmail reading in test mode.
 - **Claude's recommendations (agreed):**
   1. **Upstox for prices** — official and authorized for account holders, live NSE. Tradeoff: needs an Upstox account and token. Alternative: Alpha Vantage free tier (BSE prices, about 25 requests a day, not enough for live refresh).
   2. **Gemini with Google Search for news** — one call gives today's headlines, the brief and the source links, under Google's terms. Tradeoff: stock names go to Google; Google's search suggestions must be shown.

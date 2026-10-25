@@ -24,11 +24,12 @@ Source: `scope.md > The Core Loop`, `scope.md > What "Working" Looks Like`.
 ## Screens and Layout
 Layout inspired by Link (`scope.md > Inspiration & Identity`): a left sidebar, a large greeting, rounded cards on a calm background.
 
-- **Sidebar:** Finlio logo; **Today** (home); **Holdings**; **Privacy**. A small footer note: "Your data stays in this browser."
+- **Sidebar:** Finlio logo; **Today** (home); **Holdings**; **Expenses**; **Privacy**. A small footer note: "Your data stays in this browser."
 - **Today (home):** greeting ("Good morning" plus date), the brief card with its three sections, and a compact holdings card with the portfolio total and today's change.
 - **Holdings:** a list of all holdings, an **Add stock** button, edit and delete per row.
 - **Holding detail** (panel that slides over the current screen): price, position, gain or loss, "Why it moved", and the list of headlines with links.
 - **Add / edit stock** (dialog): search, buy date, buy price, quantity.
+- **Expenses:** Continue with Google (first time), then spent this month, spending by category, and recent transactions, with Sync and Disconnect.
 - **Privacy:** what Finlio stores, what it sends to the AI, and **Clear all my data**.
 - **Welcome** (first use only): one sentence about Finlio, **Add your first stock**, **Try a sample portfolio**.
 
@@ -90,6 +91,16 @@ Source: `scope.md > Explicitly Cut`.
   - [ ] **Try a sample portfolio** adds about five well-known NSE stocks with example buy details, clearly labelled "Sample".
   - [ ] Sample holdings can be removed in one step.
 
+### Expenses
+Source: `scope.md > The POC Boundary` (Expenses, added after approval).
+- As an investor, I want Finlio to read my bank alerts so that I can see where my money went without typing anything.
+  - [ ] Expenses shows **Continue with Google** with a plain note: read-only access, only bank and UPI alerts are read, results stay in this browser, test mode only.
+  - [ ] After Google sign-in, **Sync** reads alert emails from the last 60 days and lists each spend with date, merchant, amount (₹) and category.
+  - [ ] Spent this month and last month are shown, with spending by category as bars.
+  - [ ] Emails that aren't spends (credits, OTPs, offers) are ignored.
+  - [ ] Expenses are saved in this browser; **Sync** refreshes them; **Disconnect** signs out of Google and revokes Finlio's access.
+  - [ ] If sign-in is refused or Google isn't set up, a plain message explains what happened.
+
 ## States and Boundaries
 - **First use:** the Welcome screen; nothing stored yet.
 - **Empty portfolio:** Today and Holdings show the Welcome actions instead of empty cards.
@@ -104,7 +115,8 @@ Source: `scope.md > Explicitly Cut`.
 - Manual entry with buy date, price and quantity — learner's stated flow.
 - NSE stocks only for now; mutual funds later — approved in scope.
 - Brief on screen, created when asked; email delivery later — approved in scope.
-- No account; data stays in the browser — learner's privacy promise, stated honestly.
+- No Finlio account or database; data stays in the browser — learner's privacy promise, stated honestly. Google sign-in is only for reading bank alerts.
+- Expenses via Gmail, in Google test mode — learner's decision after scope approval, accepting the deadline risk.
 - Explain, never advise — learner's principle ("Suggest, never execute" in the August PRD) and the hackathon's credibility.
 - Coloured initial badges instead of logos — trademark rule for the demo video.
 - The AI model is Gemini — learner's choice (detail belongs in `4-spec`).
@@ -116,7 +128,6 @@ The welcome; adding, editing and deleting NSE holdings; live portfolio values; t
 - **Email brief and price alerts:** needs a sending service and scheduling; the on-screen brief proves the kernel.
 - **Mutual funds:** a second data source; stocks prove the idea.
 - **Goals (weekly, monthly, yearly):** a separate feature area.
-- **Gmail expense tracking:** Google's security review can't finish before the deadline.
 - **A landing page:** finlio.app already exists. **(assumption)**
 - **Sound effects (cuelume):** polish after the core works. **(assumption)**
 
@@ -129,7 +140,8 @@ The welcome; adding, editing and deleting NSE holdings; live portfolio values; t
 ## Non-Goals
 - Buy, sell or hold recommendations — not advice, and not licensed to give it.
 - Placing trades or moving money.
-- Accounts, payments or plans.
+- Finlio accounts, payments or plans.
+- Sending emails, or reading anything other than bank and UPI alerts.
 - Company logos in the app or video — third-party trademarks.
 - Claims of end-to-end encryption or "we never share data" — not accurate with a cloud AI.
 

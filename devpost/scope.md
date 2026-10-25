@@ -29,7 +29,7 @@ Setup happens once: add each stock owned, with buy date, buy price and quantity.
 - Finlio's own brand from finlio.app: cream background, Finlio green, the plain-words "brief card" (prior work, disclosed).
 - Component and motion references: https://ui.shadcn.com, https://www.rareui.com, https://transitions.dev, https://www.beautifului.dev, https://before.click (landing showcase), https://cuelume.dev (sound), https://www.obsidianui.dev/components, https://uiarc.dev (charts), https://beui.dev, https://gsap.com (motion), lucide-react (icons).
 - Tone: like a friend who reads the market for you and explains it simply. Calm, honest, no hype.
-- Privacy as part of the identity: no account, your portfolio stays on your device.
+- Privacy as part of the identity: no Finlio account, no Finlio database; your portfolio and expenses stay on your device. Google sign-in is used only to read bank alerts for Expenses.
 
 ## Why This Matters to the Learner
 Finlio is the learner's own product (waitlist live at finlio.app). They want to win this hackathon and present it like Steve Jobs: one problem, one moment of magic, then the vision.
@@ -51,6 +51,7 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 - Daily brief generated on demand with Gemini from real, current news about the user's holdings: what changed, what's coming up, what deserves attention, with a link to the source for every claim.
 - Explains only; never says buy or sell.
 - A sample portfolio so the demo never depends on typing under pressure (proposed).
+- **Expenses (added by the learner after approval):** sign in with Google, Finlio reads bank and UPI alert emails from the last 60 days (read-only), and shows where the money went: spent this month, by category, recent transactions. Works in Google's test mode for invited accounts only.
 
 ## Later
 - Email delivery of the brief, and alerts when a holding moves sharply (proposed: on-screen brief first).
@@ -60,9 +61,12 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 - Mobile apps.
 
 ## Explicitly Cut
-- **Gmail expense tracking:** Google requires a security review for reading mail, which can't happen before the deadline; it also isn't needed to prove the kernel.
 - **Yahoo Finance's unofficial API:** not authorized for use, which the rules require; the spec picks a source we're allowed to use.
 - **Third-party broker and stock logos in the demo video:** trademarks need permission under the rules; the spec decides how holdings are identified on screen.
-- **"We never share your data" / end-to-end encryption claims:** not true when Gemini reads the news and holdings; replaced by an honest promise: no account, data on your device, only the minimum sent to Gemini over an encrypted connection.
+- **"We never share your data" / end-to-end encryption claims:** not true when Gemini reads the news and holdings; replaced by an honest promise: no Finlio account or database, data on your device, only the minimum sent to Upstox and Gemini over an encrypted connection.
 - **Buy/sell recommendations:** Finlio explains, never advises.
-- **Accounts, payments, tiers:** not needed for the proof of concept.
+- **Finlio accounts, payments, tiers:** not needed for the proof of concept (Google sign-in is only a key to read bank alerts).
+- **Public Gmail access:** Google's restricted-scope security review takes weeks; the demo runs in test mode with invited accounts.
+
+## Scope Revisions
+- Expenses with Google sign-in and Gmail reading moved from Explicitly Cut into the POC at the learner's request, accepting test-mode-only access and deadline risk.
