@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { Sidebar } from "@/components/shell/sidebar";
+import { SetupBanner } from "@/components/setup-banner";
+import { MobileNav, Sidebar } from "@/components/shell/sidebar";
 import { PricesProvider } from "@/lib/prices";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
@@ -30,10 +31,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full bg-sand text-ink">
         <StoreProvider>
           <PricesProvider>
-            <div className="flex min-h-screen">
+            <div className="flex min-h-screen flex-col md:flex-row">
               <Sidebar />
-              <main className="m-2 ml-0 min-w-0 flex-1 rounded-3xl border border-line bg-cream">
+              <MobileNav />
+              <main className="m-2 min-w-0 flex-1 md:ml-0 rounded-3xl border border-line bg-cream">
                 <div className="mx-auto w-full max-w-[1100px] px-6 py-10 md:px-10 md:py-14 xl:px-16">
+                  <SetupBanner />
                   {children}
                 </div>
               </main>
