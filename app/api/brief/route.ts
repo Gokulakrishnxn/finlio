@@ -1,5 +1,6 @@
 import { BriefRequestSchema, BriefSchema } from "@/lib/brief-schema";
-import { todayIST } from "@/lib/format";
+import { todayIn } from "@/lib/format";
+import { LOCALES } from "@/lib/locale";
 import { writeBrief } from "@/lib/gemini";
 
 export async function POST(request: Request) {
@@ -18,7 +19,7 @@ export async function POST(request: Request) {
   // One retry: the model occasionally returns an unusable reply.
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      const brief = BriefSchema.parse(await writeBrief(parsed.data, todayIST()));
+      const brief = BriefSchema.parse(await writeBrief(parsed.data, todayIn(LOCALES[parsed.data.country].marketTimeZone)));
       return Response.json(brief);
     } catch (err) {
       console.error(`[brief] attempt ${attempt} failed:`, err);

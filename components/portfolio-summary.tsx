@@ -3,7 +3,8 @@
 import { Change } from "@/components/change";
 import { CountUp } from "@/components/count-up";
 import { PriceStatus } from "@/components/price-status";
-import { formatINR } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 import { totals, type Position } from "@/lib/portfolio";
 
 export function PortfolioSummary({ positions }: { positions: Position[] }) {
@@ -22,12 +23,12 @@ export function PortfolioSummary({ positions }: { positions: Position[] }) {
           {t.complete ? (
             <CountUp
               value={t.value}
-              format={formatINR}
+              format={formatMoney}
               className="nums mt-1 block text-[36px] leading-none font-semibold tracking-tight text-ink"
             />
           ) : (
             <p className="nums mt-1 text-[36px] leading-none font-semibold tracking-tight text-muted-foreground">
-              ₹—
+              {activeLocale().symbol}—
             </p>
           )}
         </div>
@@ -35,7 +36,7 @@ export function PortfolioSummary({ positions }: { positions: Position[] }) {
         <Stat label="Since you bought" amount={t.complete ? t.gain : undefined} pct={t.complete ? t.gainPct : undefined} />
         <div>
           <p className="text-[13px] text-muted-foreground">You put in</p>
-          <p className="nums mt-1 text-[17px] text-ink">{formatINR(t.invested)}</p>
+          <p className="nums mt-1 text-[17px] text-ink">{formatMoney(t.invested)}</p>
         </div>
       </div>
     </section>

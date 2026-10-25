@@ -1,3 +1,4 @@
+import { moneyStyle } from "@/lib/ai-locale";
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 
@@ -5,6 +6,7 @@ const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash";
 
 // Totals only: no transactions, merchants, account names or stock quantities.
 const InsightsRequestSchema = z.object({
+  country: z.enum(["IN", "US"]).default("IN"),
   netWorth: z.number(),
   assets: z.number(),
   loans: z.number(),
@@ -14,11 +16,10 @@ const InsightsRequestSchema = z.object({
   allocation: z.array(z.object({ label: z.string().max(40), percent: z.number() })).max(10),
 });
 
-const SYSTEM = `You are Finlio, a calm friend who explains someone's money to them in plain English (India, rupees).
+const system = (country: "IN" | "US") => `You are Finlio, a calm friend who explains someone's money to them in plain English. They live in ${moneyStyle(country)}
 
 Write 4 to 6 short bullet points, each one sentence, starting with "- ".
 - Describe what the numbers show: where most money goes, how this month compares with last month, how much was saved, how the money is spread, how loans compare with assets.
-- Use rupee amounts written like ₹12,400 or ₹3.2 lakh.
 - Never tell them to buy, sell, invest in or move money into anything, and never recommend products. Explain; don't advise.
 - If a number is zero or missing, don't comment on it.`;
 
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
     const response = await ai.models.generateContent({
       model: MODEL,
       contents: JSON.stringify(parsed.data),
-      config: { systemInstruction: SYSTEM },
+      config: { systemInstruction: system(parsed.data.country) },
     });
     const points = (response.text ?? "")
       .split("\n")

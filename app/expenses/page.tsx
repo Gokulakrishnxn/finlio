@@ -8,8 +8,9 @@ import { ActivityRow } from "@/components/dashboard/recent-activity";
 import { EntryDialog } from "@/components/entry-dialog";
 import { PageHeader } from "@/components/page-header";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { formatINR, formatTime } from "@/lib/format";
-import { compactINR, monthTotals } from "@/lib/networth";
+import { formatMoney, formatMonth, formatTime } from "@/lib/format";
+import { compactMoney, monthTotals } from "@/lib/networth";
+import { activeLocale } from "@/lib/locale";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
 import { cn } from "@/lib/utils";
@@ -33,7 +34,7 @@ function previousMonth(key: string) {
 }
 
 const monthName = (key: string) =>
-  new Date(`${key}-01T00:00:00`).toLocaleDateString("en-IN", { month: "long" });
+  formatMonth(key);
 
 export default function ExpensesPage() {
   const { ready, expenses, setExpenses, removeEntry } = useStore();
@@ -77,7 +78,11 @@ export default function ExpensesPage() {
     setError(null);
     setNotice(null);
     try {
-      const res = await fetch("/api/expenses/sync", { method: "POST" });
+      const res = await fetch("/api/expenses/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: activeLocale().country }),
+      });
       const body = await res.json();
       if (res.status === 401) setSession((s) => (s ? { ...s, signedIn: false } : s));
       if (!res.ok) throw new Error(body.error);
@@ -127,21 +132,21 @@ export default function ExpensesPage() {
           <p className="eyebrow">Spent in {monthName(month)}</p>
           <CountUp
             value={thisMonth.spent}
-            format={formatINR}
+            format={formatMoney}
             className="nums mt-2 block text-[34px] leading-none font-semibold tracking-tight text-ink"
           />
           <p className="mt-3 text-[13px] text-body">
-            {monthName(lastMonth)}: <span className="nums text-ink">{formatINR(before.spent)}</span>
+            {monthName(lastMonth)}: <span className="nums text-ink">{formatMoney(before.spent)}</span>
           </p>
           <div className="mt-5 grid grid-cols-2 gap-3 border-t border-line pt-4">
             <div>
               <p className="eyebrow">In</p>
-              <p className="nums mt-1 text-[16px] font-semibold text-success">{compactINR(thisMonth.income)}</p>
+              <p className="nums mt-1 text-[16px] font-semibold text-success">{compactMoney(thisMonth.income)}</p>
             </div>
             <div>
               <p className="eyebrow">Saved</p>
               <p className={cn("nums mt-1 text-[16px] font-semibold", thisMonth.saved >= 0 ? "text-ink" : "text-loss")}>
-                {compactINR(thisMonth.saved)}
+                {compactMoney(thisMonth.saved)}
               </p>
             </div>
           </div>
@@ -165,7 +170,7 @@ export default function ExpensesPage() {
                       }}
                     />
                   </span>
-                  <span className="nums text-ink">{formatINR(amount)}</span>
+                  <span className="nums text-ink">{formatMoney(amount)}</span>
                 </li>
               ))}
             </ul>

@@ -17,7 +17,8 @@ import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
 import { stockDomain } from "@/lib/brands";
 import { useStore, type NewHolding } from "@/lib/store";
-import { todayIST } from "@/lib/format";
+import { todayLocal } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 import type { Holding, Instrument } from "@/lib/types";
 
 type Errors = Partial<Record<"buyDate" | "buyPrice" | "quantity", string>>;
@@ -25,7 +26,7 @@ type Errors = Partial<Record<"buyDate" | "buyPrice" | "quantity", string>>;
 function validate(buyDate: string, buyPrice: string, quantity: string): Errors {
   const errors: Errors = {};
   if (!buyDate) errors.buyDate = "Add the date you bought it.";
-  else if (buyDate > todayIST()) errors.buyDate = "The buy date can't be in the future.";
+  else if (buyDate > todayLocal()) errors.buyDate = "The buy date can't be in the future.";
   if (!(Number(buyPrice) > 0)) errors.buyPrice = "Enter the price you paid per share.";
   if (!(Number(quantity) > 0)) errors.quantity = "Enter how many shares you own.";
   return errors;
@@ -64,7 +65,8 @@ export function HoldingDialog({
       setSearching(true);
       setSearchError(null);
       try {
-        const res = await fetch(`/api/instruments?q=${encodeURIComponent(q)}`, {
+        const market = activeLocale().country;
+        const res = await fetch(`/api/instruments?q=${encodeURIComponent(q)}&market=${market}`, {
           signal: controller.signal,
         });
         const body = await res.json();
@@ -171,7 +173,7 @@ export function HoldingDialog({
           <DialogDescription>
             {picked
               ? "Finlio uses this to work out your gain or loss. It stays in this browser."
-              : "Search NSE by company name or symbol."}
+              : `Search ${activeLocale().market} by company name or symbol.`}
           </DialogDescription>
         </DialogHeader>
 
@@ -183,9 +185,9 @@ export function HoldingDialog({
                 autoFocus
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="e.g. TCS or Infosys"
+                placeholder={activeLocale().country === "US" ? "e.g. AAPL or Apple" : "e.g. TCS or Infosys"}
                 className="h-11 rounded-xl pl-9 text-[15px]"
-                aria-label="Search NSE stocks"
+                aria-label={`Search ${activeLocale().market} stocks`}
               />
               {searching && (
                 <Loader2 className="absolute top-1/2 right-3 size-4 -translate-y-1/2 animate-spin text-muted-foreground" />
@@ -245,14 +247,14 @@ export function HoldingDialog({
               <Input
                 id="buyDate"
                 type="date"
-                max={todayIST()}
+                max={todayLocal()}
                 value={buyDate}
                 onChange={(e) => setBuyDate(e.target.value)}
                 className="h-11 rounded-xl"
               />
             </Field>
             <div className="grid grid-cols-2 gap-3">
-              <Field id="buyPrice" label="Buy price per share (₹)" error={errors.buyPrice}>
+              <Field id="buyPrice" label={`Buy price per share (${activeLocale().symbol})`} error={errors.buyPrice}>
                 <Input
                   id="buyPrice"
                   type="number"

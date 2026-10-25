@@ -48,19 +48,33 @@ export type Expense = {
 
 export type ExpenseSnapshot = { account: string; syncedAt: string; expenses: Expense[] };
 
+// Account kinds for both countries; each country shows its own list (see KINDS_BY_COUNTRY).
 export const ASSET_KINDS = {
   bank: "Bank balance",
+  checking: "Checking account",
+  savings: "Savings account",
   fd: "Fixed deposit",
+  cd: "Certificate of deposit",
   gold: "Gold",
   epf: "EPF",
   ppf: "PPF",
+  nps: "NPS",
+  "401k": "401(k)",
+  ira: "IRA",
+  hsa: "HSA",
+  brokerage: "Brokerage cash",
+  crypto: "Crypto",
   property: "Property",
   other: "Other asset",
 } as const;
 
 export const LOAN_KINDS = {
   "home-loan": "Home loan",
+  mortgage: "Mortgage",
   "car-loan": "Car loan",
+  "auto-loan": "Auto loan",
+  "education-loan": "Education loan",
+  "student-loan": "Student loan",
   "personal-loan": "Personal loan",
   "credit-card": "Credit card",
   "other-loan": "Other loan",
@@ -68,6 +82,17 @@ export const LOAN_KINDS = {
 
 export type AssetKind = keyof typeof ASSET_KINDS;
 export type LoanKind = keyof typeof LOAN_KINDS;
+
+export const KINDS_BY_COUNTRY: Record<"IN" | "US", { asset: AssetKind[]; loan: LoanKind[] }> = {
+  IN: {
+    asset: ["bank", "fd", "gold", "epf", "ppf", "nps", "property", "crypto", "other"],
+    loan: ["home-loan", "car-loan", "education-loan", "personal-loan", "credit-card", "other-loan"],
+  },
+  US: {
+    asset: ["checking", "savings", "cd", "401k", "ira", "hsa", "brokerage", "property", "crypto", "gold", "other"],
+    loan: ["mortgage", "auto-loan", "student-loan", "personal-loan", "credit-card", "other-loan"],
+  },
+};
 
 // Something owned or owed outside the stock market, entered by hand.
 export type Asset = {
@@ -99,6 +124,10 @@ export type Profile = {
   name?: string;
   city?: string;
   goal?: string; // e.g. "Buy a home by 2030"
+  country?: "IN" | "US";
+  onboardedAt?: string; // set when the welcome setup is finished
+  termsVersion?: string; // the Terms version the person accepted
+  tourDone?: boolean;
 };
 
 export type Instrument = {

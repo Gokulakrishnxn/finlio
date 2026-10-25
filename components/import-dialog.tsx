@@ -10,7 +10,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { todayIST, formatINR } from "@/lib/format";
+import { todayLocal, formatMoney } from "@/lib/format";
 import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
 import type { Instrument } from "@/lib/types";
@@ -58,7 +58,7 @@ export function ImportDialog({
         instrumentKey: match.instrumentKey,
         symbol: match.symbol,
         name: match.name,
-        buyDate: todayIST(),
+        buyDate: todayLocal(),
         buyPrice: row.avgCost,
         quantity: row.quantity,
         imported: true,
@@ -69,7 +69,7 @@ export function ImportDialog({
         done.merged.push(match.symbol);
       } else {
         addHolding(values);
-        done.added.push(`${match.symbol} · ${row.quantity} @ ${formatINR(row.avgCost)}`);
+        done.added.push(`${match.symbol} · ${row.quantity} @ ${formatMoney(row.avgCost)}`);
       }
     }
     setResult(done);

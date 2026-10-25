@@ -14,8 +14,24 @@ import { Field, Select } from "@/components/form";
 import { Input } from "@/components/ui/input";
 import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
+import { activeLocale } from "@/lib/locale";
 import { cn } from "@/lib/utils";
-import { ASSET_KINDS, LOAN_KINDS, type Asset } from "@/lib/types";
+import {
+  ASSET_KINDS,
+  KINDS_BY_COUNTRY,
+  LOAN_KINDS,
+  type Asset,
+} from "@/lib/types";
+
+// The account types offered in the person's country (an existing item keeps its own type).
+function kindsFor(side: Asset["side"], keep?: string): Record<string, string> {
+  const all: Record<string, string> =
+    side === "asset" ? ASSET_KINDS : LOAN_KINDS;
+  const list: string[] = KINDS_BY_COUNTRY[activeLocale().country][side];
+  const keys =
+    keep && !list.includes(keep) && keep in all ? [keep, ...list] : list;
+  return Object.fromEntries(keys.map((k) => [k, all[k]]));
+}
 
 // Mount with a `key` per asset so editing starts from its values.
 export function AssetDialog({
@@ -31,15 +47,17 @@ export function AssetDialog({
 }) {
   const { saveAsset } = useStore();
   const [side, setSide] = useState<Asset["side"]>(editing?.side ?? initialSide);
-  const kinds = side === "asset" ? ASSET_KINDS : LOAN_KINDS;
-  const [kind, setKind] = useState<string>(editing?.kind ?? Object.keys(kinds)[0]);
+  const kinds = kindsFor(side, editing?.kind);
+  const [kind, setKind] = useState<string>(
+    editing?.kind ?? Object.keys(kinds)[0],
+  );
   const [name, setName] = useState(editing?.name ?? "");
   const [amount, setAmount] = useState(editing ? String(editing.amount) : "");
   const [error, setError] = useState<string | null>(null);
 
   function switchSide(next: Asset["side"]) {
     setSide(next);
-    setKind(Object.keys(next === "asset" ? ASSET_KINDS : LOAN_KINDS)[0]);
+    setKind(Object.keys(kindsFor(next))[0]);
   }
 
   function save(e: React.FormEvent) {
@@ -65,7 +83,8 @@ export function AssetDialog({
             {editing ? `Edit ${editing.name}` : "Add an asset or loan"}
           </DialogTitle>
           <DialogDescription>
-            Anything you own or owe outside the stock market. Saved only in this browser.
+            Anything you own or owe outside the stock market. Saved only in this
+            browser.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={save} className="flex flex-col gap-4" noValidate>
@@ -87,7 +106,11 @@ export function AssetDialog({
             </div>
           )}
           <Field id="asset-kind" label="Type">
-            <Select id="asset-kind" value={kind} onChange={(e) => setKind(e.target.value)}>
+            <Select
+              id="asset-kind"
+              value={kind}
+              onChange={(e) => setKind(e.target.value)}
+            >
               {Object.entries(kinds).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
@@ -99,12 +122,27 @@ export function AssetDialog({
             <Input
               id="asset-name"
               value={name}
-              placeholder={side === "asset" ? "e.g. HDFC savings" : "e.g. SBI home loan"}
+              placeholder={
+                activeLocale().country === "US"
+                  ? side === "asset"
+                    ? "e.g. Chase checking"
+                    : "e.g. Wells Fargo mortgage"
+                  : side === "asset"
+                    ? "e.g. HDFC savings"
+                    : "e.g. SBI home loan"
+              }
               onChange={(e) => setName(e.target.value)}
               className="h-11 rounded-xl"
             />
           </Field>
-          <Field id="asset-amount" label={side === "asset" ? "Worth today (₹)" : "Still owed (₹)"}>
+          <Field
+            id="asset-amount"
+            label={
+              side === "asset"
+                ? `Worth today (${activeLocale().symbol})`
+                : `Still owed (${activeLocale().symbol})`
+            }
+          >
             <Input
               id="asset-amount"
               type="number"
@@ -117,8 +155,15 @@ export function AssetDialog({
           </Field>
           {error && <p className="text-[13px] text-loss">{error}</p>}
           <DialogFooter>
-            <Button type="submit" className="h-11 w-full rounded-xl text-[15px]">
-              {editing ? "Save changes" : side === "asset" ? "Add asset" : "Add loan"}
+            <Button
+              type="submit"
+              className="h-11 w-full rounded-xl text-[15px]"
+            >
+              {editing
+                ? "Save changes"
+                : side === "asset"
+                  ? "Add asset"
+                  : "Add loan"}
             </Button>
           </DialogFooter>
         </form>

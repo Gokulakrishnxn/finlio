@@ -5,7 +5,7 @@ import { Change } from "@/components/change";
 import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
 import { stockDomain } from "@/lib/brands";
-import { formatINR } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import type { Position } from "@/lib/portfolio";
 
 export function HoldingsList({
@@ -40,13 +40,13 @@ export function HoldingsList({
             </div>
             <div className="hidden w-28 text-right lg:block lg:w-32">
               <p className="nums text-[15px] text-ink">
-                {p.quote ? formatINR(p.quote.price) : "—"}
+                {p.quote ? formatMoney(p.quote.price) : "—"}
               </p>
               <Change amount={p.dayChange} pct={p.dayChangePct} className="text-[12px]" />
             </div>
             <div className="w-32 text-right lg:w-40">
               <p className="nums text-[15px] font-medium text-ink">
-                {p.value !== undefined ? formatINR(p.value) : formatINR(p.invested)}
+                {p.value !== undefined ? formatMoney(p.value) : formatMoney(p.invested)}
               </p>
               {p.value !== undefined ? (
                 <Change amount={p.gain} pct={p.gainPct} className="text-[12px]" />

@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form";
 import { useTheme } from "@/components/theme-root";
-import { todayIST } from "@/lib/format";
+import { todayLocal } from "@/lib/format";
 import { setSoundOn, sound, soundOn } from "@/lib/sound";
 import type { StoreData } from "@/lib/store";
 import { COLLAPSE_KEY, logosOn, setLogosOn, SIDEBAR_EVENT } from "@/lib/ui-prefs";
 import { cn } from "@/lib/utils";
+import { activeLocale } from "@/lib/locale";
 
 type Session = { configured: boolean; signedIn: boolean; email?: string; name?: string; picture?: string };
 
@@ -231,9 +232,13 @@ export function Preferences() {
           }
         />
         <Row
-          title="Currency and market"
-          body="Indian rupees (₹) and NSE stocks. Other currencies and markets are on the roadmap."
-          control={<span className="rounded-md bg-sand px-2 py-1 text-[12px] text-body ring-1 ring-line">₹ INR · NSE</span>}
+          title="Country, currency and market"
+          body={`${activeLocale().flag} ${activeLocale().name}: ${activeLocale().currency} and ${activeLocale().market} stocks. Change your country in Profile.`}
+          control={
+            <span className="rounded-md bg-sand px-2 py-1 text-[12px] whitespace-nowrap text-body ring-1 ring-line">
+              {activeLocale().symbol} {activeLocale().currency}
+            </span>
+          }
         />
         <Row
           title="Keyboard"
@@ -342,7 +347,7 @@ export function DataCard({ data, onRestore }: { data: StoreData; onRestore: (dat
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `finlio-backup-${todayIST()}.json`;
+    a.download = `finlio-backup-${todayLocal()}.json`;
     a.click();
     URL.revokeObjectURL(url);
     setMessage("Backup downloaded.");

@@ -1,15 +1,16 @@
 import "server-only";
 import { GoogleGenAI, type GroundingMetadata } from "@google/genai";
+import { countryName, marketName } from "@/lib/ai-locale";
 import type { BriefRequest } from "@/lib/brief-schema";
 import type { Brief, BriefItem, Source } from "@/lib/types";
 
 // gemini-3.5-flash answered fastest in testing; override with GEMINI_MODEL.
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash";
 
-const SYSTEM = `You are Finlio, a calm friend who reads the Indian stock market news for someone and explains it in plain English.
+const system = (country: "IN" | "US") => `You are Finlio, a calm friend who reads the ${countryName(country)} stock market news for someone and explains it in plain English.
 
 Rules:
-- Use Google Search to find news from the last few days about each stock (NSE-listed, India).
+- Use Google Search to find news from the last few days about each stock (${marketName(country)}).
 - Only state things the news actually reports. Never invent a reason. If you found nothing recent about a stock, put its symbol under NO NEWS.
 - Plain words. Short sentences. No jargon: say "earned more than expected" instead of "beat estimates", "profit" instead of "PAT".
 - Never say buy, sell, hold, or what the person should do. Explain; don't advise.
@@ -83,7 +84,7 @@ function toItem(line: Line, metadata?: GroundingMetadata): BriefItem | null {
 }
 
 export async function writeBrief(
-  { stocks }: BriefRequest,
+  { stocks, country }: BriefRequest,
   date: string,
 ): Promise<Brief> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -93,9 +94,9 @@ export async function writeBrief(
   const list = stocks.map((s) => `- ${s.symbol} (${s.name})`).join("\n");
   const response = await ai.models.generateContent({
     model: MODEL,
-    contents: `Today is ${date} (India). Write today's brief for these stocks:\n${list}`,
+    contents: `Today is ${date} (${countryName(country)}). Write today's brief for these stocks:\n${list}`,
     config: {
-      systemInstruction: SYSTEM,
+      systemInstruction: system(country),
       tools: [{ googleSearch: {} }],
     },
   });

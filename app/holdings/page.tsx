@@ -12,6 +12,7 @@ import { PortfolioSummary } from "@/components/portfolio-summary";
 import { SampleBanner } from "@/components/sample-banner";
 import { Welcome } from "@/components/welcome";
 import { useStore } from "@/lib/store";
+import { activeLocale } from "@/lib/locale";
 import { usePositions } from "@/lib/use-positions";
 
 export default function HoldingsPage() {
@@ -28,15 +29,17 @@ export default function HoldingsPage() {
         title="Holdings"
         subtitle={
           holdings.length
-            ? `${holdings.length} ${holdings.length === 1 ? "stock" : "stocks"} on NSE`
+            ? `${holdings.length} ${holdings.length === 1 ? "stock" : "stocks"} · ${activeLocale().market}`
             : "The stocks you own, live."
         }
         action={
           <>
-            <Button variant="outline" onClick={() => setImporting(true)} className="h-10 rounded-xl px-4">
-              <FileUp className="size-4" />
-              Import from Zerodha
-            </Button>
+            {activeLocale().country === "IN" && (
+              <Button variant="outline" onClick={() => setImporting(true)} className="h-10 rounded-xl px-4">
+                <FileUp className="size-4" />
+                Import from Zerodha
+              </Button>
+            )}
             <Button onClick={openAdd} className="h-10 rounded-xl px-4">
               <Plus className="size-4" />
               Add stock

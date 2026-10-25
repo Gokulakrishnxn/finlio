@@ -19,9 +19,10 @@ export function netWorth(positions: Position[], assets: Asset[] = []) {
 }
 
 const GROUPS: { label: string; kinds: string[]; color: string }[] = [
-  { label: "Cash & deposits", kinds: ["bank", "fd"], color: "#3784f4" },
+  { label: "Cash & deposits", kinds: ["bank", "checking", "savings", "fd", "cd", "brokerage"], color: "#3784f4" },
+  { label: "Retirement", kinds: ["epf", "ppf", "nps", "401k", "ira", "hsa"], color: "#9553f9" },
   { label: "Gold", kinds: ["gold"], color: "#ffbe4c" },
-  { label: "Retirement", kinds: ["epf", "ppf"], color: "#9553f9" },
+  { label: "Crypto", kinds: ["crypto"], color: "#14b8a6" },
   { label: "Property", kinds: ["property"], color: "#ff9f43" },
   { label: "Other", kinds: ["other"], color: "#a8a29e" },
 ];
@@ -77,11 +78,5 @@ export function monthTotals(items: Activity[], month: string) {
   return { income, spent, saved: income - spent };
 }
 
-export function compactINR(value: number) {
-  const abs = Math.abs(value);
-  const sign = value < 0 ? "−" : "";
-  if (abs >= 1e7) return `${sign}₹${(abs / 1e7).toFixed(2)}Cr`;
-  if (abs >= 1e5) return `${sign}₹${(abs / 1e5).toFixed(2)}L`;
-  if (abs >= 1e3) return `${sign}₹${(abs / 1e3).toFixed(1)}K`;
-  return `${sign}₹${abs.toFixed(0)}`;
-}
+// Kept here so existing imports keep working; lives in lib/format.
+export { compactMoney } from "@/lib/format";

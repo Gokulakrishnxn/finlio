@@ -12,7 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Field, Select } from "@/components/form";
 import { Input } from "@/components/ui/input";
-import { todayIST } from "@/lib/format";
+import { todayLocal } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "@/lib/types";
@@ -30,7 +31,7 @@ export function EntryDialog({
   const { addEntry } = useStore();
   const categories: readonly string[] = type === "income" ? INCOME_CATEGORIES : EXPENSE_CATEGORIES;
   const [amount, setAmount] = useState("");
-  const [date, setDate] = useState(todayIST());
+  const [date, setDate] = useState(todayLocal());
   const [category, setCategory] = useState(categories[0]);
   const [note, setNote] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +39,7 @@ export function EntryDialog({
   function save(e: React.FormEvent) {
     e.preventDefault();
     if (!(Number(amount) > 0)) return setError("Enter an amount above zero.");
-    if (!date || date > todayIST()) return setError("Pick today or an earlier date.");
+    if (!date || date > todayLocal()) return setError("Pick today or an earlier date.");
     addEntry({ type, amount: Number(amount), date, category, note: note.trim() || undefined });
     sound("success");
     onOpenChange(false);
@@ -55,7 +56,7 @@ export function EntryDialog({
         </DialogHeader>
         <form onSubmit={save} className="flex flex-col gap-4" noValidate>
           <div className="grid grid-cols-2 gap-3">
-            <Field id="entry-amount" label="Amount (₹)">
+            <Field id="entry-amount" label={`Amount (${activeLocale().symbol})`}>
               <Input
                 id="entry-amount"
                 autoFocus
@@ -71,7 +72,7 @@ export function EntryDialog({
               <Input
                 id="entry-date"
                 type="date"
-                max={todayIST()}
+                max={todayLocal()}
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
                 className="h-11 rounded-xl"

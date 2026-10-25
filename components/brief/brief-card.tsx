@@ -7,7 +7,8 @@ import { ArrowUpRight, Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
-import { todayIST } from "@/lib/format";
+import { formatTime, todayLocal } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 import type { Brief, BriefItem } from "@/lib/types";
 
 gsap.registerPlugin(useGSAP);
@@ -24,7 +25,7 @@ export function BriefCard() {
   const [error, setError] = useState<string | null>(null);
   const container = useRef<HTMLElement>(null);
 
-  const current = brief?.date === todayIST() ? brief : undefined;
+  const current = brief?.date === todayLocal() ? brief : undefined;
 
   // The brief writes itself in, one section after another.
   useGSAP(
@@ -53,7 +54,7 @@ export function BriefCard() {
       const res = await fetch("/api/brief", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ stocks }),
+        body: JSON.stringify({ stocks, country: activeLocale().country }),
       });
       const body = await res.json();
       if (!res.ok) throw new Error(body.error);
@@ -73,7 +74,7 @@ export function BriefCard() {
           <h2 className="text-[15px] font-medium text-ink">Today&apos;s brief</h2>
           <p className="mt-1 text-[13px] text-muted-foreground">
             {current
-              ? `Written at ${new Date(current.createdAt).toLocaleTimeString("en-IN", { hour: "numeric", minute: "2-digit", timeZone: "Asia/Kolkata" })} from today's news.`
+              ? `Written at ${formatTime(current.createdAt)} from today's news.`
               : "Finlio reads today's news about your stocks and explains it in plain words."}
           </p>
         </div>

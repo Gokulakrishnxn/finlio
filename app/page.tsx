@@ -16,11 +16,12 @@ import { SampleBanner } from "@/components/sample-banner";
 import { Welcome } from "@/components/welcome";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
+import { formatMonth } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 
 function greeting() {
   const hour = Number(
-    new Intl.DateTimeFormat("en-IN", { hour: "numeric", hour12: false, timeZone: "Asia/Kolkata" })
-      .format(new Date()),
+    new Intl.DateTimeFormat("en-GB", { hour: "numeric", hour12: false }).format(new Date()),
   );
   if (hour < 12) return "Good morning";
   if (hour < 17) return "Good afternoon";
@@ -28,11 +29,11 @@ function greeting() {
 }
 
 function todayLabel() {
-  return new Date().toLocaleDateString("en-IN", {
+  // The person's own device time, in their country's date style.
+  return new Date().toLocaleDateString(activeLocale().language, {
     weekday: "long",
     day: "numeric",
     month: "long",
-    timeZone: "Asia/Kolkata",
   });
 }
 
@@ -45,10 +46,7 @@ export default function DashboardPage() {
   if (!ready) return <PageSkeleton />;
 
   const empty = !hasData && items.length === 0;
-  const monthLabel = new Date(`${month}-01T00:00:00`).toLocaleDateString("en-IN", {
-    month: "short",
-    year: "numeric",
-  });
+  const monthLabel = formatMonth(month, "short-year");
 
   return (
     <>
@@ -99,10 +97,14 @@ export default function DashboardPage() {
                   <button onClick={() => openAdd("stock")} className="text-ink underline">
                     Add one
                   </button>{" "}
-                  or{" "}
-                  <button onClick={() => openAdd("import")} className="text-ink underline">
-                    import from Zerodha
-                  </button>
+                  {activeLocale().country === "IN" && (
+                    <>
+                      or{" "}
+                      <button onClick={() => openAdd("import")} className="text-ink underline">
+                        import from Zerodha
+                      </button>
+                    </>
+                  )}
                   .
                 </p>
               )}

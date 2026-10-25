@@ -1,3 +1,5 @@
+import { activeLocale } from "@/lib/locale";
+
 // Company websites for logos. Only domains listed here can be fetched by /api/logo.
 
 // NSE symbol → company website.
@@ -67,6 +69,66 @@ const STOCKS: Record<string, string> = {
   DABUR: "dabur.com",
   GODREJCP: "godrejcp.com",
   INDIGO: "goindigo.in",
+  // United States
+  AAPL: "apple.com",
+  MSFT: "microsoft.com",
+  NVDA: "nvidia.com",
+  AMZN: "amazon.com",
+  GOOGL: "google.com",
+  GOOG: "google.com",
+  META: "meta.com",
+  TSLA: "tesla.com",
+  "BRK.B": "berkshirehathaway.com",
+  AVGO: "broadcom.com",
+  JPM: "jpmorganchase.com",
+  V: "visa.com",
+  MA: "mastercard.com",
+  UNH: "unitedhealthgroup.com",
+  JNJ: "jnj.com",
+  PG: "pg.com",
+  HD: "homedepot.com",
+  COST: "costco.com",
+  WMT: "walmart.com",
+  KO: "coca-colacompany.com",
+  PEP: "pepsico.com",
+  MCD: "mcdonalds.com",
+  SBUX: "starbucks.com",
+  NKE: "nike.com",
+  DIS: "disney.com",
+  NFLX: "netflix.com",
+  AMD: "amd.com",
+  INTC: "intel.com",
+  ORCL: "oracle.com",
+  CRM: "salesforce.com",
+  ADBE: "adobe.com",
+  CSCO: "cisco.com",
+  IBM: "ibm.com",
+  QCOM: "qualcomm.com",
+  BAC: "bankofamerica.com",
+  WFC: "wellsfargo.com",
+  C: "citigroup.com",
+  GS: "goldmansachs.com",
+  AXP: "americanexpress.com",
+  PYPL: "paypal.com",
+  UBER: "uber.com",
+  ABNB: "airbnb.com",
+  SHOP: "shopify.com",
+  PLTR: "palantir.com",
+  COIN: "coinbase.com",
+  XOM: "exxonmobil.com",
+  CVX: "chevron.com",
+  PFE: "pfizer.com",
+  LLY: "lilly.com",
+  T: "att.com",
+  VZ: "verizon.com",
+  TMUS: "t-mobile.com",
+  F: "ford.com",
+  GM: "gm.com",
+  VOO: "vanguard.com",
+  VTI: "vanguard.com",
+  SPY: "ssga.com",
+  QQQ: "invesco.com",
+  SCHD: "schwab.com",
 };
 
 // Merchant keywords (lowercase, letters and digits only) → website.
@@ -127,9 +189,65 @@ const MERCHANTS: [string, string][] = [
   ["bookmyshow", "bookmyshow.com"],
   ["decathlon", "decathlon.in"],
   ["ikea", "ikea.com"],
+  // United States
+  ["chase", "chase.com"],
+  ["bankofamerica", "bankofamerica.com"],
+  ["wellsfargo", "wellsfargo.com"],
+  ["citi", "citi.com"],
+  ["capitalone", "capitalone.com"],
+  ["amex", "americanexpress.com"],
+  ["americanexpress", "americanexpress.com"],
+  ["ally", "ally.com"],
+  ["vanguard", "vanguard.com"],
+  ["fidelity", "fidelity.com"],
+  ["schwab", "schwab.com"],
+  ["robinhood", "robinhood.com"],
+  ["wholefoods", "wholefoodsmarket.com"],
+  ["traderjoe", "traderjoes.com"],
+  ["target", "target.com"],
+  ["walmart", "walmart.com"],
+  ["costco", "costco.com"],
+  ["kroger", "kroger.com"],
+  ["doordash", "doordash.com"],
+  ["grubhub", "grubhub.com"],
+  ["instacart", "instacart.com"],
+  ["lyft", "lyft.com"],
+  ["chipotle", "chipotle.com"],
+  ["comcast", "xfinity.com"],
+  ["xfinity", "xfinity.com"],
+  ["verizon", "verizon.com"],
+  ["tmobile", "t-mobile.com"],
+  ["att", "att.com"],
+  ["coned", "coned.com"],
+  ["pge", "pge.com"],
+  ["cvs", "cvs.com"],
+  ["walgreens", "walgreens.com"],
+  ["hulu", "hulu.com"],
+  ["disneyplus", "disneyplus.com"],
+  ["amc", "amctheatres.com"],
+  ["venmo", "venmo.com"],
+  ["paypal", "paypal.com"],
+  ["delta", "delta.com"],
+  ["united", "united.com"],
+  ["airbnb", "airbnb.com"],
+  ["shell", "shell.com"],
+  ["chevron", "chevron.com"],
 ];
 
-const ALLOWED = new Set([...Object.values(STOCKS), ...MERCHANTS.map(([, d]) => d)]);
+// The same brand can have a different site per country (amazon.in vs amazon.com).
+const US_SITES: Record<string, string> = {
+  "amazon.in": "amazon.com",
+  "starbucks.in": "starbucks.com",
+  "mcdonaldsindia.com": "mcdonalds.com",
+  "online.kfc.co.in": "kfc.com",
+  "primevideo.com": "primevideo.com",
+};
+
+const ALLOWED = new Set([
+  ...Object.values(STOCKS),
+  ...MERCHANTS.map(([, d]) => d),
+  ...Object.values(US_SITES),
+]);
 
 export function isAllowedLogoDomain(domain: string) {
   return ALLOWED.has(domain);
@@ -139,9 +257,10 @@ export function stockDomain(symbol: string) {
   return STOCKS[symbol.toUpperCase()];
 }
 
-export function merchantDomain(name: string) {
+export function merchantDomain(name: string, country: "IN" | "US" = activeLocale().country) {
   const key = name.toLowerCase().replace(/[^a-z0-9]/g, "");
   if (!key) return undefined;
   // Short keys must match the start, so "ola" doesn't match "cocacola".
-  return MERCHANTS.find(([k]) => (k.length <= 4 ? key.startsWith(k) : key.includes(k)))?.[1];
+  const site = MERCHANTS.find(([k]) => (k.length <= 4 ? key.startsWith(k) : key.includes(k)))?.[1];
+  return site && country === "US" ? (US_SITES[site] ?? site) : site;
 }

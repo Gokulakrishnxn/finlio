@@ -1,8 +1,8 @@
 import "server-only";
 
-// Bank and UPI alerts only; promotions are skipped.
+// Bank, card and payment alerts only (UPI in India; card, Zelle and Venmo in the US); promotions are skipped.
 const ALERT_QUERY =
-  'newer_than:60d (debited OR spent OR "paid to" OR UPI OR "debit card" OR txn) -category:promotions -category:social';
+  'newer_than:60d (debited OR spent OR "paid to" OR UPI OR "debit card" OR txn OR "transaction alert" OR "you made a" OR purchase OR Zelle OR Venmo) -category:promotions -category:social';
 const MAX_MESSAGES = 60;
 const CONCURRENCY = 8;
 

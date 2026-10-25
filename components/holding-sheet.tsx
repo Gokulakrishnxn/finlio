@@ -18,8 +18,9 @@ import { Change } from "@/components/change";
 import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
 import { stockDomain } from "@/lib/brands";
-import { formatDate, formatINR, todayIST } from "@/lib/format";
+import { formatDate, formatMoney, todayLocal } from "@/lib/format";
 import { useStore } from "@/lib/store";
+import { activeLocale } from "@/lib/locale";
 import type { Position } from "@/lib/portfolio";
 import type { BriefItem } from "@/lib/types";
 
@@ -36,7 +37,7 @@ export function HoldingSheet({
   const [confirming, setConfirming] = useState(false);
   const h = position?.holding;
 
-  const todays = brief?.date === todayIST() ? brief : undefined;
+  const todays = brief?.date === todayLocal() ? brief : undefined;
   const lines: { label: string; item: BriefItem }[] = h
     ? [
         ...(todays?.changed ?? []).map((item) => ({ label: "What changed", item })),
@@ -70,7 +71,7 @@ export function HoldingSheet({
                 </div>
                 <div>
                   <p className="nums text-[32px] leading-none font-semibold tracking-tight text-ink">
-                    {position.quote ? formatINR(position.quote.price) : "₹—"}
+                    {position.quote ? formatMoney(position.quote.price) : `${activeLocale().symbol}—`}
                   </p>
                   <Change
                     amount={position.quote ? position.quote.price - position.quote.prevClose : undefined}
@@ -82,11 +83,11 @@ export function HoldingSheet({
 
               <div className="grid grid-cols-2 gap-px border-b border-line bg-line">
                 <Cell label="Your shares" value={String(h.quantity)} />
-                <Cell label="Average buy price" value={formatINR(h.buyPrice)} />
-                <Cell label="You put in" value={formatINR(position.invested)} />
+                <Cell label="Average buy price" value={formatMoney(h.buyPrice)} />
+                <Cell label="You put in" value={formatMoney(position.invested)} />
                 <Cell
                   label="Worth now"
-                  value={position.value !== undefined ? formatINR(position.value) : "—"}
+                  value={position.value !== undefined ? formatMoney(position.value) : "—"}
                 />
                 <div className="col-span-2 bg-cream px-7 py-4">
                   <p className="text-[12px] text-muted-foreground">Since you bought on {formatDate(h.buyDate)}</p>

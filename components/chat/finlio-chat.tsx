@@ -6,7 +6,8 @@ import { Message, MessageContent, MessageScroller } from "@/components/agents/me
 import { PromptInput } from "@/components/agents/prompt-input";
 import { ThinkingShimmer } from "@/components/agents/loading-states/thinking-shimmer";
 import { useChatUI } from "@/components/chat/chat-context";
-import { todayIST } from "@/lib/format";
+import { todayLocal } from "@/lib/format";
+import { activeLocale } from "@/lib/locale";
 import { allocation } from "@/lib/networth";
 import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
@@ -66,9 +67,9 @@ export function FinlioChat() {
     for (const i of items) {
       if (i.type === "expense" && i.date.startsWith(month)) spending.set(i.category, (spending.get(i.category) ?? 0) + i.amount);
     }
-    const todays = brief?.date === todayIST() ? brief : undefined;
+    const todays = brief?.date === todayLocal() ? brief : undefined;
     return {
-      today: todayIST(),
+      today: todayLocal(),
       netWorth: Math.round(worth.netWorth),
       assets: Math.round(worth.assets),
       loans: Math.round(worth.loans),
@@ -105,7 +106,11 @@ export function FinlioChat() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history.map(({ role, content }) => ({ role, content })), context }),
+        body: JSON.stringify({
+          messages: history.map(({ role, content }) => ({ role, content })),
+          context,
+          country: activeLocale().country,
+        }),
         signal: abort.current.signal,
       });
       if (!res.ok || !res.body) {

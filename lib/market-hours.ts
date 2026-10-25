@@ -1,7 +1,11 @@
-// NSE equity session: weekdays 09:15–15:30 IST. Exchange holidays aren't modelled.
+import { activeLocale } from "@/lib/locale";
+
+// Is the person's home market open right now? NSE 09:15–15:30 IST, US 09:30–16:00 ET,
+// weekdays. Exchange holidays aren't modelled.
 export function isMarketOpen(now = new Date()) {
+  const { marketTimeZone, marketOpen, marketClose } = activeLocale();
   const parts = new Intl.DateTimeFormat("en-GB", {
-    timeZone: "Asia/Kolkata",
+    timeZone: marketTimeZone,
     weekday: "short",
     hour: "2-digit",
     minute: "2-digit",
@@ -10,5 +14,5 @@ export function isMarketOpen(now = new Date()) {
   const get = (type: string) => parts.find((p) => p.type === type)?.value ?? "";
   if (get("weekday") === "Sat" || get("weekday") === "Sun") return false;
   const minutes = Number(get("hour")) * 60 + Number(get("minute"));
-  return minutes >= 9 * 60 + 15 && minutes <= 15 * 60 + 30;
+  return minutes >= marketOpen[0] * 60 + marketOpen[1] && minutes <= marketClose[0] * 60 + marketClose[1];
 }

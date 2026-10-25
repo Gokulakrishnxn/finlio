@@ -9,10 +9,10 @@ import { WealthBar } from "@/components/dashboard/wealth-bar";
 import { BrandLogo, IconBadge } from "@/components/brand-logo";
 import { PageHeader } from "@/components/page-header";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { formatINR } from "@/lib/format";
+import { formatMoney } from "@/lib/format";
 import { merchantDomain } from "@/lib/brands";
 import { assetLook } from "@/lib/category-icons";
-import { compactINR } from "@/lib/networth";
+import { compactMoney } from "@/lib/networth";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
 import { ASSET_KINDS, LOAN_KINDS, type Asset } from "@/lib/types";
@@ -51,7 +51,7 @@ export default function AssetsPage() {
 
       <div className="grid gap-4 md:grid-cols-3">
         <Summary label="Net worth" value={worth.netWorth} strong />
-        <Summary label="You own" value={worth.assets} note={`incl. ${compactINR(worth.stocks)} in stocks`} />
+        <Summary label="You own" value={worth.assets} note={`incl. ${compactMoney(worth.stocks)} in stocks`} />
         <Summary label="You owe" value={worth.loans} />
       </div>
 
@@ -105,7 +105,7 @@ function Summary({ label, value, note, strong }: { label: string; value: number;
       <p className="eyebrow">{label}</p>
       <CountUp
         value={value}
-        format={formatINR}
+        format={formatMoney}
         className={`nums mt-2 block leading-none font-semibold tracking-tight text-ink ${strong ? "text-[30px]" : "text-[24px]"}`}
       />
       {note && <p className="mt-2 text-[12px] text-muted-foreground">{note}</p>}
@@ -138,7 +138,7 @@ function Group({
       <div className="flex items-center justify-between">
         <p className="eyebrow">{title}</p>
         <p className={`nums text-[18px] font-semibold ${tone === "asset" ? "text-success" : "text-loss"}`}>
-          {compactINR(total)}
+          {compactMoney(total)}
         </p>
       </div>
       {items.length ? (
@@ -153,7 +153,7 @@ function Group({
                 <p className="truncate text-[14px] font-medium text-ink">{a.name}</p>
                 <p className="text-[12px] text-muted-foreground">{KIND_LABEL[a.kind]}</p>
               </div>
-              <p className="nums text-[14px] text-ink">{formatINR(a.amount)}</p>
+              <p className="nums text-[14px] text-ink">{formatMoney(a.amount)}</p>
               <button
                 onClick={() => onEdit(a)}
                 aria-label={`Edit ${a.name}`}

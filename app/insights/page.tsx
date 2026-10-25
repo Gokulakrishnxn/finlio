@@ -12,9 +12,10 @@ import {
 import { SankeyChart, SankeyChartPlot, SankeyChartTooltip } from "@/components/charts/sankey-chart";
 import { PageHeader } from "@/components/page-header";
 import { PageSkeleton } from "@/components/page-skeleton";
-import { formatINR } from "@/lib/format";
-import { allocation, compactINR, monthTotals } from "@/lib/networth";
+import { formatMoney } from "@/lib/format";
+import { allocation, compactMoney, monthTotals } from "@/lib/networth";
 import { sound } from "@/lib/sound";
+import { activeLocale } from "@/lib/locale";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
 
@@ -78,6 +79,7 @@ export default function InsightsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          country: activeLocale().country,
           netWorth: Math.round(worth.netWorth),
           assets: Math.round(worth.assets),
           loans: Math.round(worth.loans),
@@ -141,7 +143,7 @@ export default function InsightsPage() {
           {alloc.length ? (
             <DonutChart
               segments={alloc.map((a) => ({ id: a.label, name: a.label, color: a.color, value: a.amount }))}
-              formatValue={compactINR}
+              formatValue={compactMoney}
               label="Allocation"
             >
               <div className="grid items-center gap-6 sm:grid-cols-[minmax(0,13rem)_1fr]">
@@ -166,7 +168,7 @@ export default function InsightsPage() {
                 color: CATEGORY_COLORS[n % CATEGORY_COLORS.length],
                 value: s.amount,
               }))}
-              formatValue={compactINR}
+              formatValue={compactMoney}
               label="Spending by category"
             >
               <div className="grid items-center gap-6 sm:grid-cols-[minmax(0,13rem)_1fr]">
@@ -186,12 +188,12 @@ export default function InsightsPage() {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <p className="eyebrow">Money flow · this month</p>
           <p className="text-[13px] text-muted-foreground">
-            In <span className="nums text-ink">{formatINR(thisMonth.income)}</span> · Out{" "}
-            <span className="nums text-ink">{formatINR(thisMonth.spent)}</span>
+            In <span className="nums text-ink">{formatMoney(thisMonth.income)}</span> · Out{" "}
+            <span className="nums text-ink">{formatMoney(thisMonth.spent)}</span>
           </p>
         </div>
         {flow ? (
-          <SankeyChart nodes={flow.nodes} links={flow.links} formatValue={compactINR} label="Money flow" className="mt-4">
+          <SankeyChart nodes={flow.nodes} links={flow.links} formatValue={compactMoney} label="Money flow" className="mt-4">
             <SankeyChartPlot />
             <SankeyChartTooltip />
           </SankeyChart>

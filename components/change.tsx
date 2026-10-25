@@ -1,4 +1,4 @@
-import { formatPct, formatSignedINR } from "@/lib/format";
+import { formatPct, formatSignedMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 // A signed ₹ amount with its percentage, green for gains and red for losses.
@@ -16,7 +16,7 @@ export function Change({
   }
   return (
     <span className={cn("nums", amount >= 0 ? "text-success" : "text-loss", className)}>
-      {formatSignedINR(amount)} ({formatPct(pct)})
+      {formatSignedMoney(amount)} ({formatPct(pct)})
     </span>
   );
 }

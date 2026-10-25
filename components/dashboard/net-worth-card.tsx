@@ -4,9 +4,9 @@ import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { CountUp } from "@/components/count-up";
-import { formatINR, formatPct, formatSignedINR } from "@/lib/format";
-import { todayIST } from "@/lib/format";
-import { compactINR } from "@/lib/networth";
+import { formatMoney, formatPct, formatShortDate, formatSignedMoney, todayLocal } from "@/lib/format";
+import { compactMoney } from "@/lib/networth";
+import { activeLocale } from "@/lib/locale";
 import { quarterBars, type QuarterBar } from "@/lib/quarters";
 import { cn } from "@/lib/utils";
 import type { Snapshot } from "@/lib/types";
@@ -61,7 +61,7 @@ function QuarterChart({ bars }: { bars: QuarterBar[] }) {
                   b.current ? "font-semibold text-ink" : "text-muted-foreground",
                 )}
               >
-                {b.value === undefined ? "—" : compactINR(b.value)}
+                {b.value === undefined ? "—" : compactMoney(b.value)}
               </span>
               {b.value === undefined ? (
                 <div
@@ -70,7 +70,7 @@ function QuarterChart({ bars }: { bars: QuarterBar[] }) {
                 />
               ) : (
                 <motion.div
-                  title={`${b.label} ${b.fy}: ${compactINR(b.value)}`}
+                  title={`${b.label} ${b.fy}: ${compactMoney(b.value)}`}
                   initial={reduce ? false : { height: 0 }}
                   animate={{ height: `${pct}%` }}
                   transition={{ type: "spring", stiffness: 180, damping: 24, delay: reduce ? 0 : i * 0.06 }}
@@ -97,7 +97,7 @@ function QuarterChart({ bars }: { bars: QuarterBar[] }) {
 }
 
 const shortDate = (iso: string) =>
-  new Date(`${iso}T00:00:00`).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+  formatShortDate(iso);
 
 export function NetWorthCard({
   netWorth,
@@ -116,24 +116,26 @@ export function NetWorthCard({
   const change = first ? netWorth - first.netWorth : 0;
   const pct = first?.netWorth ? (change / Math.abs(first.netWorth)) * 100 : 0;
   const [view, setView] = useState<"quarterly" | "daily">("quarterly");
-  const bars = quarterBars(snapshots, todayIST(), netWorth);
+  const bars = quarterBars(snapshots, todayLocal(), netWorth);
 
   return (
     <section className="card-surface flex flex-col p-6 md:p-7">
       <div className="flex items-center justify-between gap-3">
-        <p className="eyebrow">Net worth · ₹ INR</p>
+        <p className="eyebrow">
+          Net worth · {activeLocale().symbol} {activeLocale().currency}
+        </p>
         {!stocksLive && <span className="text-[11px] text-muted-foreground">Stocks at cost</span>}
       </div>
       <CountUp
         value={netWorth}
-        format={formatINR}
+        format={formatMoney}
         className="nums mt-3 block text-[34px] leading-none font-semibold tracking-tight text-ink md:text-[44px]"
       />
       {snapshots.length > 1 ? (
         <p className={`mt-3 flex items-center gap-1.5 text-[13px] ${change >= 0 ? "text-success" : "text-loss"}`}>
           {change >= 0 ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
           <span className="nums">
-            {formatSignedINR(change)} ({formatPct(pct)})
+            {formatSignedMoney(change)} ({formatPct(pct)})
           </span>
           <span className="text-muted-foreground">since {shortDate(first.date)}</span>
         </p>
@@ -184,11 +186,11 @@ export function NetWorthCard({
       <div className="mt-5 grid grid-cols-2 gap-3 border-t border-line pt-4">
         <div>
           <p className="eyebrow">Assets</p>
-          <p className="nums mt-1 text-[15px] text-ink">{compactINR(assets)}</p>
+          <p className="nums mt-1 text-[15px] text-ink">{compactMoney(assets)}</p>
         </div>
         <div>
           <p className="eyebrow">Loans</p>
-          <p className="nums mt-1 text-[15px] text-ink">{compactINR(loans)}</p>
+          <p className="nums mt-1 text-[15px] text-ink">{compactMoney(loans)}</p>
         </div>
       </div>
     </section>

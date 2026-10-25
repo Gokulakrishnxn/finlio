@@ -11,6 +11,7 @@ export const BriefRequestSchema = z.object({
     )
     .min(1)
     .max(25),
+  country: z.enum(["IN", "US"]).default("IN"),
 });
 
 export type BriefRequest = z.infer<typeof BriefRequestSchema>;

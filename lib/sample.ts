@@ -1,8 +1,9 @@
+import type { Country } from "@/lib/locale";
 import type { Asset, Entry, Holding, Snapshot } from "@/lib/types";
 
 // Real NSE stocks with example buy details, clearly labelled "Sample".
 // Prices and news for them are live; only the buy date, price and quantity are made up.
-export const SAMPLE_HOLDINGS: Omit<Holding, "id">[] = [
+const IN_HOLDINGS: Omit<Holding, "id">[] = [
   {
     instrumentKey: "NSE_EQ|INE467B01029",
     symbol: "TCS",
@@ -52,7 +53,7 @@ export const SAMPLE_HOLDINGS: Omit<Holding, "id">[] = [
 
 // The rest of the sample: everything a real household might track, labelled so
 // "Remove sample" can take it all away again. Amounts are examples.
-export const SAMPLE_ASSETS: Omit<Asset, "id">[] = [
+const IN_ASSETS: Omit<Asset, "id">[] = [
   { side: "asset", kind: "bank", name: "HDFC savings", amount: 185000, sample: true },
   { side: "asset", kind: "fd", name: "SBI fixed deposit", amount: 300000, sample: true },
   { side: "asset", kind: "gold", name: "Gold coins", amount: 142000, sample: true },
@@ -65,7 +66,7 @@ export const SAMPLE_ASSETS: Omit<Asset, "id">[] = [
 type Recurring = { day: number; type: Entry["type"]; amount: number; category: string; note: string; every?: number };
 
 // One month of a salaried life in India; repeated for the last three months.
-const MONTH: Recurring[] = [
+const IN_MONTH: Recurring[] = [
   { day: 1, type: "income", amount: 95000, category: "Salary", note: "Salary" },
   { day: 3, type: "expense", amount: 22000, category: "Bills & utilities", note: "Rent" },
   { day: 4, type: "expense", amount: 599, category: "Bills & utilities", note: "Airtel" },
@@ -84,11 +85,57 @@ const MONTH: Recurring[] = [
   { day: 28, type: "expense", amount: 1200, category: "Entertainment", note: "BookMyShow" },
 ];
 
+
+// A US household: salary paid twice a month, rent, groceries, delivery, streaming.
+const US_HOLDINGS: Omit<Holding, "id">[] = [
+  { instrumentKey: "US|AAPL", symbol: "AAPL", name: "Apple Inc.", buyDate: "2024-03-11", buyPrice: 172, quantity: 30, sample: true },
+  { instrumentKey: "US|MSFT", symbol: "MSFT", name: "Microsoft Corporation", buyDate: "2024-01-22", buyPrice: 398, quantity: 12, sample: true },
+  { instrumentKey: "US|NVDA", symbol: "NVDA", name: "NVIDIA Corporation", buyDate: "2024-08-05", buyPrice: 102, quantity: 40, sample: true },
+  { instrumentKey: "US|AMZN", symbol: "AMZN", name: "Amazon.com, Inc.", buyDate: "2025-02-18", buyPrice: 221, quantity: 15, sample: true },
+  { instrumentKey: "US|VOO", symbol: "VOO", name: "Vanguard S&P 500 ETF", buyDate: "2023-10-02", buyPrice: 395, quantity: 25, sample: true },
+];
+
+const US_ASSETS: Omit<Asset, "id">[] = [
+  { side: "asset", kind: "checking", name: "Chase checking", amount: 8400, sample: true },
+  { side: "asset", kind: "savings", name: "Ally savings", amount: 22000, sample: true },
+  { side: "asset", kind: "401k", name: "401(k)", amount: 86000, sample: true },
+  { side: "asset", kind: "ira", name: "Roth IRA", amount: 31000, sample: true },
+  { side: "asset", kind: "hsa", name: "HSA", amount: 6200, sample: true },
+  { side: "loan", kind: "auto-loan", name: "Auto loan", amount: 14800, sample: true },
+  { side: "loan", kind: "student-loan", name: "Student loan", amount: 23500, sample: true },
+  { side: "loan", kind: "credit-card", name: "Chase Sapphire card", amount: 1850, sample: true },
+];
+
+const US_MONTH: Recurring[] = [
+  { day: 1, type: "income", amount: 3600, category: "Salary", note: "Paycheck" },
+  { day: 2, type: "expense", amount: 2100, category: "Bills & utilities", note: "Rent" },
+  { day: 4, type: "expense", amount: 79, category: "Bills & utilities", note: "Comcast" },
+  { day: 5, type: "expense", amount: 142, category: "Groceries", note: "Whole Foods" },
+  { day: 7, type: "expense", amount: 38, category: "Food & dining", note: "DoorDash" },
+  { day: 9, type: "expense", amount: 96, category: "Bills & utilities", note: "Con Edison" },
+  { day: 11, type: "expense", amount: 24, category: "Travel", note: "Uber" },
+  { day: 12, type: "expense", amount: 7, category: "Food & dining", note: "Starbucks" },
+  { day: 15, type: "income", amount: 3600, category: "Salary", note: "Paycheck" },
+  { day: 16, type: "expense", amount: 64, category: "Shopping", note: "Amazon" },
+  { day: 18, type: "expense", amount: 85, category: "Groceries", note: "Trader Joe's" },
+  { day: 19, type: "income", amount: 650, category: "Freelance", note: "Design project", every: 2 },
+  { day: 20, type: "expense", amount: 112, category: "Shopping", note: "Target" },
+  { day: 22, type: "expense", amount: 22, category: "Health", note: "CVS" },
+  { day: 24, type: "expense", amount: 15.49, category: "Entertainment", note: "Netflix" },
+  { day: 25, type: "expense", amount: 11.99, category: "Entertainment", note: "Spotify" },
+  { day: 27, type: "expense", amount: 52, category: "Food & dining", note: "Chipotle" },
+  { day: 28, type: "expense", amount: 32, category: "Entertainment", note: "AMC" },
+];
+
+export const sampleHoldings = (country: Country) => (country === "US" ? US_HOLDINGS : IN_HOLDINGS);
+export const sampleAssets = (country: Country) => (country === "US" ? US_ASSETS : IN_ASSETS);
+
 const iso = (y: number, m: number, d: number) =>
   `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
 
 // Income and spends for this month (up to today) and the two before it.
-export function sampleEntries(today: string): Omit<Entry, "id">[] {
+export function sampleEntries(today: string, country: Country = "IN"): Omit<Entry, "id">[] {
+  const MONTH = country === "US" ? US_MONTH : IN_MONTH;
   const [ty, tm] = today.split("-").map(Number);
   const out: Omit<Entry, "id">[] = [];
   for (let back = 0; back < 3; back++) {
@@ -100,8 +147,10 @@ export function sampleEntries(today: string): Omit<Entry, "id">[] {
       const date = iso(y, m, r.day);
       if (date > today) continue;
       // Small month-to-month variation so the months don't look copied.
-      const wobble = r.type === "expense" && r.amount > 1000 ? 1 + ((back * 7 + r.day) % 5 - 2) / 20 : 1;
-      out.push({ type: r.type, date, amount: Math.round(r.amount * wobble), category: r.category, note: r.note, sample: true });
+      const big = country === "US" ? 50 : 1000;
+      const wobble = r.type === "expense" && r.amount > big ? 1 + ((back * 7 + r.day) % 5 - 2) / 20 : 1;
+      const amount = Math.round(r.amount * wobble * 100) / 100;
+      out.push({ type: r.type, date, amount, category: r.category, note: r.note, sample: true });
     }
   }
   return out;

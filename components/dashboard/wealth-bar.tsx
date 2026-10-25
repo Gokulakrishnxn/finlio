@@ -1,4 +1,4 @@
-import { compactINR } from "@/lib/networth";
+import { compactMoney } from "@/lib/networth";
 
 // Assets versus loans as one split bar.
 export function WealthBar({ assets, loans }: { assets: number; loans: number }) {
@@ -13,10 +13,10 @@ export function WealthBar({ assets, loans }: { assets: number; loans: number }) 
       </div>
       <div className="mt-2 flex justify-between text-[11px] font-semibold tracking-[0.06em] uppercase">
         <span className="text-success">
-          {assetPct}% assets · <span className="nums">{compactINR(assets)}</span>
+          {assetPct}% assets · <span className="nums">{compactMoney(assets)}</span>
         </span>
         <span className="text-loss">
-          {100 - assetPct}% loans · <span className="nums">{compactINR(loans)}</span>
+          {100 - assetPct}% loans · <span className="nums">{compactMoney(loans)}</span>
         </span>
       </div>
     </div>

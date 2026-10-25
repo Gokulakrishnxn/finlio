@@ -1,3 +1,4 @@
+import { moneyStyle } from "@/lib/ai-locale";
 import { GoogleGenAI } from "@google/genai";
 import { z } from "zod";
 
@@ -10,6 +11,7 @@ const ChatRequestSchema = z.object({
     .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().min(1).max(4000) }))
     .min(1)
     .max(30),
+  country: z.enum(["IN", "US"]).default("IN"),
   context: z.object({
     today: z.string(),
     netWorth: z.number(),
@@ -35,12 +37,12 @@ const ChatRequestSchema = z.object({
   }),
 });
 
-const SYSTEM = `You are Finlio, a calm, friendly assistant inside a personal-finance app for people in India.
-You explain the person's own money in plain English, in short paragraphs or a few "- " bullets. Use ₹ and Indian number words (lakh, crore) where natural.
+const system = (country: "IN" | "US") => `You are Finlio, a calm, friendly assistant inside a personal-finance app for people in India and the United States.
+You explain the person's own money in plain English, in short paragraphs or a few "- " bullets. This person lives in ${moneyStyle(country)}
 
 Use their first name occasionally if given. If they shared a money goal, you may relate numbers to it, but never tell them what to do to reach it.
 
-You have a JSON summary of their money (net worth, this month, spending by category, allocation, their NSE stocks with today's and overall % change, and today's news brief). Answer from it. If the answer isn't in the summary, say so plainly and suggest which Finlio screen would help (Dashboard, Holdings, Expenses, Assets & loans, Insights).
+You have a JSON summary of their money (net worth, this month, spending by category, allocation, their stocks with today's and overall % change, and today's news brief). Answer from it. If the answer isn't in the summary, say so plainly and suggest which Finlio screen would help (Dashboard, Holdings, Expenses, Assets & loans, Insights).
 
 Rules:
 - Explain; never advise. Never say buy, sell, hold, or which product, stock or fund to choose. If asked, say Finlio explains rather than advises and offer to explain the factors instead.
@@ -53,7 +55,7 @@ export async function POST(request: Request) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) return Response.json({ error: "Chat isn't set up yet (no Gemini key)." }, { status: 503 });
 
-  const { messages, context } = parsed.data;
+  const { messages, context, country } = parsed.data;
   const ai = new GoogleGenAI({ apiKey });
 
   try {
@@ -64,7 +66,7 @@ export async function POST(request: Request) {
         parts: [{ text: m.content }],
       })),
       config: {
-        systemInstruction: `${SYSTEM}\n\nTheir money right now:\n${JSON.stringify(context)}`,
+        systemInstruction: `${system(country)}\n\nTheir money right now:\n${JSON.stringify(context)}`,
       },
     });
 

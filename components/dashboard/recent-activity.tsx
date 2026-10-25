@@ -3,7 +3,7 @@ import { BrandLogo, IconBadge } from "@/components/brand-logo";
 import { merchantDomain } from "@/lib/brands";
 import { categoryLook } from "@/lib/category-icons";
 import { formatDate } from "@/lib/format";
-import { compactINR, type Activity } from "@/lib/networth";
+import { compactMoney, type Activity } from "@/lib/networth";
 
 export function RecentActivity({ items, limit = 5 }: { items: Activity[]; limit?: number }) {
   return (
@@ -51,7 +51,7 @@ export function ActivityRow({ item, action }: { item: Activity; action?: React.R
       </div>
       <p className={`nums text-[14px] ${income ? "text-success" : "text-ink"}`}>
         {income ? "+" : "−"}
-        {compactINR(item.amount)}
+        {compactMoney(item.amount)}
       </p>
       {action}
     </li>
