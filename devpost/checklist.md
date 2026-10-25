@@ -102,6 +102,7 @@ Activity mode:
 
 ## Revisions
 
+- Completed neutral charcoal/black dark appearance throughout the app (no green surface tint, per the learner’s preference): added persistent Light / Dark / System selection in Settings, shared semantic colours for surfaces, charts, status text and overlays, visible keyboard focus, and a two-row mobile header so navigation and Settings fit at 375px. No financial data flow changed.
 - Slice 2's brief arrives as one response and is revealed section by section with GSAP, instead of streaming from the server — same experience, simpler helper.
 - Slice 2 real-news verification is blocked: the learner's Gemini key works for plain generation (`gemini-3.5-flash`), but Google Search grounding returns 429 "exceeded your current quota" on every model, which points to a project without billing. Code is committed unticked; the learner chose to continue designing the remaining screens (slices 3–5) while they enable billing. Re-verify slice 2 as soon as Search grounding works.
 - Default model changed from `gemini-3.8-flash` to `gemini-3.5-flash` (overridable with `GEMINI_MODEL`) — 3.8 timed out on a plain call in testing while 3.5 answered.

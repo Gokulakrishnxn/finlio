@@ -3,10 +3,11 @@
 // The sections of the Settings window (opened from the profile menu).
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Download, ImageIcon, LogOut, Mail, PanelLeftClose, Upload, Volume2 } from "lucide-react";
+import { Download, ImageIcon, LogOut, Mail, Monitor, Moon, PanelLeftClose, Sun, Upload, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form";
+import { useTheme } from "@/components/theme-root";
 import { todayIST } from "@/lib/format";
 import { setSoundOn, sound, soundOn } from "@/lib/sound";
 import type { StoreData } from "@/lib/store";
@@ -47,7 +48,7 @@ export function ProfileCard({
   return (
     <Card title="Profile">
       <div className="mb-5 flex items-center gap-4">
-        <span className="flex size-14 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-[22px] font-semibold text-white">
+        <span className="flex size-14 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-[22px] font-semibold text-[#102b18]">
           {initialLetter}
         </span>
         <div>
@@ -102,7 +103,7 @@ export function ProfileCard({
           <Button type="submit" className="h-10 rounded-xl px-5">
             Save profile
           </Button>
-          {saved && <span className="text-[13px] text-[#1f7a3a]">Saved</span>}
+          {saved && <span className="text-[13px] text-success">Saved</span>}
         </div>
       </form>
     </Card>
@@ -132,6 +133,7 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (on: boolean) 
 }
 
 export function Preferences() {
+  const { theme, setTheme } = useTheme();
   const [sounds, setSounds] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
   const [logos, setLogos] = useState(true);
@@ -149,7 +151,34 @@ export function Preferences() {
 
   return (
     <Card title="Preferences">
-      <ul className="divide-y divide-line">
+      <fieldset>
+        <legend className="text-[14px] font-medium text-ink">Appearance</legend>
+        <p className="mt-1 text-[13px] text-muted-foreground">Choose a theme, or match your device.</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {([
+            { value: "light", label: "Light", icon: Sun },
+            { value: "dark", label: "Dark", icon: Moon },
+            { value: "system", label: "System", icon: Monitor },
+          ] as const).map(({ value, label, icon: Icon }) => (
+            <label
+              key={value}
+              className="relative flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-input bg-card px-2 py-3 text-[13px] font-medium text-body transition-colors hover:bg-muted has-checked:border-success has-checked:bg-success-soft has-checked:text-success has-focus-visible:outline-2 has-focus-visible:outline-offset-3 has-focus-visible:outline-ring"
+            >
+              <input
+                type="radio"
+                name="appearance"
+                value={value}
+                checked={theme === value}
+                onChange={() => setTheme(value)}
+                className="sr-only"
+              />
+              <Icon className="size-[18px]" strokeWidth={1.75} aria-hidden />
+              {label}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <ul className="mt-5 divide-y divide-line border-t border-line pt-5">
         <Row
           icon={<Volume2 className="size-4" />}
           title="Interface sounds"

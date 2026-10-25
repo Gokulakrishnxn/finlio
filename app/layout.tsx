@@ -5,8 +5,10 @@ import { ChatLauncher, FinlioChat } from "@/components/chat/finlio-chat";
 import { SettingsProvider } from "@/components/settings/settings-dialog";
 import { MobileNav, Sidebar } from "@/components/shell/sidebar";
 import { SoundRoot } from "@/components/sound-root";
+import { ThemeRoot } from "@/components/theme-root";
 import { PricesProvider } from "@/lib/prices";
 import { StoreProvider } from "@/lib/store";
+import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -30,8 +32,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="min-h-full bg-sand text-ink">
+        <ThemeRoot />
         <StoreProvider>
           <PricesProvider>
             <ChatProvider>

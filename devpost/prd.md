@@ -38,6 +38,7 @@ Established by the learner (`scope.md > Inspiration & Identity`):
 
 - **Structure:** Link's dashboard (https://app.link.com/home): sidebar, greeting header, generous whitespace, rounded cards with soft borders.
 - **Brand (finlio.app, prior work, disclosed):** cream background (#fbfaf9), sand (#f6f4ef), soft line borders (#ecebe7), ink text (#343433), Finlio green (#34c759) for gains and the brand, red (#ef4444) for losses. Typeface: Geist, with Geist Mono for numbers.
+- **Appearance:** Settings → General offers Light, Dark and System (the default). The choice is saved in this browser. Dark mode uses neutral charcoal and black surfaces with light text and readable green/red amounts across every screen, chart, dialog and chat; System follows device appearance changes. The mobile header keeps navigation and Settings accessible without crowding.
 - **The signature element:** the before/after brief card from finlio.app, with jargon headline in and one plain sentence out.
 - **Motion:** calm and purposeful (GSAP). The brief writes itself in section by section; numbers count up; panels slide. Nothing bouncy.
 - **Components and references:** shadcn/ui, rareui, transitions.dev, beautifului, obsidianui (dashboard), uiarc (charts), beui; lucide-react icons.

@@ -2,6 +2,8 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -32,17 +34,34 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Finlio brand (from finlio.app) */
-  --color-cream: #fbfaf9;
-  --color-sand: #f6f4ef;
-  --color-line: #ecebe7;
-  --color-ink: #343433;
-  --color-body: #474645;
-  --color-gain: #34c759;
-  --color-loss: #ef4444;
+  /* Semantic Finlio colours, shared by both appearances. */
+  --color-cream: var(--background);
+  --color-sand: var(--secondary);
+  --color-line: var(--border);
+  --color-ink: var(--foreground);
+  --color-body: var(--body);
+  --color-gain: var(--gain);
+  --color-loss: var(--destructive);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-purple: var(--purple);
+  --color-purple-soft: var(--purple-soft);
+  --color-pink: var(--pink);
+  --color-pink-soft: var(--pink-soft);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-neutral: var(--neutral);
+  --color-neutral-soft: var(--neutral-soft);
+  --color-overlay: var(--overlay);
 }
 
 :root {
+  color-scheme: light;
   --background: #fbfaf9;
   --foreground: #343433;
   --card: #ffffff;
@@ -54,14 +73,84 @@
   --secondary: #f6f4ef;
   --secondary-foreground: #343433;
   --muted: #f6f4ef;
-  --muted-foreground: #8a8986;
+  --muted-foreground: #716f6b;
   --accent: #f6f4ef;
   --accent-foreground: #343433;
-  --destructive: #ef4444;
+  --destructive: #c53030;
   --border: #ecebe7;
-  --input: #ecebe7;
-  --ring: #34c759;
+  --input: #8c8980;
+  --ring: #21803d;
   --radius: 0.75rem;
+  --body: #474645;
+  --gain: #34c759;
+  --success: #21743b;
+  --success-soft: #eef8f1;
+  --danger-soft: #ffecec;
+  --info: #1d5fb8;
+  --info-soft: #e6f1ff;
+  --warning: #a6470b;
+  --warning-soft: #fff1e6;
+  --purple: #6a3bc0;
+  --purple-soft: #f3ecff;
+  --pink: #a3245e;
+  --pink-soft: #fdeaf3;
+  --gold: #806010;
+  --gold-soft: #fff7e0;
+  --neutral: #57534e;
+  --neutral-soft: #f1f0ec;
+  --overlay: rgb(18 18 18 / 24%);
+  --card-shadow: 0 1px 2px rgb(18 18 18 / 3%);
+  --chart-gain: #21803d;
+  --chart-loss: #c53030;
+  --chart-muted: #aaa79e;
+  --chart-ink: #57534e;
+  --chart-gain-soft: #cfeed8;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #181818;
+  --foreground: #f2f2f2;
+  --card: #222222;
+  --card-foreground: #f2f2f2;
+  --popover: #292929;
+  --popover-foreground: #f2f2f2;
+  --primary: #f2f2f2;
+  --primary-foreground: #181818;
+  --secondary: #111111;
+  --secondary-foreground: #f2f2f2;
+  --muted: #303030;
+  --muted-foreground: #adadad;
+  --accent: #353535;
+  --accent-foreground: #f2f2f2;
+  --destructive: #ff8c8c;
+  --border: #3b3b3b;
+  --input: #757575;
+  --ring: #72db91;
+  --body: #cfcfcf;
+  --gain: #49d474;
+  --success: #83dda0;
+  --success-soft: #2b2b2b;
+  --danger-soft: #422b2b;
+  --info: #96c0ff;
+  --info-soft: #25364a;
+  --warning: #ffb47b;
+  --warning-soft: #413125;
+  --purple: #c8acff;
+  --purple-soft: #352c49;
+  --pink: #f5a3ca;
+  --pink-soft: #452c39;
+  --gold: #e9c96b;
+  --gold-soft: #3c3523;
+  --neutral: #cacaca;
+  --neutral-soft: #343434;
+  --overlay: rgb(0 0 0 / 60%);
+  --card-shadow: 0 1px 3px rgb(0 0 0 / 18%);
+  --chart-gain: #72db91;
+  --chart-loss: #ff8c8c;
+  --chart-muted: #898989;
+  --chart-ink: #cfcfcf;
+  --chart-gain-soft: #3b7650;
 }
 
 @layer base {
@@ -74,10 +163,23 @@
   html {
     @apply font-sans;
   }
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  select option {
+    background: var(--popover);
+    color: var(--foreground);
+  }
+  ::selection {
+    background: var(--success-soft);
+    color: var(--success);
+  }
 }
 
 @utility card-surface {
-  @apply rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(18,18,18,0.03)];
+  @apply rounded-2xl border border-line bg-card;
+  box-shadow: var(--card-shadow);
 }
 
 /* Small uppercase section label, e.g. "NET WORTH · ₹ INR". */

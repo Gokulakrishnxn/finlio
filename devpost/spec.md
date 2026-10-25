@@ -62,6 +62,7 @@ Unverified, check in the first build step: the exact Gemini model name (docs cur
 ## Look and Feel
 From `prd.md > Look and Feel`:
 - **Tokens** (in `app/globals.css` via Tailwind `@theme`): cream `#fbfaf9` page, sand `#f6f4ef` sidebar, line `#ecebe7` borders, ink `#343433` text, body `#474645` secondary text, green `#34c759` gains and brand, red `#ef4444` losses.
+- **Themes:** semantic CSS variables supply light and `.dark` palettes, including chart, status, focus, input and overlay colours. Dark uses `#111111` canvas, `#181818` content and `#222222` cards. Text gains/losses use contrast-adjusted colours in both themes. Settings → General saves Light, Dark or System in `finlio:theme`; System is the default. A static inline head script resolves the preference before paint, with hydration suppression only on `<html>`. `ThemeRoot` listens for device appearance and cross-tab storage changes; storage failures keep the selection usable for the current page session. Native inputs use the corresponding CSS `color-scheme`.
 - **Type:** Geist for text; Geist Mono with tabular figures for every number. Large greeting (about 40px, semibold); section labels small and muted.
 - **Layout:** fixed 280px sidebar; content centred, max width about 1100px; cards with 24px corners, 1px line border, very soft shadow, 28px padding. Generous whitespace.
 - **Signature:** the brief card from finlio.app (jargon headline → plain sentence), rebuilt as new code.

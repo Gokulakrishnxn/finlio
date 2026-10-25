@@ -52,8 +52,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
                 key={id}
                 onClick={() => setTab(id)}
                 className={cn(
-                  "flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[14px] text-body transition-colors hover:bg-white/70",
-                  tab === id && "bg-white font-medium text-ink shadow-sm",
+                  "flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[14px] text-body transition-colors hover:bg-card/70",
+                  tab === id && "bg-card font-medium text-ink shadow-sm",
                 )}
               >
                 <Icon className="size-4" strokeWidth={1.75} />
