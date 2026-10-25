@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, Lock, Sun } from "lucide-react";
+import { Briefcase, Lock, Sun, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Today", icon: Sun },
   { href: "/holdings", label: "Holdings", icon: Briefcase },
+  { href: "/expenses", label: "Expenses", icon: Wallet },
   { href: "/privacy", label: "Privacy", icon: Lock },
 ] as const;
 

@@ -30,15 +30,15 @@ const POINTS = [
   {
     icon: ShieldCheck,
     title: "Who sees those names",
-    body: "Upstox, for live prices. Google Gemini with Google Search, to read today's news and write your brief. Both over an encrypted connection. No ads, no tracking.",
+    body: "Upstox, for live prices. Google Gemini with Google Search, to read today's news and write your brief. If you connect Google for Expenses, Finlio reads only bank and UPI alerts, read-only, and Gemini sees just those alerts' subject and preview. All over encrypted connections. No ads, no tracking.",
   },
 ];
 
 export default function PrivacyPage() {
-  const { holdings, brief, clearAll } = useStore();
+  const { holdings, brief, expenses, clearAll } = useStore();
   const [confirming, setConfirming] = useState(false);
   const [cleared, setCleared] = useState(false);
-  const hasData = holdings.length > 0 || Boolean(brief);
+  const hasData = holdings.length > 0 || Boolean(brief) || Boolean(expenses);
 
   return (
     <>
@@ -62,7 +62,7 @@ export default function PrivacyPage() {
             <p className="mt-1.5 text-[15px] text-body">
               {cleared
                 ? "Done. Finlio has forgotten everything."
-                : "Removes your holdings and briefs from this browser."}
+                : "Removes your holdings, briefs and expenses from this browser."}
             </p>
           </div>
           <Button

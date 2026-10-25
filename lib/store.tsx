@@ -2,11 +2,11 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { SAMPLE_HOLDINGS } from "@/lib/sample";
-import type { Brief, Holding } from "@/lib/types";
+import type { Brief, ExpenseSnapshot, Holding } from "@/lib/types";
 
 const STORAGE_KEY = "finlio:v1";
 
-type StoreData = { holdings: Holding[]; brief?: Brief };
+type StoreData = { holdings: Holding[]; brief?: Brief; expenses?: ExpenseSnapshot };
 
 export type NewHolding = Omit<Holding, "id">;
 
@@ -19,6 +19,7 @@ type Store = StoreData & {
   addSample: () => void;
   removeSample: () => void;
   setBrief: (brief: Brief) => void;
+  setExpenses: (expenses: ExpenseSnapshot | undefined) => void;
   clearAll: () => void;
 };
 
@@ -126,6 +127,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [update],
   );
 
+  const setExpenses = useCallback(
+    (expenses: ExpenseSnapshot | undefined) => update((prev) => ({ ...prev, expenses })),
+    [update],
+  );
+
   const clearAll = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
     setData({ holdings: [] });
@@ -143,6 +149,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         addSample,
         removeSample,
         setBrief,
+        setExpenses,
         clearAll,
       }}
     >
