@@ -22,6 +22,8 @@ export function PricesProvider({ children }: { children: React.ReactNode }) {
   const [updatedAt, setUpdatedAt] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Polling stops when the server has no Upstox token; Retry tries again.
+  const [unconfigured, setUnconfigured] = useState(false);
 
   const keys = useMemo(
     () => [...new Set(holdings.map((h) => h.instrumentKey))].sort().join(","),
@@ -38,6 +40,7 @@ export function PricesProvider({ children }: { children: React.ReactNode }) {
         body: JSON.stringify({ keys: keys.split(",") }),
       });
       const body = await res.json();
+      setUnconfigured(res.status === 503);
       if (!res.ok) throw new Error(body.error);
       // Keep last known prices for anything missing from this response.
       setQuotes((prev) => ({ ...prev, ...body.quotes }));
@@ -54,9 +57,13 @@ export function PricesProvider({ children }: { children: React.ReactNode }) {
     if (!ready || !keys) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     refresh();
+  }, [ready, keys, refresh]);
+
+  useEffect(() => {
+    if (!ready || !keys || unconfigured) return;
     const timer = setInterval(refresh, REFRESH_MS);
     return () => clearInterval(timer);
-  }, [ready, keys, refresh]);
+  }, [ready, keys, refresh, unconfigured]);
 
   return (
     <PricesContext.Provider value={{ quotes, updatedAt, loading, error, refresh }}>

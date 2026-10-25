@@ -57,15 +57,15 @@ export function BriefCard() {
       const body = await res.json();
       if (!res.ok) throw new Error(body.error);
       setBrief(body as Brief);
-    } catch {
-      setError("Couldn't write today's brief.");
+    } catch (err) {
+      setError(err instanceof Error && err.message ? err.message : "Couldn't write today's brief.");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section ref={container} className="card-surface p-8">
+    <section ref={container} className="card-surface p-6 md:p-8">
       <div className="flex items-start justify-between gap-6">
         <div>
           <h2 className="text-[15px] font-medium text-ink">Today&apos;s brief</h2>
@@ -92,7 +92,7 @@ export function BriefCard() {
 
       {!loading && error && (
         <div className="mt-8 flex items-center gap-4">
-          <p className="text-[15px] text-body">{error}</p>
+          <p className="max-w-xl text-[15px] text-body">{error}</p>
           <Button variant="outline" size="sm" onClick={generate}>
             Try again
           </Button>
