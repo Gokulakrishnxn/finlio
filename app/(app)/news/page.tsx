@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { Newspaper } from "lucide-react";
-import { BriefCard } from "@/components/brief/brief-card";
+import { NewsFeed } from "@/components/brief/news-feed";
 import { PageHeader } from "@/components/page-header";
 import { PageSkeleton } from "@/components/page-skeleton";
+import { formatDate, todayLocal } from "@/lib/format";
 import { activeLocale } from "@/lib/locale";
 import { useStore } from "@/lib/store";
 
@@ -17,10 +18,10 @@ export default function NewsPage() {
     <>
       <PageHeader
         title="News"
-        subtitle={`Today's brief: what moved your ${activeLocale().market} stocks, and why.`}
+        subtitle={`${formatDate(todayLocal())} · what moved your ${activeLocale().market} stocks, and why.`}
       />
       {holdings.length ? (
-        <BriefCard />
+        <NewsFeed />
       ) : (
         <section className="card-surface flex flex-col items-start gap-4 p-8">
           <span className="flex size-10 items-center justify-center rounded-xl bg-success-soft text-success">
