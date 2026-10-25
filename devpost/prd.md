@@ -182,7 +182,7 @@ The welcome; adding, editing and deleting NSE holdings; live portfolio values; t
 - **Email brief and price alerts:** needs a sending service and scheduling; the on-screen brief proves the kernel.
 - **Mutual funds:** a second data source; stocks prove the idea.
 - **Goals (weekly, monthly, yearly):** a separate feature area.
-- **A landing page:** finlio.app already exists. **(assumption)**
+- **A landing page:** ~~finlio.app already exists~~ Added later at the learner's request: `/` is now a landing page and the app lives at `/dashboard`.
 - **Sound effects (cuelume):** polish after the core works. **(assumption)**
 
 ## Possible Later Enhancements

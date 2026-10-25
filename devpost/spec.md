@@ -139,8 +139,9 @@ PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual inc
 - AI routes accept `country` and adapt wording (`lib/ai-locale.ts`).
 - `components/onboarding/onboarding.tsx`: full-screen setup over the app until `profile.onboardedAt` is set; stores `name`, `country`, `termsVersion` (`lib/terms.ts`), `tourDone`.
 - `components/tour/tour.tsx`: spotlight tour over elements marked `data-tour`.
-- `app/terms/page.tsx`: static Terms page; lists `lib/privacy.ts` (`SHARING`).
-- `app/news/page.tsx`: today's brief (moved off the Dashboard). Settings gains a Privacy tab (`components/settings/privacy-panel.tsx`) and a shared Sign out confirmation in `SettingsProvider` (disconnect Google → `clearAll()` → welcome); `lib/backup.ts` downloads the backup.
+- `app/(app)/terms/page.tsx`: static Terms page; lists `lib/privacy.ts` (`SHARING`).
+- `app/(app)/news/page.tsx`: today's brief (moved off the Dashboard). Settings gains a Privacy tab (`components/settings/privacy-panel.tsx`) and a shared Sign out confirmation in `SettingsProvider` (disconnect Google → `clearAll()` → welcome); `lib/backup.ts` downloads the backup.
+- Routes: `/` is the landing page (`app/(marketing)/page.tsx`, no sidebar, chat or welcome screen; its before/after brief toggle is `components/landing/before-after.tsx`). The app moved into `app/(app)/` with its own layout (sidebar, page card, Finlio chat, welcome setup); its home is `/dashboard`. The root `app/layout.tsx` keeps only fonts, theme and providers. Sign out returns to `/`.
 PRD ref: `prd.md > Welcome and setup`, `prd.md > Country`, `prd.md > Screen tour`, `prd.md > Terms & Conditions`, `prd.md > Responsive`.
 
 ## Data Model
@@ -182,11 +183,12 @@ Prices are not stored; they're fetched again on every visit. Clearing data remov
 ```
 finlio/
 ├── app/
-│   ├── layout.tsx            # fonts, shell, HoldingsProvider
+│   ├── layout.tsx            # fonts, theme, providers
 │   ├── globals.css           # Tailwind + Finlio tokens
-│   ├── page.tsx              # Today: greeting, brief, holdings summary
-│   ├── holdings/page.tsx     # Holdings list
-│   ├── privacy/page.tsx      # Privacy + clear data
+│   ├── (marketing)/page.tsx  # landing page at /
+│   ├── (app)/layout.tsx      # sidebar, page card, Finlio chat, welcome
+│   ├── (app)/dashboard/      # the app's home
+│   ├── (app)/holdings/ …     # holdings, news, expenses, assets, analytics, terms
 │   └── api/
 │       ├── instruments/route.ts  # stock search (Upstox list)
 │       ├── quotes/route.ts       # live prices (Upstox)

@@ -69,7 +69,7 @@ cp .env.example .env.local   # then fill in the keys below
 pnpm dev
 ```
 
-Open **http://localhost:3000**. Every screen works without keys in a reduced way, and each feature that needs a key says so where it's used (for example *Try a sample portfolio* and stock search need no keys).
+Open **http://localhost:3000** for the landing page, or **/dashboard** for the app. Every screen works without keys in a reduced way, and each feature that needs a key says so where it's used (for example *Try a sample portfolio* and stock search need no keys).
 
 ### Keys (in `.env.local`, never committed)
 
@@ -86,7 +86,7 @@ Open **http://localhost:3000**. Every screen works without keys in a reduced way
 
 ### Trying it
 
-On first visit Finlio asks for your name and country (India or United States), asks you to accept the [Terms](app/terms/page.tsx), and offers sample data and a short tour. Your country sets the currency (₹ or $), the stock market (NSE or NYSE/Nasdaq), quarters (Apr–Mar financial year or calendar year) and account types (EPF/PPF or 401(k)/IRA). Change it any time in Settings → Profile.
+On first visit Finlio asks for your name and country (India or United States), asks you to accept the [Terms](app/(app)/terms/page.tsx), and offers sample data and a short tour. Your country sets the currency (₹ or $), the stock market (NSE or NYSE/Nasdaq), quarters (Apr–Mar financial year or calendar year) and account types (EPF/PPF or 401(k)/IRA). Change it any time in Settings → Profile.
 
 
 1. On **Today**, press **Try a sample portfolio** (real NSE stocks, example buy details, labelled *Sample*) or **Add your first stock**.
