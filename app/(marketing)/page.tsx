@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowDown,
@@ -11,9 +10,8 @@ import {
 } from "lucide-react";
 import { AppRow, HeroDecor, HeroDecorMobile } from "@/components/landing/hero-decor";
 import { RotatingWord } from "@/components/landing/rotating-word";
+import { LandingFooter, LandingHeader } from "@/components/landing/site-chrome";
 import { cn } from "@/lib/utils";
-
-const REPO = "https://github.com/Gokulakrishnxn/finlio";
 
 const FAQ = [
   {
@@ -34,11 +32,15 @@ const FAQ = [
   },
   {
     q: "Where is my data kept?",
-    a: "In your browser, on your device. There's no Finlio account and no Finlio database. Only stock names and symbols are sent to fetch prices and news, never your quantities or balances.",
+    a: "You sign in with Google, but your financial records are saved in this browser, with no Finlio database. Prices and news use stock identifiers; AI explanations use totals and your questions. If you connect Gmail, bank-alert previews are processed to extract expenses. You can review the full list in Terms & privacy.",
   },
   {
     q: "Do I have to link my bank or broker?",
     a: "No. Add stocks by name or import a CSV, and add accounts by hand. Connecting Gmail to read bank and card alerts is optional and read-only.",
+  },
+  {
+    q: "How do I get started?",
+    a: "Choose Get started and sign up with your Google account. Then add your name and country, and start with sample data, a Finlio backup or an empty dashboard.",
   },
   {
     q: "Is Finlio free?",
@@ -49,55 +51,15 @@ const FAQ = [
 export default function Landing() {
   return (
     <>
-      <Header />
-      <main>
+      <LandingHeader />
+      <main id="main-content">
         <Hero />
         <Story />
         <Faq />
         <Closing />
       </main>
-      <Footer />
+      <LandingFooter />
     </>
-  );
-}
-
-function Mark({ className }: { className?: string }) {
-  return (
-    <Image
-      src="/finlio-mark.png"
-      alt=""
-      width={1024}
-      height={1024}
-      className={cn("mix-blend-multiply dark:mix-blend-screen dark:invert", className)}
-      priority
-    />
-  );
-}
-
-function Header() {
-  return (
-    <header className="fixed inset-x-0 top-0 z-40 bg-card/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-1.5">
-          <Mark className="size-7" />
-          <span className="text-[17px] font-semibold tracking-tight text-ink">Finlio</span>
-        </Link>
-        <nav className="hidden items-center gap-8 text-[14px] text-body sm:flex">
-          <a href="#how" className="transition-colors hover:text-ink">
-            How it works
-          </a>
-          <a href="#faqs" className="transition-colors hover:text-ink">
-            FAQs
-          </a>
-        </nav>
-        <Link
-          href="/dashboard"
-          className="inline-flex h-9 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-cream transition-opacity hover:opacity-90"
-        >
-          Open Finlio
-        </Link>
-      </div>
-    </header>
   );
 }
 
@@ -107,14 +69,14 @@ function Hero() {
       <HeroDecor />
       <div className="relative z-10 mx-auto max-w-3xl px-4 pt-32 pb-20 text-center sm:px-6 sm:pt-40 sm:pb-28 lg:pb-32">
         <Link
-          href="/dashboard"
+          href="/sign-up"
           className="group land-rise mb-7 inline-flex items-center gap-2 rounded-full bg-card py-1.5 pr-3 pl-2.5 text-[13px] font-medium text-body ring-1 ring-line transition-colors hover:text-ink"
         >
           <span className="relative flex size-2">
             <span className="absolute inset-0 animate-ping rounded-full bg-success opacity-60" />
             <span className="relative size-2 rounded-full bg-success" />
           </span>
-          Free for India 🇮🇳 and the United States 🇺🇸
+          Finlio Daily · Your money, explained
           <ChevronRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
         </Link>
         <h1
@@ -127,18 +89,18 @@ function Hero() {
           className="land-rise mx-auto mt-6 max-w-lg text-[16px] leading-[1.55] font-medium tracking-[-0.01em] text-pretty text-body sm:text-[17px]"
           style={{ animationDelay: "200ms" }}
         >
-          Every morning, Finlio tells you in simple words why the stocks you own went up or down, and adds up
-          everything else you own into one honest number.
+          One clear view of your stocks, savings and spending. See what changed, why it happened,
+          and where you stand. All in plain words.
         </p>
         <div
           className="land-rise mt-9 flex flex-wrap items-center justify-center gap-3"
           style={{ animationDelay: "300ms" }}
         >
           <Link
-            href="/dashboard"
+            href="/sign-up"
             className="group inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-[15px] font-medium text-cream transition-opacity hover:opacity-90"
           >
-            Open Finlio
+            Get started
             <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
           </Link>
           <a
@@ -149,7 +111,7 @@ function Hero() {
           </a>
         </div>
         <p className="land-rise mt-4 text-[13px] text-muted-foreground" style={{ animationDelay: "400ms" }}>
-          No sign-up. Try it with sample data.
+          Free to explore · Made for India and the United States
         </p>
         <HeroDecorMobile />
       </div>
@@ -243,7 +205,7 @@ function Story() {
             <Words>It shows where your money goes each month, and answers your questions about it whenever you ask.</Words>
           </p>
           <p>
-            <Words>It explains. It never tells you what to buy or sell. And everything stays on your device.</Words>
+            <Words>It explains. It never tells you what to buy or sell. Your financial records are saved in this browser, and you control what you connect.</Words>
             <Icons items={[{ icon: Wallet, tint: "bg-success text-white" }]} />
           </p>
         </div>
@@ -290,13 +252,13 @@ function Closing() {
             Start knowing.
           </h2>
           <p className="mt-5 max-w-md text-[16px] leading-[1.55] font-medium text-pretty text-body sm:text-[17px]">
-            Add the stocks you own and get your first brief in a minute. Free, private, and in simple words.
+            Start with a clean dashboard or bring your Finlio backup. Add what you own, see where you stand, and make sense of your money.
           </p>
           <Link
-            href="/dashboard"
+            href="/sign-up"
             className="group mt-6 inline-flex min-h-11 items-center gap-2 text-[17px] font-medium text-info transition-opacity hover:opacity-80"
           >
-            Open Finlio
+            Get started
             <ArrowRight className="size-[18px] transition-transform group-hover:translate-x-1" />
           </Link>
         </div>
@@ -349,64 +311,3 @@ function BriefCompare() {
   );
 }
 
-function Footer() {
-  const product = [
-    { label: "How it works", href: "#how" },
-    { label: "FAQs", href: "#faqs" },
-    { label: "Open Finlio", href: "/dashboard" },
-  ];
-  const more = [
-    { label: "Terms", href: "/terms" },
-    { label: "GitHub", href: REPO },
-    { label: "Devpost", href: "https://learn-ai-basics.devpost.com" },
-  ];
-  return (
-    <footer className="bg-cream px-4 pb-4 sm:px-6 sm:pb-6">
-      <div className="mx-auto max-w-6xl rounded-3xl bg-card p-6 ring-1 ring-line sm:p-10">
-        <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr_1fr]">
-          <div>
-            <Link href="/" className="flex items-center gap-1.5">
-              <Mark className="size-7" />
-              <span className="text-[17px] font-semibold tracking-tight text-ink">Finlio</span>
-            </Link>
-            <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-body">
-              Know why your money moved, in plain English.
-            </p>
-            <p className="mt-4 flex items-center gap-2 text-[14px] font-medium text-ink">
-              <span className="size-2 rounded-full bg-success" />
-              Free and open source
-            </p>
-          </div>
-          <FooterLinks title="Product" links={product} />
-          <FooterLinks title="More" links={more} />
-        </div>
-        <p className="mt-10 border-t border-line pt-6 text-[13px] text-muted-foreground">
-          © 2026 Finlio. Information and education, not investment advice.
-        </p>
-      </div>
-    </footer>
-  );
-}
-
-function FooterLinks({ title, links }: { title: string; links: { label: string; href: string }[] }) {
-  return (
-    <div>
-      <p className="text-[12px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">{title}</p>
-      <ul className="mt-4 flex flex-col gap-3">
-        {links.map((l) => (
-          <li key={l.label}>
-            {l.href.startsWith("http") ? (
-              <a href={l.href} target="_blank" rel="noreferrer" className="text-[15px] text-body hover:text-ink">
-                {l.label}
-              </a>
-            ) : (
-              <Link href={l.href} className="text-[15px] text-body hover:text-ink">
-                {l.label}
-              </Link>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}

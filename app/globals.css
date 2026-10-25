@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *):not(:where(.marketing-theme, .marketing-theme *)));
 
 @theme inline {
   --color-background: var(--background);
@@ -60,7 +60,8 @@
   --color-overlay: var(--overlay);
 }
 
-:root {
+:root,
+.marketing-theme {
   color-scheme: light;
   --background: #fbfaf9;
   --foreground: #343433;
