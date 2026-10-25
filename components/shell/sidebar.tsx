@@ -33,10 +33,7 @@ type NavItem = { href: string; label: string; icon: LucideIcon };
 const SECTIONS: { title: string; items: NavItem[] }[] = [
   {
     title: "Overview",
-    items: [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-      { href: "/news", label: "News", icon: Newspaper },
-    ],
+    items: [{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
   },
   {
     title: "Money",
@@ -46,7 +43,13 @@ const SECTIONS: { title: string; items: NavItem[] }[] = [
       { href: "/assets", label: "Assets & loans", icon: Landmark },
     ],
   },
-  { title: "Understand", items: [{ href: "/analytics", label: "Analytics", icon: ChartNoAxesCombined }] },
+  {
+    title: "Understand",
+    items: [
+      { href: "/analytics", label: "Analytics", icon: ChartNoAxesCombined },
+      { href: "/news", label: "News", icon: Newspaper },
+    ],
+  },
 ];
 
 const ALL = SECTIONS.flatMap((s) => s.items);

@@ -31,7 +31,7 @@ const STEPS: Step[] = [
   {
     target: "nav",
     title: "Everything has a home",
-    body: "News, Holdings, Expenses, Assets & loans and Analytics. Connect Gmail on Expenses to read bank alerts automatically.",
+    body: "Holdings, Expenses, Assets & loans, Analytics and News. Connect Gmail on Expenses to read bank alerts automatically.",
   },
   {
     target: "chat",
