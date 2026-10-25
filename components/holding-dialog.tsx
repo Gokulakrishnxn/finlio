@@ -14,9 +14,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InitialBadge } from "@/components/initial-badge";
-import { useStore } from "@/lib/store";
+import { useStore, type NewHolding } from "@/lib/store";
 import { todayIST } from "@/lib/format";
-import type { Instrument } from "@/lib/types";
+import type { Holding, Instrument } from "@/lib/types";
 
 type Errors = Partial<Record<"buyDate" | "buyPrice" | "quantity", string>>;
 
@@ -29,23 +29,29 @@ function validate(buyDate: string, buyPrice: string, quantity: string): Errors {
   return errors;
 }
 
+// Mount with a `key` per holding so editing starts from that holding's values.
 export function HoldingDialog({
   open,
   onOpenChange,
+  editing,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  editing?: Holding;
 }) {
-  const { addHolding } = useStore();
+  const { holdings, addHolding, mergeHolding, updateHolding } = useStore();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Instrument[]>([]);
   const [searching, setSearching] = useState(false);
   const [searchError, setSearchError] = useState<string | null>(null);
-  const [picked, setPicked] = useState<Instrument | null>(null);
-  const [buyDate, setBuyDate] = useState("");
-  const [buyPrice, setBuyPrice] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [picked, setPicked] = useState<Instrument | null>(
+    editing ? { instrumentKey: editing.instrumentKey, symbol: editing.symbol, name: editing.name } : null,
+  );
+  const [buyDate, setBuyDate] = useState(editing?.buyDate ?? "");
+  const [buyPrice, setBuyPrice] = useState(editing ? String(editing.buyPrice) : "");
+  const [quantity, setQuantity] = useState(editing ? String(editing.quantity) : "");
   const [errors, setErrors] = useState<Errors>({});
+  const [duplicate, setDuplicate] = useState<{ existing: Holding; extra: NewHolding } | null>(null);
 
   // Debounced search against the NSE list.
   useEffect(() => {
@@ -85,6 +91,7 @@ export function HoldingDialog({
     setQuantity("");
     setErrors({});
     setSearchError(null);
+    setDuplicate(null);
   }
 
   function handleOpenChange(next: boolean) {
@@ -98,15 +105,58 @@ export function HoldingDialog({
     const found = validate(buyDate, buyPrice, quantity);
     setErrors(found);
     if (Object.keys(found).length) return;
-    addHolding({
+    const values: NewHolding = {
       instrumentKey: picked.instrumentKey,
       symbol: picked.symbol,
       name: picked.name,
       buyDate,
       buyPrice: Number(buyPrice),
       quantity: Number(quantity),
-    });
+    };
+    if (editing) {
+      updateHolding(editing.id, { buyDate, buyPrice: values.buyPrice, quantity: values.quantity });
+    } else {
+      const existing = holdings.find((h) => h.instrumentKey === values.instrumentKey);
+      if (existing) {
+        setDuplicate({ existing, extra: values });
+        return;
+      }
+      addHolding(values);
+    }
     handleOpenChange(false);
+  }
+
+  if (duplicate) {
+    const { existing, extra } = duplicate;
+    return (
+      <Dialog open={open} onOpenChange={handleOpenChange}>
+        <DialogContent className="gap-5 rounded-3xl p-7 sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold tracking-tight">
+              You already own {existing.symbol}
+            </DialogTitle>
+            <DialogDescription>
+              Add these {extra.quantity} shares to your {existing.quantity}? Finlio will keep one
+              holding with the average price you paid.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-1 gap-2">
+            <Button variant="outline" className="h-11 flex-1 rounded-xl" onClick={() => handleOpenChange(false)}>
+              Cancel
+            </Button>
+            <Button
+              className="h-11 flex-1 rounded-xl"
+              onClick={() => {
+                mergeHolding(existing.id, extra);
+                handleOpenChange(false);
+              }}
+            >
+              Add to {existing.symbol}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return (
@@ -114,7 +164,7 @@ export function HoldingDialog({
       <DialogContent className="gap-5 rounded-3xl p-7 sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold tracking-tight">
-            {picked ? "Your position" : "Add a stock you own"}
+            {editing ? `Edit ${editing.symbol}` : picked ? "Your position" : "Add a stock you own"}
           </DialogTitle>
           <DialogDescription>
             {picked
@@ -170,6 +220,7 @@ export function HoldingDialog({
             <button
               type="button"
               onClick={() => setPicked(null)}
+              disabled={Boolean(editing)}
               className="flex items-center gap-3 rounded-2xl bg-sand p-3 text-left"
             >
               <InitialBadge symbol={picked.symbol} />
@@ -179,7 +230,9 @@ export function HoldingDialog({
                   {picked.name}
                 </span>
               </span>
-              <ArrowLeft className="size-4 text-muted-foreground" aria-label="Change stock" />
+              {!editing && (
+                <ArrowLeft className="size-4 text-muted-foreground" aria-label="Change stock" />
+              )}
             </button>
 
             <Field id="buyDate" label="Buy date" error={errors.buyDate}>
@@ -221,7 +274,7 @@ export function HoldingDialog({
 
             <DialogFooter className="mt-1">
               <Button type="submit" className="h-11 w-full rounded-xl text-[15px]">
-                Save {picked.symbol}
+                {editing ? "Save changes" : `Save ${picked.symbol}`}
               </Button>
             </DialogFooter>
           </form>

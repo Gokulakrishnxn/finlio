@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { BriefCard } from "@/components/brief/brief-card";
-import { HoldingDialog } from "@/components/holding-dialog";
 import { HoldingsList } from "@/components/holdings-list";
+import { useHoldingOverlays } from "@/components/holding-overlays";
 import { PageHeader } from "@/components/page-header";
+import { PortfolioSummary } from "@/components/portfolio-summary";
+import { SampleBanner } from "@/components/sample-banner";
 import { Welcome } from "@/components/welcome";
 import { useStore } from "@/lib/store";
+import { usePositions } from "@/lib/use-positions";
 
 function greeting() {
   const hour = Number(
@@ -30,7 +32,8 @@ function todayLabel() {
 
 export default function TodayPage() {
   const { holdings, ready } = useStore();
-  const [adding, setAdding] = useState(false);
+  const positions = usePositions();
+  const { openAdd, select, overlays } = useHoldingOverlays(positions);
 
   if (!ready) return null;
 
@@ -39,23 +42,25 @@ export default function TodayPage() {
       <PageHeader title={greeting()} subtitle={todayLabel()} />
 
       {holdings.length === 0 ? (
-        <Welcome onAdd={() => setAdding(true)} />
+        <Welcome onAdd={openAdd} />
       ) : (
         <div className="flex flex-col gap-4">
+          <SampleBanner />
           <BriefCard />
-          <section className="card-surface p-7">
-            <div className="mb-2 flex items-center justify-between">
+          <PortfolioSummary positions={positions} />
+          <section className="card-surface px-7 pt-6 pb-3">
+            <div className="flex items-center justify-between">
               <h2 className="text-[15px] font-medium text-ink">Your holdings</h2>
               <Link href="/holdings" className="text-[13px] text-muted-foreground hover:text-ink">
                 Manage
               </Link>
             </div>
-            <HoldingsList holdings={holdings} />
+            <HoldingsList positions={positions} onSelect={select} />
           </section>
         </div>
       )}
 
-      <HoldingDialog open={adding} onOpenChange={setAdding} />
+      {overlays}
     </>
   );
 }

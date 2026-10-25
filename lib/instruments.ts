@@ -15,12 +15,19 @@ type UpstoxInstrument = {
 
 let cache: Promise<Instrument[]> | null = null;
 
+const ACRONYMS = new Set(["ITC", "ICICI", "IDFC", "IRCTC", "ONGC", "SBI", "LIC", "ABB", "ACC", "UPL", "IDBI", "IOB", "IRFC", "NHPC", "NTPC"]);
+
 // Upstox names are uppercase abbreviations ("TATA CONSULTANCY SERV LT").
+// Title-case them, keeping acronyms such as HDFC or ITC in capitals.
 export function displayName(raw: string) {
   return raw
-    .toLowerCase()
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .replace(/\b(Lt|Ltd)\.?$/, "Ltd");
+    .split(/\s+/)
+    .map((word) => {
+      if (ACRONYMS.has(word) || !/[AEIOUY]/.test(word)) return word;
+      return word.charAt(0) + word.slice(1).toLowerCase();
+    })
+    .join(" ")
+    .replace(/\b(LT|LTD|Lt|Ltd)\.?$/, "Ltd");
 }
 
 async function loadEquities(): Promise<Instrument[]> {
