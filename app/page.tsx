@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { BriefCard } from "@/components/brief/brief-card";
 import { NetWorthCard } from "@/components/dashboard/net-worth-card";
 import { QuickAddTiles, useQuickAdd } from "@/components/dashboard/quick-add";
 import { RecentActivity } from "@/components/dashboard/recent-activity";
@@ -80,8 +79,6 @@ export default function DashboardPage() {
               <RecentActivity items={items} />
             </div>
           </div>
-
-          {holdings.length > 0 && <BriefCard />}
 
           <div className="grid gap-4 *:min-w-0 lg:grid-cols-12">
             <section className="card-surface px-6 pt-5 pb-2 lg:col-span-7">

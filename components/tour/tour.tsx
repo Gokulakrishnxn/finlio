@@ -19,8 +19,8 @@ const STEPS: Step[] = [
     body: "Stocks, savings and everything you own, minus what you owe. The bars show how it has grown each quarter.",
   },
   {
-    target: "brief",
-    title: "Today's brief",
+    target: "news",
+    title: "News: today's brief",
     body: "Finlio reads today's news about the stocks you own and explains, in plain words, what moved and why. Every line links to its source.",
   },
   {
@@ -31,7 +31,7 @@ const STEPS: Step[] = [
   {
     target: "nav",
     title: "Everything has a home",
-    body: "Holdings, Expenses, Assets & loans and Analytics. Connect Gmail on Expenses to read bank alerts automatically.",
+    body: "News, Holdings, Expenses, Assets & loans and Analytics. Connect Gmail on Expenses to read bank alerts automatically.",
   },
   {
     target: "chat",
@@ -41,7 +41,7 @@ const STEPS: Step[] = [
   {
     target: "profile",
     title: "Your profile and settings",
-    body: "Change your name or country, switch light or dark mode, export a backup, or replay this tour.",
+    body: "Change your name or country, switch light or dark mode, see what stays private, export a backup, or sign out.",
   },
 ];
 

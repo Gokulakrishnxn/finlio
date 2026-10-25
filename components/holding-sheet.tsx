@@ -112,7 +112,7 @@ export function HoldingSheet({
                   <p className="mt-3 text-[14px] leading-relaxed text-body">
                     {todays
                       ? `Today's brief has no news about ${h.symbol}.`
-                      : "Get today's brief to see why it moved."}
+                      : "Open News and get today's brief to see why it moved."}
                   </p>
                 )}
 
