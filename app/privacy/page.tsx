@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { HardDrive, Lock, ShieldCheck, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,7 +18,8 @@ import { PageHeader } from "@/components/page-header";
 import { useStore } from "@/lib/store";
 
 const SHARING = [
-  { who: "Upstox", why: "Live NSE prices", what: "NSE codes of your stocks" },
+  { who: "Upstox (India)", why: "Live NSE prices", what: "NSE codes of your stocks" },
+  { who: "Finnhub (United States)", why: "US stock search and prices", what: "Ticker symbols of your stocks, like AAPL" },
   { who: "Gemini + Google Search", why: "Today's brief", what: "Names and symbols of your stocks" },
   { who: "Gmail (read-only)", why: "Expenses, if you connect it", what: "Finlio reads bank and UPI alerts only" },
   { who: "Gemini", why: "Reading those alerts", what: "Each alert's sender, subject and preview" },
@@ -82,7 +84,7 @@ export default function PrivacyPage() {
           </table>
         </div>
         <p className="border-t border-line px-6 py-3 text-[12px] text-muted-foreground">
-          All over encrypted connections. Connecting Gmail is optional; Disconnect on Expenses revokes access.
+          All over encrypted connections. Connecting Gmail is optional; Disconnect on Expenses revokes access. See the <Link href="/terms" className="underline">Terms &amp; Conditions</Link>.
         </p>
       </section>
 
