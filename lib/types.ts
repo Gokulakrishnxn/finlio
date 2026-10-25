@@ -23,6 +23,30 @@ export type Brief = {
   searchSuggestionsHtml?: string;
 };
 
+export const EXPENSE_CATEGORIES = [
+  "Food & dining",
+  "Groceries",
+  "Shopping",
+  "Travel",
+  "Bills & utilities",
+  "Entertainment",
+  "Health",
+  "Transfers",
+  "Other",
+] as const;
+
+export type ExpenseCategory = (typeof EXPENSE_CATEGORIES)[number];
+
+export type Expense = {
+  id: string; // Gmail message id
+  date: string; // "2026-10-21"
+  amount: number; // ₹
+  merchant: string;
+  category: ExpenseCategory;
+};
+
+export type ExpenseSnapshot = { account: string; syncedAt: string; expenses: Expense[] };
+
 export type Instrument = {
   instrumentKey: string;
   symbol: string;
