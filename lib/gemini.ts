@@ -3,7 +3,8 @@ import { GoogleGenAI, type GroundingMetadata } from "@google/genai";
 import type { BriefRequest } from "@/lib/brief-schema";
 import type { Brief, BriefItem, Source } from "@/lib/types";
 
-const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.8-flash";
+// gemini-3.5-flash answered fastest in testing; override with GEMINI_MODEL.
+const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash";
 
 const SYSTEM = `You are Finlio, a calm friend who reads the Indian stock market news for someone and explains it in plain English.
 
