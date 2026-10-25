@@ -44,6 +44,11 @@ export default function AnalyticsPage() {
     return [...totals.entries()].map(([category, amount]) => ({ category, amount })).sort((a, b) => b.amount - a.amount);
   }, [items, month]);
 
+  // Charts show the biggest categories and fold the rest into one "Other" slice,
+  // so small amounts don't crowd into unreadable slivers.
+  const topSpending = useMemo(() => groupSmall(spending, 5, "Other"), [spending]);
+  const flowSpending = useMemo(() => groupSmall(spending, 4, "Other spending"), [spending]);
+
   const income = useMemo(() => {
     const totals = new Map<string, number>();
     for (const i of items) {
@@ -57,19 +62,23 @@ export default function AnalyticsPage() {
     if (!income.length || !spending.length) return null;
     const nodes = [
       ...income.map((i) => ({ id: `in:${i.category}`, label: i.category, color: "var(--chart-gain)" })),
-      { id: "month", label: "This month", color: "var(--chart-ink)" },
-      ...spending.map((s, n) => ({ id: `out:${s.category}`, label: s.category, color: CATEGORY_COLORS[n % CATEGORY_COLORS.length] })),
+      { id: "month", label: "This month", color: "#3784f4" },
+      ...flowSpending.map((s, n) => ({
+        id: `out:${s.category}`,
+        label: s.category,
+        color: s.category === "Other spending" ? "#a8a29e" : CATEGORY_COLORS[n % CATEGORY_COLORS.length],
+      })),
     ];
     const links = [
       ...income.map((i) => ({ source: `in:${i.category}`, target: "month", value: i.amount })),
-      ...spending.map((s) => ({ source: "month", target: `out:${s.category}`, value: s.amount })),
+      ...flowSpending.map((s) => ({ source: "month", target: `out:${s.category}`, value: s.amount })),
     ];
     if (thisMonth.saved > 0) {
       nodes.push({ id: "saved", label: "Saved", color: "var(--success)" });
       links.push({ source: "month", target: "saved", value: thisMonth.saved });
     }
     return { nodes, links };
-  }, [income, spending, thisMonth.saved]);
+  }, [income, spending.length, flowSpending, thisMonth.saved]);
 
   async function explain() {
     setLoading(true);
@@ -145,11 +154,15 @@ export default function AnalyticsPage() {
               segments={alloc.map((a) => ({ id: a.label, name: a.label, color: a.color, value: a.amount }))}
               formatValue={compactMoney}
               label="Allocation"
+              thickness={18}
+              gap={4}
             >
-              <div className="grid items-center gap-6 sm:grid-cols-[minmax(0,13rem)_1fr]">
-                <DonutChartPlot>
-                  <DonutChartCenter totalLabel="Total assets" />
-                </DonutChartPlot>
+              <div className="grid items-center gap-6 2xl:grid-cols-[minmax(0,12rem)_1fr]">
+                <div className="mx-auto w-full max-w-[13rem]">
+                  <DonutChartPlot>
+                    <DonutChartCenter totalLabel="Total assets" />
+                  </DonutChartPlot>
+                </div>
                 <DonutChartLegend />
               </div>
             </DonutChart>
@@ -162,19 +175,23 @@ export default function AnalyticsPage() {
           <p className="eyebrow mb-5">Spending this month</p>
           {spending.length ? (
             <DonutChart
-              segments={spending.map((s, n) => ({
+              segments={topSpending.map((s, n) => ({
                 id: s.category,
                 name: s.category,
-                color: CATEGORY_COLORS[n % CATEGORY_COLORS.length],
+                color: s.category === "Other" ? "#a8a29e" : CATEGORY_COLORS[n % CATEGORY_COLORS.length],
                 value: s.amount,
               }))}
+              thickness={18}
+              gap={4}
               formatValue={compactMoney}
               label="Spending by category"
             >
-              <div className="grid items-center gap-6 sm:grid-cols-[minmax(0,13rem)_1fr]">
-                <DonutChartPlot>
-                  <DonutChartCenter totalLabel="Spent" />
-                </DonutChartPlot>
+              <div className="grid items-center gap-6 2xl:grid-cols-[minmax(0,12rem)_1fr]">
+                <div className="mx-auto w-full max-w-[13rem]">
+                  <DonutChartPlot>
+                    <DonutChartCenter totalLabel="Spent" />
+                  </DonutChartPlot>
+                </div>
                 <DonutChartLegend />
               </div>
             </DonutChart>
@@ -193,8 +210,16 @@ export default function AnalyticsPage() {
           </p>
         </div>
         {flow ? (
-          <SankeyChart nodes={flow.nodes} links={flow.links} formatValue={compactMoney} label="Money flow" className="mt-4">
-            <SankeyChartPlot />
+          <SankeyChart
+            nodes={flow.nodes}
+            links={flow.links}
+            formatValue={compactMoney}
+            label="Money flow"
+            nodePadding={26}
+            nodeWidth={10}
+            className="mt-4"
+          >
+            <SankeyChartPlot className="h-[22rem] min-w-0" />
             <SankeyChartTooltip />
           </SankeyChart>
         ) : (
@@ -205,4 +230,14 @@ export default function AnalyticsPage() {
       </section>
     </>
   );
+}
+
+// Up to `keep` of the largest categories that are at least 5% of the total; the rest
+// become one combined slice, so tiny amounts don't turn into unreadable slivers.
+function groupSmall(rows: { category: string; amount: number }[], keep: number, otherLabel: string) {
+  const total = rows.reduce((sum, r) => sum + r.amount, 0);
+  const big = rows.filter((r, i) => i < keep && r.amount >= total * 0.05);
+  if (big.length >= rows.length - 1) return rows;
+  const rest = rows.slice(big.length).reduce((sum, r) => sum + r.amount, 0);
+  return [...big, { category: otherLabel, amount: rest }];
 }
