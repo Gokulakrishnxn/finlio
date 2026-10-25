@@ -42,7 +42,7 @@ Established by the learner (`scope.md > Inspiration & Identity`):
 - **Motion:** calm and purposeful (GSAP). The brief writes itself in section by section; numbers count up; panels slide. Nothing bouncy.
 - **Components and references:** shadcn/ui, rareui, transitions.dev, beautifului, obsidianui (dashboard), uiarc (charts), beui; lucide-react icons.
 - **Tone:** a friend who reads the market for you. Short sentences, no jargon, no hype, no exclamation marks.
-- **Avoid:** generic AI-app styling (purple gradients, glowing chat bubbles), third-party broker or stock logos (trademarks).
+- **Avoid:** generic AI-app styling (purple gradients, glowing chat bubbles), third-party logos in the demo video (trademarks).
 
 ## Features and Behavior
 
@@ -53,7 +53,7 @@ Established by the learner (`scope.md > Inspiration & Identity`):
   - [ ] Quantity and price must be above zero, and the buy date can't be in the future; otherwise a clear message appears next to the field.
   - [ ] Adding the same stock again asks whether to add to the existing holding or cancel. **(assumption)**
   - [ ] Each holding can be edited or deleted; deleting asks for confirmation.
-  - [ ] Each holding is shown with a coloured initial badge instead of a company logo.
+  - [ ] Each holding shows its company logo when one is available and logos are on; otherwise a coloured initial badge.
 
 ### Portfolio
 - As an investor, I want to see what my holdings are worth now so that I know where I stand.
@@ -142,7 +142,7 @@ Source: `scope.md > The POC Boundary` (whole-money dashboard, added after approv
 - No Finlio account or database; data stays in the browser — learner's privacy promise, stated honestly. Google sign-in is only for reading bank alerts.
 - Expenses via Gmail, in Google test mode — learner's decision after scope approval, accepting the deadline risk.
 - Explain, never advise — learner's principle ("Suggest, never execute" in the August PRD) and the hackathon's credibility.
-- Coloured initial badges instead of logos — trademark rule for the demo video.
+- Company logos optional behind a Settings switch, off when recording — trademark rule for the demo video.
 - The AI model is Gemini — learner's choice (detail belongs in `4-spec`).
 
 ## What We're Building
@@ -166,7 +166,7 @@ The welcome; adding, editing and deleting NSE holdings; live portfolio values; t
 - Placing trades or moving money.
 - Finlio accounts, payments or plans.
 - Sending emails, or reading anything other than bank and UPI alerts.
-- Company logos in the app or video — third-party trademarks.
+- Company logos in the demo video — third-party trademarks. (In the app they are optional, behind a Settings switch, added at the learner's request.)
 - Claims of end-to-end encryption or "we never share data" — not accurate with a cloud AI.
 
 ## Open Questions

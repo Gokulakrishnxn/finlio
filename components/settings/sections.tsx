@@ -3,14 +3,14 @@
 // The sections of the Settings window (opened from the profile menu).
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Download, LogOut, Mail, PanelLeftClose, Upload, Volume2 } from "lucide-react";
+import { Download, ImageIcon, LogOut, Mail, PanelLeftClose, Upload, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field } from "@/components/form";
 import { todayIST } from "@/lib/format";
 import { setSoundOn, sound, soundOn } from "@/lib/sound";
 import type { StoreData } from "@/lib/store";
-import { COLLAPSE_KEY, SIDEBAR_EVENT } from "@/lib/ui-prefs";
+import { COLLAPSE_KEY, logosOn, setLogosOn, SIDEBAR_EVENT } from "@/lib/ui-prefs";
 import { cn } from "@/lib/utils";
 
 type Session = { configured: boolean; signedIn: boolean; email?: string; name?: string; picture?: string };
@@ -134,10 +134,12 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (on: boolean) 
 export function Preferences() {
   const [sounds, setSounds] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
+  const [logos, setLogos] = useState(true);
 
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSounds(soundOn());
+    setLogos(logosOn());
     try {
       setCollapsed(window.localStorage.getItem(COLLAPSE_KEY) === "1");
     } catch {
@@ -160,6 +162,21 @@ export function Preferences() {
                 setSoundOn(on);
                 setSounds(on);
                 if (on) sound("toggle");
+              }}
+            />
+          }
+        />
+        <Row
+          icon={<ImageIcon className="size-4" />}
+          title="Show company logos"
+          body="Logos for your stocks, banks and merchants. Turn off before recording a public demo: logos are other companies' trademarks."
+          control={
+            <Toggle
+              label="Show company logos"
+              on={logos}
+              onChange={(on) => {
+                setLogosOn(on);
+                setLogos(on);
               }}
             />
           }

@@ -64,7 +64,7 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 
 ## Explicitly Cut
 - **Yahoo Finance's unofficial API:** not authorized for use, which the rules require; the spec picks a source we're allowed to use.
-- **Third-party broker and stock logos in the demo video:** trademarks need permission under the rules; the spec decides how holdings are identified on screen.
+- **Third-party logos in the demo video:** trademarks need permission under the rules. The app can show company logos (learner's later request), but the Settings switch must be off when recording.
 - **"We never share your data" / end-to-end encryption claims:** not true when Gemini reads the news and holdings; replaced by an honest promise: no Finlio account or database, data on your device, only the minimum sent to Upstox and Gemini over an encrypted connection.
 - **Buy/sell recommendations:** Finlio explains, never advises.
 - **Finlio accounts, payments, tiers:** not needed for the proof of concept (Google sign-in is only a key to read bank alerts).

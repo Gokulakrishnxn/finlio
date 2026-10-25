@@ -22,6 +22,7 @@ const SHARING = [
   { who: "Gmail (read-only)", why: "Expenses, if you connect it", what: "Finlio reads bank and UPI alerts only" },
   { who: "Gemini", why: "Reading those alerts", what: "Each alert's sender, subject and preview" },
   { who: "Gemini", why: "Insights and Finlio chat", what: "Your totals and your question; no transactions or quantities" },
+  { who: "icon.horse, Google favicons", why: "Company logos (can be turned off)", what: "Company web addresses like netflix.com, sent by Finlio's helper, not your browser" },
 ];
 
 export default function PrivacyPage() {
