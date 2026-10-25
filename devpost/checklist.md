@@ -9,7 +9,7 @@ Build mode: fast
 
 ## Slices
 
-- [ ] **1. You can add a stock you own and see it in Finlio**
+- [x] **1. You can add a stock you own and see it in Finlio**
   Becomes usable: A running Finlio with the Link-style shell, the welcome screen, and an Add stock dialog that searches real NSE stocks; saved holdings appear on Today and Holdings and survive a reload.
   Why now: Bootstraps the project and gives the brief something to read. Stock search uses Upstox's public NSE list (no key), so it also proves the first external dependency early.
   PRD ref: `prd.md > The Core Journey` (steps 1–3), `prd.md > Adding holdings`, `prd.md > Screens and Layout`, `prd.md > Look and Feel`
