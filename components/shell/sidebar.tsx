@@ -16,7 +16,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="sticky top-0 flex h-screen w-[280px] shrink-0 flex-col px-5 py-8">
+    <aside className="sticky top-0 flex h-screen w-[220px] shrink-0 flex-col px-4 py-8 xl:w-[280px] xl:px-5">
       <Link href="/" className="flex items-center gap-1.5 px-3">
         <Image
           src="/finlio-mark.png"
