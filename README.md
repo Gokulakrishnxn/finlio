@@ -68,7 +68,7 @@ cp .env.example .env.local   # then fill in the keys below
 pnpm dev
 ```
 
-Open **http://localhost:3000**. Finlio shows a **Finish setting up** card listing any keys that are still missing, and every screen works without them in a reduced way (for example *Try a sample portfolio* and stock search need no keys).
+Open **http://localhost:3000**. Every screen works without keys in a reduced way, and each feature that needs a key says so where it's used (for example *Try a sample portfolio* and stock search need no keys).
 
 ### Keys (in `.env.local`, never committed)
 

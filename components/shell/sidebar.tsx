@@ -1,89 +1,195 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Briefcase, Lock, Sun, Wallet } from "lucide-react";
+import {
+  Briefcase,
+  Landmark,
+  LayoutDashboard,
+  Lock,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Sparkles,
+  Wallet,
+  type LucideIcon,
+} from "lucide-react";
+import { SoundToggle } from "@/components/sound-toggle";
+import { sound } from "@/lib/sound";
 import { cn } from "@/lib/utils";
 
-const NAV = [
-  { href: "/", label: "Today", icon: Sun },
-  { href: "/holdings", label: "Holdings", icon: Briefcase },
-  { href: "/expenses", label: "Expenses", icon: Wallet },
-  { href: "/privacy", label: "Privacy", icon: Lock },
-] as const;
+type NavItem = { href: string; label: string; icon: LucideIcon };
+
+const SECTIONS: { title: string; items: NavItem[] }[] = [
+  { title: "Overview", items: [{ href: "/", label: "Dashboard", icon: LayoutDashboard }] },
+  {
+    title: "Money",
+    items: [
+      { href: "/holdings", label: "Holdings", icon: Briefcase },
+      { href: "/expenses", label: "Expenses", icon: Wallet },
+      { href: "/assets", label: "Assets & loans", icon: Landmark },
+    ],
+  },
+  { title: "Understand", items: [{ href: "/insights", label: "Insights", icon: Sparkles }] },
+  { title: "You", items: [{ href: "/privacy", label: "Privacy", icon: Lock }] },
+];
+
+const ALL = SECTIONS.flatMap((s) => s.items);
+
+function isActive(pathname: string, href: string) {
+  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+}
+
+function Brand() {
+  return (
+    <Link href="/" className="flex items-center gap-1.5">
+      <Image
+        src="/finlio-mark.png"
+        alt=""
+        width={1024}
+        height={1024}
+        className="size-8 mix-blend-multiply"
+        priority
+      />
+      <span className="text-xl font-semibold tracking-tight text-ink">Finlio</span>
+    </Link>
+  );
+}
+
+const COLLAPSE_KEY = "finlio:sidebar";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [collapsed, setCollapsed] = useState(false);
+
+  // Remember the choice per browser.
+  useEffect(() => {
+    try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCollapsed(window.localStorage.getItem(COLLAPSE_KEY) === "1");
+    } catch {
+      // Storage blocked: start expanded.
+    }
+  }, []);
+
+  function toggle() {
+    const next = !collapsed;
+    setCollapsed(next);
+    sound(next ? "close" : "open");
+    try {
+      window.localStorage.setItem(COLLAPSE_KEY, next ? "1" : "0");
+    } catch {
+      // Storage blocked: the choice lasts until reload.
+    }
+  }
 
   return (
-    <aside className="sticky top-0 hidden h-screen w-[220px] shrink-0 flex-col px-4 py-8 md:flex xl:w-[280px] xl:px-5">
-      <Link href="/" className="flex items-center gap-1.5 px-3">
-        <Image
-          src="/finlio-mark.png"
-          alt=""
-          width={1024}
-          height={1024}
-          className="size-8 mix-blend-multiply"
-          priority
-        />
-        <span className="text-xl font-semibold tracking-tight text-ink">Finlio</span>
-      </Link>
+    <aside
+      className={cn(
+        "sticky top-2 hidden h-[calc(100vh-1rem)] shrink-0 flex-col rounded-3xl border border-line bg-white transition-[width] duration-300 md:flex",
+        collapsed ? "w-[76px]" : "w-[248px]",
+      )}
+    >
+      <div className={cn("flex items-center pt-6 pb-5", collapsed ? "flex-col gap-3 px-2" : "justify-between px-5")}>
+        {collapsed ? (
+          <Link href="/" aria-label="Finlio">
+            <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-8 mix-blend-multiply" />
+          </Link>
+        ) : (
+          <Brand />
+        )}
+        <button
+          onClick={toggle}
+          aria-label={collapsed ? "Open sidebar" : "Close sidebar"}
+          title={collapsed ? "Open sidebar" : "Close sidebar"}
+          className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-sand hover:text-ink"
+        >
+          {collapsed ? <PanelLeftOpen className="size-[18px]" /> : <PanelLeftClose className="size-[18px]" />}
+        </button>
+      </div>
 
-      <nav className="mt-10 flex flex-col gap-1">
-        {NAV.map(({ href, label, icon: Icon }) => {
-          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-[15px] text-body transition-colors hover:bg-line/60",
-                active && "bg-line/80 font-medium text-ink",
-              )}
-            >
-              <Icon className="size-[18px]" strokeWidth={1.75} />
-              {label}
-            </Link>
-          );
-        })}
+      <nav className={cn("flex flex-1 flex-col overflow-y-auto", collapsed ? "gap-3 px-3" : "gap-6 px-3")}>
+        {SECTIONS.map((section) => (
+          <div key={section.title}>
+            {collapsed ? (
+              <div className="mx-auto mb-2 h-px w-6 bg-line" />
+            ) : (
+              <p className="eyebrow px-3 pb-2">{section.title}</p>
+            )}
+            <ul className="flex flex-col gap-0.5">
+              {section.items.map(({ href, label, icon: Icon }) => {
+                const active = isActive(pathname, href);
+                return (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      title={collapsed ? label : undefined}
+                      aria-label={collapsed ? label : undefined}
+                      onClick={() => !active && sound("navigate")}
+                      className={cn(
+                        "relative flex items-center gap-3 rounded-xl py-2 text-[14px] text-body transition-colors hover:bg-sand",
+                        collapsed ? "justify-center px-0" : "px-3",
+                        active && "bg-[#eef8f1] font-medium text-[#1f7a3a] hover:bg-[#eef8f1]",
+                      )}
+                    >
+                      {active && !collapsed && (
+                        <span className="absolute top-2 bottom-2 -left-3 w-[3px] rounded-r-full bg-gain" />
+                      )}
+                      <Icon className="size-[18px] shrink-0" strokeWidth={1.75} />
+                      {!collapsed && label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
       </nav>
 
-      <div className="mt-auto flex items-start gap-2.5 border-t border-line px-3 pt-5 text-[13px] leading-snug text-muted-foreground">
-        <Lock className="mt-0.5 size-3.5 shrink-0" strokeWidth={2} />
-        Your data stays in this browser.
-      </div>
+      {collapsed ? (
+        <div className="flex justify-center pb-5" title="Private by design: your money data stays in this browser">
+          <Lock className="size-4 text-muted-foreground" />
+        </div>
+      ) : (
+        <div className="m-3 rounded-2xl bg-sand p-4">
+          <div className="flex items-center gap-2 text-[13px] font-medium text-ink">
+            <Lock className="size-3.5" strokeWidth={2} />
+            Private by design
+          </div>
+          <p className="mt-1 text-[12px] leading-snug text-muted-foreground">
+            No Finlio account. Your money data stays in this browser.
+          </p>
+          <div className="mt-2 -ml-1">
+            <SoundToggle />
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
 
-// Small screens: logo and the same four links in a bar across the top.
+// Small screens: logo on top, every section as an icon link.
 export function MobileNav() {
   const pathname = usePathname();
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-sand/90 px-4 py-3 backdrop-blur md:hidden">
-      <Link href="/" className="flex items-center gap-1">
-        <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-7 mix-blend-multiply" />
-        <span className="text-lg font-semibold tracking-tight text-ink">Finlio</span>
-      </Link>
-      <nav className="flex gap-1">
-        {NAV.map(({ href, label, icon: Icon }) => {
-          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              aria-label={label}
-              className={cn(
-                "flex size-9 items-center justify-center rounded-xl text-body",
-                active && "bg-line/80 text-ink",
-              )}
-            >
-              <Icon className="size-[18px]" strokeWidth={1.75} />
-            </Link>
-          );
-        })}
+    <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-line bg-white/90 px-4 py-3 backdrop-blur md:hidden">
+      <Brand />
+      <nav className="flex gap-0.5">
+        {ALL.map(({ href, label, icon: Icon }) => (
+          <Link
+            key={href}
+            href={href}
+            aria-label={label}
+            className={cn(
+              "flex size-9 items-center justify-center rounded-xl text-body",
+              isActive(pathname, href) && "bg-[#eef8f1] text-[#1f7a3a]",
+            )}
+          >
+            <Icon className="size-[18px]" strokeWidth={1.75} />
+          </Link>
+        ))}
       </nav>
     </header>
   );

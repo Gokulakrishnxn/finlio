@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SetupBanner } from "@/components/setup-banner";
+import { ChatProvider } from "@/components/chat/chat-context";
+import { ChatLauncher, FinlioChat } from "@/components/chat/finlio-chat";
 import { MobileNav, Sidebar } from "@/components/shell/sidebar";
 import { PricesProvider } from "@/lib/prices";
 import { StoreProvider } from "@/lib/store";
@@ -31,16 +32,19 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full bg-sand text-ink">
         <StoreProvider>
           <PricesProvider>
-            <div className="flex min-h-screen flex-col md:flex-row">
-              <Sidebar />
-              <MobileNav />
-              <main className="m-2 min-w-0 flex-1 md:ml-0 rounded-3xl border border-line bg-cream">
-                <div className="mx-auto w-full max-w-[1100px] px-6 py-10 md:px-10 md:py-14 xl:px-16">
-                  <SetupBanner />
-                  {children}
-                </div>
-              </main>
-            </div>
+            <ChatProvider>
+              <div className="flex min-h-screen flex-col md:flex-row md:gap-2 md:p-2">
+                <Sidebar />
+                <MobileNav />
+                <main className="min-w-0 flex-1 bg-cream md:rounded-3xl md:border md:border-line">
+                  <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:px-8 md:py-10 xl:px-12">
+                    {children}
+                  </div>
+                </main>
+                <FinlioChat />
+              </div>
+              <ChatLauncher />
+            </ChatProvider>
           </PricesProvider>
         </StoreProvider>
       </body>

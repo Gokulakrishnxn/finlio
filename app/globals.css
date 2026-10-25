@@ -77,7 +77,12 @@
 }
 
 @utility card-surface {
-  @apply rounded-3xl border border-line bg-white shadow-[0_1px_2px_rgba(18,18,18,0.03),0_8px_24px_-12px_rgba(18,18,18,0.06)];
+  @apply rounded-2xl border border-line bg-white shadow-[0_1px_2px_rgba(18,18,18,0.03)];
+}
+
+/* Small uppercase section label, e.g. "NET WORTH · ₹ INR". */
+@utility eyebrow {
+  @apply text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase;
 }
 
 @utility nums {
