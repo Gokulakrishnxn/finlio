@@ -1,5 +1,7 @@
 import Link from "next/link";
-import { ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { BrandLogo, IconBadge } from "@/components/brand-logo";
+import { merchantDomain } from "@/lib/brands";
+import { categoryLook } from "@/lib/category-icons";
 import { formatDate } from "@/lib/format";
 import { compactINR, type Activity } from "@/lib/networth";
 
@@ -33,13 +35,13 @@ export function RecentActivity({ items, limit = 5 }: { items: Activity[]; limit?
 
 export function ActivityRow({ item, action }: { item: Activity; action?: React.ReactNode }) {
   const income = item.type === "income";
+  const look = categoryLook(item.category);
   return (
     <li className="flex items-center gap-3 border-b border-line py-3 last:border-b-0">
-      <span
-        className={`flex size-8 shrink-0 items-center justify-center rounded-full ${income ? "bg-[#e8f7ec] text-[#1f7a3a]" : "bg-[#ffecec] text-[#c43c3c]"}`}
-      >
-        {income ? <ArrowDownLeft className="size-4" /> : <ArrowUpRight className="size-4" />}
-      </span>
+      <BrandLogo
+        domain={merchantDomain(item.title)}
+        fallback={<IconBadge icon={look.icon} tint={look.tint} />}
+      />
       <div className="min-w-0 flex-1">
         <p className="truncate text-[14px] font-medium text-ink">{item.title}</p>
         <p className="text-[12px] text-muted-foreground">

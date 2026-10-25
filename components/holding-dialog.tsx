@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
+import { stockDomain } from "@/lib/brands";
 import { useStore, type NewHolding } from "@/lib/store";
 import { todayIST } from "@/lib/format";
 import type { Holding, Instrument } from "@/lib/types";
@@ -198,7 +200,11 @@ export function HoldingDialog({
                     onClick={() => setPicked(r)}
                     className="flex w-full items-center gap-3 rounded-xl px-2 py-2 text-left transition-colors hover:bg-sand"
                   >
-                    <InitialBadge symbol={r.symbol} className="size-9 text-sm" />
+                    <BrandLogo
+                      domain={stockDomain(r.symbol)}
+                      className="size-9"
+                      fallback={<InitialBadge symbol={r.symbol} className="size-9 text-sm" />}
+                    />
                     <span className="min-w-0">
                       <span className="block text-[15px] font-medium text-ink">{r.symbol}</span>
                       <span className="block truncate text-[13px] text-muted-foreground">
@@ -223,7 +229,7 @@ export function HoldingDialog({
               disabled={Boolean(editing)}
               className="flex items-center gap-3 rounded-2xl bg-sand p-3 text-left"
             >
-              <InitialBadge symbol={picked.symbol} />
+              <BrandLogo domain={stockDomain(picked.symbol)} fallback={<InitialBadge symbol={picked.symbol} />} />
               <span className="min-w-0 flex-1">
                 <span className="block font-medium text-ink">{picked.symbol}</span>
                 <span className="block truncate text-[13px] text-muted-foreground">

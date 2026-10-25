@@ -6,9 +6,12 @@ import { Button } from "@/components/ui/button";
 import { AssetDialog } from "@/components/asset-dialog";
 import { CountUp } from "@/components/count-up";
 import { WealthBar } from "@/components/dashboard/wealth-bar";
+import { BrandLogo, IconBadge } from "@/components/brand-logo";
 import { PageHeader } from "@/components/page-header";
 import { PageSkeleton } from "@/components/page-skeleton";
 import { formatINR } from "@/lib/format";
+import { merchantDomain } from "@/lib/brands";
+import { assetLook } from "@/lib/category-icons";
 import { compactINR } from "@/lib/networth";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
@@ -142,6 +145,10 @@ function Group({
         <ul className="mt-2">
           {items.map((a) => (
             <li key={a.id} className="group flex items-center gap-3 border-b border-line py-3 last:border-b-0">
+              <BrandLogo
+                domain={merchantDomain(a.name)}
+                fallback={<IconBadge icon={assetLook(a.kind).icon} tint={assetLook(a.kind).tint} />}
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[14px] font-medium text-ink">{a.name}</p>
                 <p className="text-[12px] text-muted-foreground">{KIND_LABEL[a.kind]}</p>

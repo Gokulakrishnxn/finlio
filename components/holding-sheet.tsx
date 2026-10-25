@@ -15,7 +15,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Change } from "@/components/change";
+import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
+import { stockDomain } from "@/lib/brands";
 import { formatDate, formatINR, todayIST } from "@/lib/format";
 import { useStore } from "@/lib/store";
 import type { Position } from "@/lib/portfolio";
@@ -54,7 +56,11 @@ export function HoldingSheet({
             <>
               <SheetHeader className="gap-4 border-b border-line p-7">
                 <div className="flex items-center gap-3">
-                  <InitialBadge symbol={h.symbol} className="size-12 text-lg" />
+                  <BrandLogo
+                    domain={stockDomain(h.symbol)}
+                    className="size-12"
+                    fallback={<InitialBadge symbol={h.symbol} className="size-12 text-lg" />}
+                  />
                   <div className="min-w-0">
                     <SheetTitle className="text-xl font-semibold tracking-tight text-ink">
                       {h.symbol}

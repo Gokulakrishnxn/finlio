@@ -2,7 +2,9 @@
 
 import { ChevronRight } from "lucide-react";
 import { Change } from "@/components/change";
+import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
+import { stockDomain } from "@/lib/brands";
 import { formatINR } from "@/lib/format";
 import type { Position } from "@/lib/portfolio";
 
@@ -21,7 +23,7 @@ export function HoldingsList({
             onClick={() => onSelect(p.holding.id)}
             className="group -mx-3 flex w-[calc(100%+1.5rem)] items-center gap-4 rounded-2xl px-3 py-4 text-left transition-colors hover:bg-sand/70"
           >
-            <InitialBadge symbol={p.holding.symbol} />
+            <BrandLogo domain={stockDomain(p.holding.symbol)} fallback={<InitialBadge symbol={p.holding.symbol} />} />
             <div className="min-w-0 flex-1">
               <p className="flex items-center gap-2 font-medium text-ink">
                 {p.holding.symbol}
