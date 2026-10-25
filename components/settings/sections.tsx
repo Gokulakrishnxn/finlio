@@ -394,6 +394,7 @@ export function Accounts() {
 }
 
 export function DataCard({ data, onRestore }: { data: StoreData; onRestore: (data: StoreData) => void }) {
+  const { signOut } = useSettings();
   const fileRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -450,11 +451,11 @@ export function DataCard({ data, onRestore }: { data: StoreData; onRestore: (dat
       </div>
       {message && <p className="mt-3 text-[13px] text-body">{message}</p>}
       <p className="mt-4 border-t border-line pt-4 text-[13px] text-muted-foreground">
-        To erase everything, use{" "}
-        <Link href="/privacy" className="text-ink underline">
-          Clear all my data
-        </Link>{" "}
-        on Privacy. Restoring replaces what&apos;s here now.
+        Restoring replaces what&apos;s here now. To erase everything,{" "}
+        <button onClick={signOut} className="text-ink underline">
+          sign out
+        </button>
+        .
       </p>
     </Card>
   );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SHARING } from "@/lib/privacy";
 import { TERMS_UPDATED } from "@/lib/terms";
 
 export const metadata = { title: "Terms & Conditions · Finlio" };
@@ -53,16 +54,20 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
       <>
         <p>
           Finlio has no account system and no Finlio database. What you enter is stored in your own browser on
-          your device. Clearing your browser data, or using <em>Clear all my data</em>, deletes it, and we
-          cannot recover it. Use <em>Settings → Data controls → Export backup</em> to keep a copy.
+          your device. Clearing your browser data, or choosing <em>Sign out</em>, deletes it, and we cannot
+          recover it. Use <em>Settings → Data controls → Export backup</em> to keep a copy.
         </p>
-        <p>
-          To work, Finlio sends limited information to the services below. The{" "}
-          <Link href="/privacy" className="underline">
-            Privacy page
-          </Link>{" "}
-          lists exactly what is sent.
+        <p id="your-data">
+          To work, Finlio sends limited information to other services. Exactly what is sent (also shown in{" "}
+          <em>Settings → Privacy</em>):
         </p>
+        <ul className="space-y-1.5">
+          {SHARING.map((s) => (
+            <li key={`${s.who}-${s.why}`}>
+              <strong className="font-medium text-ink">{s.who}</strong> ({s.why}): {s.what}.
+            </li>
+          ))}
+        </ul>
       </>
     ),
   },
@@ -163,10 +168,6 @@ export default function TermsPage() {
       </div>
 
       <p className="mt-6 text-center text-[13px] text-muted-foreground">
-        <Link href="/privacy" className="underline">
-          Privacy
-        </Link>{" "}
-        ·{" "}
         <Link href="/" className="underline">
           Back to Finlio
         </Link>

@@ -21,11 +21,11 @@ const FEATURES = [
 ];
 
 // First visit: welcome, name, country, then terms and how to start.
-// Shown over the app until finished; the Terms and Privacy pages stay readable.
+// Shown over the app until finished; the Terms page stays readable.
 export function Onboarding() {
   const { ready, profile } = useStore();
   const pathname = usePathname();
-  if (!ready || profile?.onboardedAt || pathname.startsWith("/terms") || pathname.startsWith("/privacy")) {
+  if (!ready || profile?.onboardedAt || pathname.startsWith("/terms")) {
     return null;
   }
   return <Flow />;
@@ -258,11 +258,8 @@ function Flow() {
                   <Link href="/terms" target="_blank" className="font-medium text-ink underline">
                     Terms &amp; Conditions
                   </Link>{" "}
-                  and understand that Finlio explains my money but doesn&apos;t give financial advice. See{" "}
-                  <Link href="/privacy" target="_blank" className="font-medium text-ink underline">
-                    Privacy
-                  </Link>
-                  .
+                  and understand that Finlio explains my money but doesn&apos;t give financial advice. My data
+                  stays in this browser.
                 </span>
               </label>
 

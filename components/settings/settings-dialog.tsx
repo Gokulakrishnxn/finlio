@@ -1,22 +1,41 @@
 "use client";
 
 import { createContext, useCallback, useContext, useState } from "react";
-import { Database, Link2, Settings2, UserRound, X, type LucideIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Database, Download, Link2, Lock, LogOut, Settings2, UserRound, X, type LucideIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { PrivacyPanel } from "@/components/settings/privacy-panel";
 import { Accounts, DataCard, Preferences, ProfileCard } from "@/components/settings/sections";
-import { useStore } from "@/lib/store";
+import { downloadBackup } from "@/lib/backup";
+import { sound } from "@/lib/sound";
+import { useStore, type StoreData } from "@/lib/store";
 import { cn } from "@/lib/utils";
 
-export type SettingsTab = "general" | "profile" | "accounts" | "data";
+export type SettingsTab = "general" | "profile" | "accounts" | "data" | "privacy";
 
 const TABS: { id: SettingsTab; label: string; icon: LucideIcon }[] = [
   { id: "general", label: "General", icon: Settings2 },
   { id: "profile", label: "Profile", icon: UserRound },
   { id: "accounts", label: "Connected apps", icon: Link2 },
   { id: "data", label: "Data controls", icon: Database },
+  { id: "privacy", label: "Privacy", icon: Lock },
 ];
 
-type SettingsUI = { openSettings: (tab?: SettingsTab) => void; closeSettings: () => void };
+type SettingsUI = {
+  openSettings: (tab?: SettingsTab) => void;
+  closeSettings: () => void;
+  signOut: () => void; // asks first, then signs out
+};
 
 const SettingsContext = createContext<SettingsUI | null>(null);
 
@@ -26,17 +45,50 @@ export function useSettings() {
   return ui;
 }
 
+function snapshotOf(store: ReturnType<typeof useStore>): StoreData {
+  return {
+    holdings: store.holdings,
+    brief: store.brief,
+    expenses: store.expenses,
+    assets: store.assets,
+    entries: store.entries,
+    snapshots: store.snapshots,
+    profile: store.profile,
+  };
+}
+
 // Settings live in one pop-up window, opened from the profile menu (like ChatGPT).
+// Sign out lives here too, so the menu and Settings share one confirmation.
 export function SettingsProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<SettingsTab>("general");
+  const [confirmSignOut, setConfirmSignOut] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const store = useStore();
+  const router = useRouter();
+
   const openSettings = useCallback((next: SettingsTab = "general") => {
     setTab(next);
     setOpen(true);
   }, []);
 
+  // Finlio has no accounts: signing out disconnects Google and erases this
+  // browser's Finlio data, which brings back the welcome screen.
+  async function signOut() {
+    setSigningOut(true);
+    await fetch("/api/auth/signout", { method: "POST" }).catch(() => undefined);
+    store.clearAll();
+    setSigningOut(false);
+    setConfirmSignOut(false);
+    setOpen(false);
+    sound("close");
+    router.push("/");
+  }
+
   return (
-    <SettingsContext.Provider value={{ openSettings, closeSettings: () => setOpen(false) }}>
+    <SettingsContext.Provider
+      value={{ openSettings, closeSettings: () => setOpen(false), signOut: () => setConfirmSignOut(true) }}
+    >
       {children}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
@@ -60,6 +112,13 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
                 {label}
               </button>
             ))}
+            <button
+              onClick={() => setConfirmSignOut(true)}
+              className="flex shrink-0 items-center gap-2.5 rounded-lg px-3 py-2 text-left text-[14px] text-loss transition-colors hover:bg-card/70 sm:mt-auto"
+            >
+              <LogOut className="size-4" strokeWidth={1.75} />
+              Sign out
+            </button>
           </nav>
           <div className="relative min-h-0 flex-1 overflow-y-auto p-6">
             <DialogDescription className="sr-only">Finlio settings, saved only in this browser.</DialogDescription>
@@ -70,32 +129,53 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             >
               <X className="size-4" />
             </button>
-            {open && <TabBody tab={tab} />}
+            {open && <TabBody tab={tab} onSignOut={() => setConfirmSignOut(true)} />}
           </div>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog open={confirmSignOut} onOpenChange={setConfirmSignOut}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Sign out of Finlio?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Finlio has no account, so signing out disconnects Google and erases your stocks, accounts, spending
+              and history from this browser. Download a backup first if you want to come back to them; restore it
+              from the welcome screen.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:justify-between">
+            <Button
+              variant="outline"
+              onClick={() => {
+                downloadBackup(snapshotOf(store));
+                sound("success");
+              }}
+              className="rounded-xl"
+            >
+              <Download className="size-4" />
+              Download backup
+            </Button>
+            <div className="flex gap-2">
+              <AlertDialogCancel>Stay signed in</AlertDialogCancel>
+              <Button variant="destructive" onClick={signOut} disabled={signingOut}>
+                <LogOut className="size-4" />
+                {signingOut ? "Signing out…" : "Sign out"}
+              </Button>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </SettingsContext.Provider>
   );
 }
 
-function TabBody({ tab }: { tab: SettingsTab }) {
+function TabBody({ tab, onSignOut }: { tab: SettingsTab; onSignOut: () => void }) {
   const store = useStore();
   if (tab === "general") return <Preferences />;
   if (tab === "profile")
     return <ProfileCard key={store.profile?.name ?? "new"} initial={store.profile} onSave={store.setProfile} />;
   if (tab === "accounts") return <Accounts />;
-  return (
-    <DataCard
-      data={{
-        holdings: store.holdings,
-        brief: store.brief,
-        expenses: store.expenses,
-        assets: store.assets,
-        entries: store.entries,
-        snapshots: store.snapshots,
-        profile: store.profile,
-      }}
-      onRestore={store.replaceAll}
-    />
-  );
+  if (tab === "privacy") return <PrivacyPanel onSignOut={onSignOut} />;
+  return <DataCard data={snapshotOf(store)} onRestore={store.replaceAll} />;
 }

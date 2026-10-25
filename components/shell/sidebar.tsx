@@ -9,8 +9,10 @@ import {
   Landmark,
   LayoutDashboard,
   Lock,
+  LogOut,
   PanelLeftClose,
   MessageCircle,
+  Newspaper,
   PanelLeftOpen,
   Settings2,
   UserRound,
@@ -29,7 +31,13 @@ import { cn } from "@/lib/utils";
 type NavItem = { href: string; label: string; icon: LucideIcon };
 
 const SECTIONS: { title: string; items: NavItem[] }[] = [
-  { title: "Overview", items: [{ href: "/", label: "Dashboard", icon: LayoutDashboard }] },
+  {
+    title: "Overview",
+    items: [
+      { href: "/", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/news", label: "News", icon: Newspaper },
+    ],
+  },
   {
     title: "Money",
     items: [
@@ -39,7 +47,6 @@ const SECTIONS: { title: string; items: NavItem[] }[] = [
     ],
   },
   { title: "Understand", items: [{ href: "/analytics", label: "Analytics", icon: ChartNoAxesCombined }] },
-  { title: "You", items: [{ href: "/privacy", label: "Privacy", icon: Lock }] },
 ];
 
 const ALL = SECTIONS.flatMap((s) => s.items);
@@ -136,6 +143,7 @@ export function Sidebar() {
                   <li key={href}>
                     <Link
                       href={href}
+                      data-tour={href === "/news" ? "news" : undefined}
                       title={collapsed ? label : undefined}
                       aria-label={collapsed ? label : undefined}
                       onClick={() => !active && sound("navigate")}
@@ -181,7 +189,7 @@ function Avatar({ name, className }: { name?: string; className?: string }) {
 function ProfileChip({ name, city, collapsed }: { name?: string; city?: string; collapsed: boolean }) {
   const [menu, setMenu] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
-  const { openSettings } = useSettings();
+  const { openSettings, signOut } = useSettings();
   const { setOpen: setChatOpen } = useChatUI();
 
   useEffect(() => {
@@ -230,15 +238,20 @@ function ProfileChip({ name, city, collapsed }: { name?: string; city?: string; 
             <span className="flex-1">Finlio chat</span>
             <kbd className="text-[11px] text-muted-foreground">⌘L</kbd>
           </button>
-          <Link role="menuitem" href="/privacy" className={item} onClick={() => setMenu(false)}>
+          <button role="menuitem" className={item} onClick={pick(() => openSettings("privacy"))}>
             <Lock className="size-4" strokeWidth={1.75} />
             Privacy
-          </Link>
+          </button>
           <div className="my-1 h-px bg-line" />
           <div className="flex items-center justify-between px-2.5 py-1.5">
             <span className="text-[12px] text-muted-foreground">Interface sounds</span>
             <SoundToggle />
           </div>
+          <div className="my-1 h-px bg-line" />
+          <button role="menuitem" className={cn(item, "text-loss hover:text-loss")} onClick={pick(signOut)}>
+            <LogOut className="size-4" strokeWidth={1.75} />
+            Sign out
+          </button>
         </div>
       )}
       <button
@@ -289,6 +302,7 @@ export function MobileNav() {
           <Link
             key={href}
             href={href}
+            data-tour={href === "/news" ? "news" : undefined}
             aria-label={label}
             className={cn(
               "flex h-9 flex-1 items-center justify-center rounded-xl text-body transition-colors hover:bg-muted",
