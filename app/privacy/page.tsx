@@ -143,7 +143,7 @@ export default function PrivacyPage() {
 function Point({ icon: Icon, title, body }: { icon: typeof Lock; title: string; body: string }) {
   return (
     <section className="card-surface p-6">
-      <span className="flex size-9 items-center justify-center rounded-xl bg-[#eef8f1] text-[#1f7a3a]">
+      <span className="flex size-9 items-center justify-center rounded-xl bg-success-soft text-success">
         <Icon className="size-[18px]" strokeWidth={1.75} />
       </span>
       <h2 className="mt-4 font-medium text-ink">{title}</h2>

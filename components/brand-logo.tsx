@@ -33,7 +33,7 @@ export function BrandLogo({
   return (
     <span
       className={cn(
-        "flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 ring-line",
+        "flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white ring-1 ring-line [color-scheme:light]",
         className,
       )}
     >

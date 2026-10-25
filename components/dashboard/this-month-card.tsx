@@ -21,15 +21,15 @@ export function ThisMonthCard({
         </span>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-3">
-        <Stat label="In" value={compactINR(income)} className="text-[#1f9d47]" />
+        <Stat label="In" value={compactINR(income)} className="text-success" />
         <Stat label="Out" value={compactINR(spent)} className="text-loss" />
         <Stat label="Saved" value={compactINR(saved)} className={saved >= 0 ? "text-ink" : "text-loss"} />
       </div>
       <div className="mt-4 flex justify-between border-t border-line pt-3 text-[12px]">
-        <Link href="/expenses" className="text-[#1f7a3a] hover:underline">
+        <Link href="/expenses" className="text-success hover:underline">
           See expenses →
         </Link>
-        <Link href="/insights" className="text-[#1f7a3a] hover:underline">
+        <Link href="/insights" className="text-success hover:underline">
           Insights →
         </Link>
       </div>

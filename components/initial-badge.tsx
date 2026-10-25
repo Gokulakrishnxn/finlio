@@ -2,12 +2,12 @@ import { cn } from "@/lib/utils";
 
 // Soft brand-adjacent tints; a symbol always gets the same one.
 const TINTS = [
-  "bg-[#e8f7ec] text-[#1f7a3a]",
-  "bg-[#e6f1ff] text-[#1d5fb8]",
-  "bg-[#fff1e6] text-[#b4500f]",
-  "bg-[#f3ecff] text-[#6a3bc0]",
-  "bg-[#fff7e0] text-[#8a6410]",
-  "bg-[#ffe9e9] text-[#b42c2c]",
+  "bg-success-soft text-success",
+  "bg-info-soft text-info",
+  "bg-warning-soft text-warning",
+  "bg-purple-soft text-purple",
+  "bg-gold-soft text-gold",
+  "bg-danger-soft text-loss",
 ];
 
 function tintFor(symbol: string) {

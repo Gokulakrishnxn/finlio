@@ -12,7 +12,7 @@ export function WealthBar({ assets, loans }: { assets: number; loans: number }) 
         <span className="h-full bg-loss" style={{ width: `${100 - assetPct}%` }} />
       </div>
       <div className="mt-2 flex justify-between text-[11px] font-semibold tracking-[0.06em] uppercase">
-        <span className="text-[#1f7a3a]">
+        <span className="text-success">
           {assetPct}% assets · <span className="nums">{compactINR(assets)}</span>
         </span>
         <span className="text-loss">

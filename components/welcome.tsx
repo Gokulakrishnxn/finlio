@@ -41,8 +41,8 @@ export function Welcome({ onAdd }: { onAdd: () => void }) {
             “Q2 net profit up 8.3% YoY, beats street estimates on robust BFSI demand.”
           </p>
         </div>
-        <div className="bg-[#f1faf3] p-7">
-          <p className="text-[11px] font-semibold tracking-[0.06em] text-[#1f7a3a] uppercase">
+        <div className="bg-success-soft p-7">
+          <p className="text-[11px] font-semibold tracking-[0.06em] text-success uppercase">
             What Finlio tells you
           </p>
           <p className="mt-2 text-[15px] leading-relaxed font-medium text-ink">

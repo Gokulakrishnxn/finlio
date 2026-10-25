@@ -27,7 +27,7 @@ const GROUPS: { label: string; kinds: string[]; color: string }[] = [
 ];
 
 export function allocation(stocks: number, assets: Asset[] = []): Allocation {
-  const rows = [{ label: "Stocks", amount: stocks, color: "#34c759" }];
+  const rows = [{ label: "Stocks", amount: stocks, color: "var(--chart-gain)" }];
   for (const g of GROUPS) {
     const amount = assets
       .filter((a) => a.side === "asset" && g.kinds.includes(a.kind))

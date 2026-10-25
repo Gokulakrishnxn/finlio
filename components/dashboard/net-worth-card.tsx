@@ -23,7 +23,7 @@ function Sparkline({ points }: { points: number[] }) {
   ]);
   const line = xy.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
   const up = points[points.length - 1] >= points[0];
-  const color = up ? "#34c759" : "#ef4444";
+  const color = up ? "var(--chart-gain)" : "var(--chart-loss)";
   const [lx, ly] = xy[xy.length - 1];
   return (
     <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="h-[72px] w-full" aria-hidden>
@@ -76,7 +76,7 @@ function QuarterChart({ bars }: { bars: QuarterBar[] }) {
                   transition={{ type: "spring", stiffness: 180, damping: 24, delay: reduce ? 0 : i * 0.06 }}
                   className={cn(
                     "w-full max-w-[44px] rounded-md",
-                    b.current ? "bg-gain" : "bg-[#cfeed8]",
+                    b.current ? "bg-gain" : "bg-[var(--chart-gain-soft)]",
                   )}
                 />
               )}
@@ -130,7 +130,7 @@ export function NetWorthCard({
         className="nums mt-3 block text-[34px] leading-none font-semibold tracking-tight text-ink md:text-[44px]"
       />
       {snapshots.length > 1 ? (
-        <p className={`mt-3 flex items-center gap-1.5 text-[13px] ${change >= 0 ? "text-[#1f9d47]" : "text-loss"}`}>
+        <p className={`mt-3 flex items-center gap-1.5 text-[13px] ${change >= 0 ? "text-success" : "text-loss"}`}>
           {change >= 0 ? <TrendingUp className="size-4" /> : <TrendingDown className="size-4" />}
           <span className="nums">
             {formatSignedINR(change)} ({formatPct(pct)})
@@ -154,7 +154,7 @@ export function NetWorthCard({
               onClick={() => setView(v)}
               className={cn(
                 "rounded-md px-2.5 py-1 text-[12px] text-body",
-                view === v && "bg-white font-medium text-ink shadow-sm",
+                view === v && "bg-card font-medium text-ink shadow-sm",
               )}
             >
               {v === "quarterly" ? "Quarterly" : "Daily"}

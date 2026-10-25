@@ -15,7 +15,7 @@ export function Change({
     return <span className={cn("nums text-muted-foreground", className)}>—</span>;
   }
   return (
-    <span className={cn("nums", amount >= 0 ? "text-[#1f9d47]" : "text-loss", className)}>
+    <span className={cn("nums", amount >= 0 ? "text-success" : "text-loss", className)}>
       {formatSignedINR(amount)} ({formatPct(pct)})
     </span>
   );

@@ -28,7 +28,7 @@ export function PriceStatus() {
   const open = isMarketOpen();
   return (
     <span className="flex items-center gap-2 text-[13px] text-muted-foreground">
-      <span className={open ? "size-1.5 rounded-full bg-gain" : "size-1.5 rounded-full bg-[#c9c8c4]"} />
+      <span className={open ? "size-1.5 rounded-full bg-gain" : "size-1.5 rounded-full bg-[var(--chart-muted)]"} />
       {open ? "Market open" : "Market closed"}
       {updatedAt && ` · Updated ${formatTime(updatedAt)}`}
     </span>

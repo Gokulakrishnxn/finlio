@@ -25,7 +25,7 @@ const MESSAGES: Record<string, string> = {
   "not-configured": "Google sign-in isn't set up on this copy of Finlio yet.",
 };
 
-const BAR_COLORS = ["#34c759", "#3784f4", "#ff9f43", "#9553f9", "#ffbe4c", "#ef4444", "#14b8a6", "#a8a29e", "#c9c8c4"];
+const BAR_COLORS = ["var(--chart-gain)", "#3784f4", "#ff9f43", "#9553f9", "#ffbe4c", "var(--chart-loss)", "#14b8a6", "#a8a29e", "var(--chart-muted)"];
 
 function previousMonth(key: string) {
   const [y, m] = key.split("-").map(Number);
@@ -119,7 +119,7 @@ export default function ExpensesPage() {
       />
 
       {notice && (
-        <p className="mb-4 rounded-2xl bg-white px-5 py-3 text-[14px] text-body ring-1 ring-line">{notice}</p>
+        <p className="mb-4 rounded-2xl bg-card px-5 py-3 text-[14px] text-body ring-1 ring-line">{notice}</p>
       )}
 
       <div className="grid gap-4 lg:grid-cols-12">
@@ -136,7 +136,7 @@ export default function ExpensesPage() {
           <div className="mt-5 grid grid-cols-2 gap-3 border-t border-line pt-4">
             <div>
               <p className="eyebrow">In</p>
-              <p className="nums mt-1 text-[16px] font-semibold text-[#1f9d47]">{compactINR(thisMonth.income)}</p>
+              <p className="nums mt-1 text-[16px] font-semibold text-success">{compactINR(thisMonth.income)}</p>
             </div>
             <div>
               <p className="eyebrow">Saved</p>
@@ -161,7 +161,7 @@ export default function ExpensesPage() {
                         width: `${Math.max(4, (amount / max) * 100)}%`,
                         background:
                           BAR_COLORS[EXPENSE_CATEGORIES.indexOf(category as (typeof EXPENSE_CATEGORIES)[number])] ??
-                          "#c9c8c4",
+                          "var(--chart-muted)",
                       }}
                     />
                   </span>
@@ -203,7 +203,7 @@ export default function ExpensesPage() {
         ) : (
           <ConnectCard configured={session.configured} />
         )}
-        {error && <p className="mt-3 rounded-2xl bg-white px-5 py-3 text-[14px] text-loss ring-1 ring-line">{error}</p>}
+        {error && <p className="mt-3 rounded-2xl bg-card px-5 py-3 text-[14px] text-loss ring-1 ring-line">{error}</p>}
       </div>
 
       <section className="card-surface mt-4 px-6 pt-5 pb-3">
@@ -216,7 +216,7 @@ export default function ExpensesPage() {
                 onClick={() => setFilter(f)}
                 className={cn(
                   "rounded-lg px-3 py-1 text-[13px] text-body",
-                  filter === f && "bg-white font-medium text-ink shadow-sm",
+                  filter === f && "bg-card font-medium text-ink shadow-sm",
                 )}
               >
                 {f === "all" ? "All" : f === "expense" ? "Spends" : "Income"}
@@ -278,7 +278,7 @@ function ConnectCard({ configured }: { configured: boolean }) {
           <a
             href="/api/auth/google"
             aria-disabled={!configured}
-            className="inline-flex h-11 items-center gap-3 rounded-xl bg-white px-5 text-[15px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-sand aria-disabled:pointer-events-none aria-disabled:opacity-50"
+            className="inline-flex h-11 items-center gap-3 rounded-xl bg-card px-5 text-[15px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-sand aria-disabled:pointer-events-none aria-disabled:opacity-50"
           >
             <GoogleG />
             Continue with Google
@@ -287,7 +287,7 @@ function ConnectCard({ configured }: { configured: boolean }) {
         </div>
       </div>
       <div className="flex gap-3 border-t border-line bg-sand/60 px-6 py-4 text-[12px] leading-relaxed text-body">
-        <ShieldCheck className="mt-0.5 size-4 shrink-0 text-[#1f7a3a]" />
+        <ShieldCheck className="mt-0.5 size-4 shrink-0 text-success" />
         <p>
           Read-only. Finlio looks only at bank and UPI alerts, never sends email, and keeps results in this
           browser. Only those alerts&apos; subject and preview go to Gemini to read the amount. In Google&apos;s

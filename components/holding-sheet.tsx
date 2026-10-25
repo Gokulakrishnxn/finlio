@@ -127,7 +127,7 @@ export function HoldingSheet({
                             href={s.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center justify-between gap-3 rounded-xl bg-white px-4 py-3 text-[14px] text-ink ring-1 ring-line transition-colors hover:bg-sand"
+                            className="flex items-center justify-between gap-3 rounded-xl bg-card px-4 py-3 text-[14px] text-ink ring-1 ring-line transition-colors hover:bg-sand"
                           >
                             <span className="truncate">{s.title}</span>
                             <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />

@@ -78,7 +78,7 @@ export function AssetDialog({
                   onClick={() => switchSide(s)}
                   className={cn(
                     "h-9 rounded-lg text-[14px] text-body",
-                    side === s && "bg-white font-medium text-ink shadow-sm",
+                    side === s && "bg-card font-medium text-ink shadow-sm",
                   )}
                 >
                   {s === "asset" ? "I own it" : "I owe it"}

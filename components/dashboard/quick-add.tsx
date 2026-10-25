@@ -10,11 +10,11 @@ import { ImportDialog } from "@/components/import-dialog";
 export type QuickAddKind = "expense" | "income" | "asset" | "stock" | "import";
 
 const TILES: { kind: QuickAddKind; label: string; icon: LucideIcon; tint: string }[] = [
-  { kind: "expense", label: "Expense", icon: ArrowUpRight, tint: "bg-[#ffecec] text-[#c43c3c]" },
-  { kind: "income", label: "Income", icon: ArrowDownLeft, tint: "bg-[#e8f7ec] text-[#1f7a3a]" },
-  { kind: "stock", label: "Stock", icon: LineChart, tint: "bg-[#e6f1ff] text-[#1d5fb8]" },
-  { kind: "asset", label: "Asset / loan", icon: Landmark, tint: "bg-[#fff3e2] text-[#b4500f]" },
-  { kind: "import", label: "Import CSV", icon: FileUp, tint: "bg-[#f3ecff] text-[#6a3bc0]" },
+  { kind: "expense", label: "Expense", icon: ArrowUpRight, tint: "bg-danger-soft text-loss" },
+  { kind: "income", label: "Income", icon: ArrowDownLeft, tint: "bg-success-soft text-success" },
+  { kind: "stock", label: "Stock", icon: LineChart, tint: "bg-info-soft text-info" },
+  { kind: "asset", label: "Asset / loan", icon: Landmark, tint: "bg-warning-soft text-warning" },
+  { kind: "import", label: "Import CSV", icon: FileUp, tint: "bg-purple-soft text-purple" },
 ];
 
 // Every "add" dialog in one place, so any screen can open them.

@@ -18,7 +18,7 @@ import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
 import { useMoney } from "@/lib/use-money";
 
-const CATEGORY_COLORS = ["#ef4444", "#ff9f43", "#ffbe4c", "#9553f9", "#3784f4", "#14b8a6", "#a8a29e", "#c084fc", "#94a3b8"];
+const CATEGORY_COLORS = ["var(--chart-loss)", "#ff9f43", "#ffbe4c", "#9553f9", "#3784f4", "#14b8a6", "#a8a29e", "#c084fc", "#94a3b8"];
 
 function previousMonth(key: string) {
   const [y, m] = key.split("-").map(Number);
@@ -55,8 +55,8 @@ export default function InsightsPage() {
   const flow = useMemo(() => {
     if (!income.length || !spending.length) return null;
     const nodes = [
-      ...income.map((i) => ({ id: `in:${i.category}`, label: i.category, color: "#34c759" })),
-      { id: "month", label: "This month", color: "#343433" },
+      ...income.map((i) => ({ id: `in:${i.category}`, label: i.category, color: "var(--chart-gain)" })),
+      { id: "month", label: "This month", color: "var(--chart-ink)" },
       ...spending.map((s, n) => ({ id: `out:${s.category}`, label: s.category, color: CATEGORY_COLORS[n % CATEGORY_COLORS.length] })),
     ];
     const links = [
@@ -64,7 +64,7 @@ export default function InsightsPage() {
       ...spending.map((s) => ({ source: "month", target: `out:${s.category}`, value: s.amount })),
     ];
     if (thisMonth.saved > 0) {
-      nodes.push({ id: "saved", label: "Saved", color: "#1f7a3a" });
+      nodes.push({ id: "saved", label: "Saved", color: "var(--success)" });
       links.push({ source: "month", target: "saved", value: thisMonth.saved });
     }
     return { nodes, links };
@@ -123,7 +123,7 @@ export default function InsightsPage() {
         </div>
         {error && <p className="border-t border-line px-6 py-4 text-[14px] text-loss">{error}</p>}
         {points && (
-          <ul className="flex flex-col gap-3 border-t border-line bg-[#f7fbf8] px-6 py-5">
+          <ul className="flex flex-col gap-3 border-t border-line bg-success-soft px-6 py-5">
             {points.map((p, i) => (
               <li key={i} className="flex gap-3 text-[15px] leading-relaxed text-ink">
                 <span className="mt-2 size-1.5 shrink-0 rounded-full bg-gain" />

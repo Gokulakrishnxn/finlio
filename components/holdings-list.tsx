@@ -54,7 +54,7 @@ export function HoldingsList({
                 <p className="text-[12px] text-muted-foreground">invested</p>
               )}
             </div>
-            <ChevronRight className="size-4 text-[#c9c8c4] transition-colors group-hover:text-ink" />
+            <ChevronRight className="size-4 text-muted-foreground transition-colors group-hover:text-ink" />
           </button>
         </li>
       ))}

@@ -135,7 +135,7 @@ export function FinlioChat() {
     <aside
       aria-label="Finlio chat"
       className={cn(
-        "flex flex-col overflow-hidden border-line bg-white",
+        "flex flex-col overflow-hidden border-line bg-card",
         // Docked card on wide screens, full-height sheet over the page otherwise.
         "fixed inset-y-0 right-0 z-40 w-full max-w-[420px] border-l shadow-2xl transition-transform duration-300",
         "xl:sticky xl:top-2 xl:z-auto xl:h-[calc(100vh-1rem)] xl:w-[380px] xl:shrink-0 xl:rounded-3xl xl:border xl:shadow-none",
@@ -144,7 +144,7 @@ export function FinlioChat() {
     >
       <header className="flex items-center justify-between border-b border-line px-5 py-4">
         <div className="flex items-center gap-2.5">
-          <span className="flex size-8 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-white">
+          <span className="flex size-8 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-[#102b18]">
             <MessageCircle className="size-4" />
           </span>
           <div>
@@ -197,7 +197,7 @@ export function FinlioChat() {
               <MessageContent
                 className={cn(
                   "max-w-[90%] rounded-2xl px-3.5 py-2.5 text-[14px] leading-relaxed",
-                  m.role === "user" ? "bg-ink text-white" : "bg-sand text-ink",
+                  m.role === "user" ? "bg-primary text-primary-foreground" : "bg-sand text-ink",
                 )}
               >
                 {m.content ? (
@@ -238,11 +238,11 @@ export function ChatLauncher() {
         setOpen(true);
         sound("open");
       }}
-      className="fixed right-5 bottom-5 z-30 flex items-center gap-2 rounded-full bg-ink px-4 py-3 text-[14px] font-medium text-white shadow-lg transition-transform hover:scale-[1.03]"
+      className="fixed right-5 bottom-5 z-30 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-[14px] font-medium text-primary-foreground shadow-lg transition-transform hover:scale-[1.03]"
     >
       <MessageCircle className="size-4" />
       Ask Finlio
-      <kbd className="rounded bg-white/15 px-1.5 py-0.5 text-[11px] font-normal">⌘L</kbd>
+      <kbd className="rounded bg-primary-foreground/15 px-1.5 py-0.5 text-[11px] font-normal">⌘L</kbd>
     </button>
   );
 }

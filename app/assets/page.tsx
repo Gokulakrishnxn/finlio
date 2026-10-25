@@ -137,7 +137,7 @@ function Group({
     <section className={`card-surface border-l-4 ${accent} px-6 pt-5 pb-3`}>
       <div className="flex items-center justify-between">
         <p className="eyebrow">{title}</p>
-        <p className={`nums text-[18px] font-semibold ${tone === "asset" ? "text-[#1f7a3a]" : "text-loss"}`}>
+        <p className={`nums text-[18px] font-semibold ${tone === "asset" ? "text-success" : "text-loss"}`}>
           {compactINR(total)}
         </p>
       </div>

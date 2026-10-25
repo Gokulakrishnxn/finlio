@@ -10,7 +10,7 @@ export function RecentActivity({ items, limit = 5 }: { items: Activity[]; limit?
     <section className="card-surface p-6">
       <div className="flex items-center justify-between">
         <p className="eyebrow">Recent activity</p>
-        <Link href="/expenses" className="text-[12px] text-[#1f7a3a] hover:underline">
+        <Link href="/expenses" className="text-[12px] text-success hover:underline">
           All →
         </Link>
       </div>
@@ -49,7 +49,7 @@ export function ActivityRow({ item, action }: { item: Activity; action?: React.R
           {item.source === "gmail" && " · Gmail"}
         </p>
       </div>
-      <p className={`nums text-[14px] ${income ? "text-[#1f9d47]" : "text-ink"}`}>
+      <p className={`nums text-[14px] ${income ? "text-success" : "text-ink"}`}>
         {income ? "+" : "−"}
         {compactINR(item.amount)}
       </p>

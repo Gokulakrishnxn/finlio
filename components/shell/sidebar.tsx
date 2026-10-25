@@ -56,7 +56,7 @@ function Brand() {
         alt=""
         width={1024}
         height={1024}
-        className="size-8 mix-blend-multiply"
+        className="size-8 mix-blend-multiply dark:mix-blend-screen dark:invert"
         priority
       />
       <span className="text-xl font-semibold tracking-tight text-ink">Finlio</span>
@@ -99,14 +99,14 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "sticky top-2 hidden h-[calc(100vh-1rem)] shrink-0 flex-col rounded-3xl border border-line bg-white transition-[width] duration-300 md:flex",
+        "sticky top-2 hidden h-[calc(100vh-1rem)] shrink-0 flex-col rounded-3xl border border-line bg-card transition-[width] duration-300 md:flex",
         collapsed ? "w-[76px]" : "w-[248px]",
       )}
     >
       <div className={cn("flex items-center pt-6 pb-5", collapsed ? "flex-col gap-3 px-2" : "justify-between px-5")}>
         {collapsed ? (
           <Link href="/" aria-label="Finlio">
-            <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-8 mix-blend-multiply" />
+            <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-8 mix-blend-multiply dark:mix-blend-screen dark:invert" />
           </Link>
         ) : (
           <Brand />
@@ -142,7 +142,7 @@ export function Sidebar() {
                       className={cn(
                         "relative flex items-center gap-3 rounded-xl py-2 text-[14px] text-body transition-colors hover:bg-sand",
                         collapsed ? "justify-center px-0" : "px-3",
-                        active && "bg-[#eef8f1] font-medium text-[#1f7a3a] hover:bg-[#eef8f1]",
+                        active && "bg-success-soft font-medium text-success hover:bg-success-soft dark:bg-muted dark:text-ink dark:hover:bg-muted",
                       )}
                     >
                       {active && !collapsed && (
@@ -168,7 +168,7 @@ function Avatar({ name, className }: { name?: string; className?: string }) {
   return (
     <span
       className={cn(
-        "flex size-8 shrink-0 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-[13px] font-semibold text-white",
+        "flex size-8 shrink-0 items-center justify-center rounded-full bg-[radial-gradient(circle_at_30%_30%,#7ee29a,#34c759_55%,#1f7a3a)] text-[13px] font-semibold text-[#102b18]",
         className,
       )}
     >
@@ -207,7 +207,7 @@ function ProfileChip({ name, city, collapsed }: { name?: string; city?: string; 
       {menu && (
         <div
           role="menu"
-          className="absolute bottom-full left-0 z-50 mb-2 w-[248px] rounded-2xl border border-line bg-white p-1.5 shadow-[0_12px_40px_-12px_rgba(18,18,18,0.25)] animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2"
+          className="absolute bottom-full left-0 z-50 mb-2 w-[248px] rounded-2xl border border-line bg-card p-1.5 shadow-[0_12px_40px_-12px_rgba(18,18,18,0.25)] animate-in fade-in-0 zoom-in-95 slide-in-from-bottom-2"
         >
           <div className="flex items-center gap-3 px-2.5 py-2.5">
             <Avatar name={name} className="size-9" />
@@ -271,25 +271,27 @@ export function MobileNav() {
   const { openSettings } = useSettings();
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b border-line bg-white/90 px-4 py-3 backdrop-blur md:hidden">
-      <Brand />
-      <nav className="flex gap-0.5">
+    <header className="sticky top-0 z-30 border-b border-line bg-card/95 px-4 pt-3 pb-2 backdrop-blur md:hidden">
+      <div className="flex items-center justify-between">
+        <Brand />
+        <button onClick={() => openSettings("general")} aria-label="Profile and settings" className="rounded-full">
+          <Avatar name={profile?.name} className="size-8" />
+        </button>
+      </div>
+      <nav aria-label="Main navigation" className="mt-3 flex justify-between gap-1">
         {ALL.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}
             href={href}
             aria-label={label}
             className={cn(
-              "flex size-9 items-center justify-center rounded-xl text-body",
-              isActive(pathname, href) && "bg-[#eef8f1] text-[#1f7a3a]",
+              "flex h-9 flex-1 items-center justify-center rounded-xl text-body transition-colors hover:bg-muted",
+              isActive(pathname, href) && "bg-success-soft text-success dark:bg-muted dark:text-ink",
             )}
           >
             <Icon className="size-[18px]" strokeWidth={1.75} />
           </Link>
         ))}
-        <button onClick={() => openSettings("general")} aria-label="Profile and settings" className="ml-1">
-          <Avatar name={profile?.name} className="size-8" />
-        </button>
       </nav>
     </header>
   );

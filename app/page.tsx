@@ -107,7 +107,7 @@ export default function DashboardPage() {
                 </p>
               )}
               {holdings.length > 6 && (
-                <Link href="/holdings" className="block py-3 text-[13px] text-[#1f7a3a] hover:underline">
+                <Link href="/holdings" className="block py-3 text-[13px] text-success hover:underline">
                   See all {holdings.length} stocks →
                 </Link>
               )}
@@ -116,7 +116,7 @@ export default function DashboardPage() {
             <section className="card-surface p-6 lg:col-span-5">
               <div className="flex items-center justify-between">
                 <p className="eyebrow">Wealth</p>
-                <Link href="/assets" className="text-[12px] text-[#1f7a3a] hover:underline">
+                <Link href="/assets" className="text-[12px] text-success hover:underline">
                   Assets & loans →
                 </Link>
               </div>

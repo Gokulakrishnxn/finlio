@@ -26,7 +26,7 @@ export function PortfolioSummary({ positions }: { positions: Position[] }) {
               className="nums mt-1 block text-[36px] leading-none font-semibold tracking-tight text-ink"
             />
           ) : (
-            <p className="nums mt-1 text-[36px] leading-none font-semibold tracking-tight text-[#c9c8c4]">
+            <p className="nums mt-1 text-[36px] leading-none font-semibold tracking-tight text-muted-foreground">
               ₹—
             </p>
           )}
