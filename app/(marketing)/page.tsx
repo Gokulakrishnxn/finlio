@@ -3,18 +3,13 @@ import Link from "next/link";
 import {
   ArrowDown,
   ArrowRight,
-  Briefcase,
-  ChartLine,
   ChevronRight,
-  Landmark,
   Newspaper,
-  PiggyBank,
   Plus,
-  Rss,
   Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { HeroDecor, HeroDecorMobile } from "@/components/landing/hero-decor";
+import { AppRow, HeroDecor, HeroDecorMobile } from "@/components/landing/hero-decor";
 import { RotatingWord } from "@/components/landing/rotating-word";
 import { cn } from "@/lib/utils";
 
@@ -212,30 +207,15 @@ function Story() {
           <div className="space-y-3">
             <p>
               <Words>Your stocks sit in one app.</Words>
-              <Icons
-                items={[
-                  { icon: ChartLine, tint: "bg-info text-white" },
-                  { icon: Briefcase, tint: "bg-purple text-white" },
-                ]}
-              />
+              <AppRow row="stocks" />
             </p>
             <p>
-              <Words>Your savings sit in another.</Words>
-              <Icons
-                items={[
-                  { icon: Landmark, tint: "bg-success text-white" },
-                  { icon: PiggyBank, tint: "bg-warning text-white" },
-                ]}
-              />
+              <Words>Your funds and savings sit in another.</Words>
+              <AppRow row="funds" />
             </p>
             <p>
               <Words>And the news is somewhere else.</Words>
-              <Icons
-                items={[
-                  { icon: Newspaper, tint: "bg-ink text-cream" },
-                  { icon: Rss, tint: "bg-loss text-white" },
-                ]}
-              />
+              <AppRow row="news" />
             </p>
           </div>
           <p>

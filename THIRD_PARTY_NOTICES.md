@@ -35,3 +35,7 @@ SOFTWARE.
 
 Files: `components/ui/`
 Source: https://ui.shadcn.com (MIT)
+
+## App logos on the landing page (`public/logos/`)
+
+Groww, Zerodha Kite, Upstox, Angel One, ET Money, Coin by Zerodha, Paytm Money, Kuvera, Moneycontrol, ET Markets, Mint and The Economic Times logos are trademarks of their owners, carried over from the finlio.app waitlist page (disclosed prior work). They only illustrate where people's money and news live today and imply no endorsement. They follow the "Show company logos" switch: with it off, generic icons are shown instead, which is how the demo video is recorded.
