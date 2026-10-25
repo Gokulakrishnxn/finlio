@@ -119,7 +119,7 @@ export function NetWorthCard({
   const bars = quarterBars(snapshots, todayLocal(), netWorth);
 
   return (
-    <section className="card-surface flex flex-col p-6 md:p-7">
+    <section data-tour="networth" className="card-surface flex flex-col p-6 md:p-7">
       <div className="flex items-center justify-between gap-3">
         <p className="eyebrow">
           Net worth · {activeLocale().symbol} {activeLocale().currency}
@@ -147,7 +147,11 @@ export function NetWorthCard({
 
       <div className="mt-5 flex items-center justify-between">
         <p className="text-[12px] text-muted-foreground">
-          {view === "quarterly" ? "By quarter · financial year (Apr–Mar)" : "Day by day"}
+          {view === "quarterly"
+            ? activeLocale().fyStartMonth === 4
+              ? "By quarter · financial year (Apr–Mar)"
+              : "By quarter · calendar year"
+            : "Day by day"}
         </p>
         <div className="flex gap-0.5 rounded-lg bg-sand p-0.5">
           {(["quarterly", "daily"] as const).map((v) => (

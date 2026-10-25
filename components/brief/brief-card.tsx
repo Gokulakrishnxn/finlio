@@ -68,7 +68,7 @@ export function BriefCard() {
   }
 
   return (
-    <section ref={container} className="card-surface p-6 md:p-8">
+    <section ref={container} data-tour="brief" className="card-surface p-6 md:p-8">
       <div className="flex items-start justify-between gap-6">
         <div>
           <h2 className="text-[15px] font-medium text-ink">Today&apos;s brief</h2>

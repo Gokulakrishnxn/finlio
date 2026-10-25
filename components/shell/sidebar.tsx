@@ -121,7 +121,7 @@ export function Sidebar() {
         </button>
       </div>
 
-      <nav className={cn("flex flex-1 flex-col overflow-y-auto", collapsed ? "gap-3 px-3" : "gap-6 px-3")}>
+      <nav data-tour="nav" className={cn("flex flex-1 flex-col overflow-y-auto", collapsed ? "gap-3 px-3" : "gap-6 px-3")}>
         {SECTIONS.map((section) => (
           <div key={section.title}>
             {collapsed ? (
@@ -244,6 +244,7 @@ function ProfileChip({ name, city, collapsed }: { name?: string; city?: string; 
       <button
         onClick={() => setMenu((m) => !m)}
         aria-haspopup="menu"
+        data-tour="profile"
         aria-expanded={menu}
         title={collapsed ? "Profile and settings" : undefined}
         className={cn(
@@ -274,11 +275,16 @@ export function MobileNav() {
     <header className="sticky top-0 z-30 border-b border-line bg-card/95 px-4 pt-3 pb-2 backdrop-blur md:hidden">
       <div className="flex items-center justify-between">
         <Brand />
-        <button onClick={() => openSettings("general")} aria-label="Profile and settings" className="rounded-full">
+        <button
+          onClick={() => openSettings("general")}
+          aria-label="Profile and settings"
+          data-tour="profile"
+          className="rounded-full"
+        >
           <Avatar name={profile?.name} className="size-8" />
         </button>
       </div>
-      <nav aria-label="Main navigation" className="mt-3 flex justify-between gap-1">
+      <nav data-tour="nav" aria-label="Main navigation" className="mt-3 flex justify-between gap-1">
         {ALL.map(({ href, label, icon: Icon }) => (
           <Link
             key={href}

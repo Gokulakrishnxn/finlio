@@ -6,14 +6,16 @@ import Link from "next/link";
 import { Download, ImageIcon, LogOut, Mail, Monitor, Moon, PanelLeftClose, Sun, Upload, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Field } from "@/components/form";
+import { Field, Select } from "@/components/form";
+import { useSettings } from "@/components/settings/settings-dialog";
+import { useTour } from "@/components/tour/tour";
 import { useTheme } from "@/components/theme-root";
 import { todayLocal } from "@/lib/format";
 import { setSoundOn, sound, soundOn } from "@/lib/sound";
 import type { StoreData } from "@/lib/store";
 import { COLLAPSE_KEY, logosOn, setLogosOn, SIDEBAR_EVENT } from "@/lib/ui-prefs";
 import { cn } from "@/lib/utils";
-import { activeLocale } from "@/lib/locale";
+import { activeLocale, COUNTRIES, isCountry, LOCALES, type Country } from "@/lib/locale";
 
 type Session = { configured: boolean; signedIn: boolean; email?: string; name?: string; picture?: string };
 
@@ -36,12 +38,18 @@ export function ProfileCard({
   const [name, setName] = useState(initial?.name ?? "");
   const [city, setCity] = useState(initial?.city ?? "");
   const [goal, setGoal] = useState(initial?.goal ?? "");
+  const [country, setCountry] = useState<Country>(isCountry(initial?.country) ? initial.country : "IN");
   const [saved, setSaved] = useState(false);
   const initialLetter = (name.trim()[0] ?? "F").toUpperCase();
 
   function save(e: React.FormEvent) {
     e.preventDefault();
-    onSave({ name: name.trim() || undefined, city: city.trim() || undefined, goal: goal.trim() || undefined });
+    onSave({
+      name: name.trim() || undefined,
+      city: city.trim() || undefined,
+      goal: goal.trim() || undefined,
+      country,
+    });
     setSaved(true);
     sound("success");
   }
@@ -84,6 +92,28 @@ export function ProfileCard({
             />
           </Field>
         </div>
+        <Field id="profile-country" label="Country">
+          <Select
+            id="profile-country"
+            value={country}
+            onChange={(e) => {
+              setCountry(e.target.value as Country);
+              setSaved(false);
+            }}
+          >
+            {COUNTRIES.map((c) => (
+              <option key={c} value={c}>
+                {LOCALES[c].flag} {LOCALES[c].name} ({LOCALES[c].symbol} {LOCALES[c].currency})
+              </option>
+            ))}
+          </Select>
+        </Field>
+        {country !== (initial?.country ?? "IN") && (
+          <p className="-mt-2 text-[12px] text-muted-foreground">
+            Amounts will show in {LOCALES[country].currency}. Finlio doesn&apos;t convert what you&apos;ve already
+            entered, so update amounts that were in the other currency.
+          </p>
+        )}
         <Field id="profile-goal" label="A money goal (optional)">
           <Input
             id="profile-goal"
@@ -134,6 +164,8 @@ function Toggle({ on, onChange, label }: { on: boolean; onChange: (on: boolean) 
 }
 
 export function Preferences() {
+  const { startTour } = useTour();
+  const { closeSettings } = useSettings();
   const { theme, setTheme } = useTheme();
   const [sounds, setSounds] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
@@ -244,6 +276,31 @@ export function Preferences() {
           title="Keyboard"
           body="Open or close Finlio chat from anywhere."
           control={<kbd className="rounded-md bg-sand px-2 py-1 text-[12px] text-body ring-1 ring-line">⌘ L</kbd>}
+        />
+        <Row
+          title="Tour"
+          body="A quick six-step walk through the dashboard."
+          control={
+            <Button
+              variant="outline"
+              onClick={() => {
+                closeSettings();
+                startTour();
+              }}
+              className="h-8 rounded-lg px-3 text-[13px]"
+            >
+              Replay tour
+            </Button>
+          }
+        />
+        <Row
+          title="Terms & Conditions"
+          body="Finlio explains your money; it doesn't give financial advice."
+          control={
+            <Link href="/terms" target="_blank" className="text-[13px] font-medium whitespace-nowrap text-ink underline">
+              Read terms
+            </Link>
+          }
         />
       </ul>
     </Card>

@@ -40,7 +40,7 @@ export function QuickAddTiles({ onAdd }: { onAdd: (kind: QuickAddKind) => void }
   // Zerodha CSV import is for Indian portfolios only.
   const tiles = TILES.filter((t) => t.kind !== "import" || activeLocale().country === "IN");
   return (
-    <section>
+    <section data-tour="quickadd">
       <p className="eyebrow mb-3">Quick add</p>
       <div className={`grid grid-cols-3 gap-2 ${tiles.length === 5 ? "sm:grid-cols-5" : "sm:grid-cols-4"}`}>
         {tiles.map(({ kind, label, icon: Icon, tint }) => (

@@ -16,7 +16,7 @@ const TABS: { id: SettingsTab; label: string; icon: LucideIcon }[] = [
   { id: "data", label: "Data controls", icon: Database },
 ];
 
-type SettingsUI = { openSettings: (tab?: SettingsTab) => void };
+type SettingsUI = { openSettings: (tab?: SettingsTab) => void; closeSettings: () => void };
 
 const SettingsContext = createContext<SettingsUI | null>(null);
 
@@ -36,7 +36,7 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ openSettings }}>
+    <SettingsContext.Provider value={{ openSettings, closeSettings: () => setOpen(false) }}>
       {children}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent
