@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+.next/
+dist/
+build/
+out/
+coverage/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+
+# Devpost Learn: private learner profile stays local
+devpost/learner-profile.md
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
