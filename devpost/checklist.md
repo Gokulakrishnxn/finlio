@@ -39,7 +39,7 @@ Build mode: fast
   Learner check: Look at a stock you own and compare its price with your broker app.
   Commit: `Add live NSE prices and portfolio values`
 
-- [ ] **4. You can manage holdings and look closer at one**
+- [x] **4. You can manage holdings and look closer at one**
   Becomes usable: Edit and delete holdings (with confirmation), merge a duplicate add, and open a holding to see its position, its lines from today's brief and its headlines.
   Why now: Rounds out the core journey (step 6) once prices and the brief exist to show in the detail panel.
   PRD ref: `prd.md > Adding holdings`, `prd.md > Holding detail`
@@ -84,3 +84,6 @@ Activity mode:
 
 - Slice 2's brief arrives as one response and is revealed section by section with GSAP, instead of streaming from the server — same experience, simpler helper.
 - Slice 2 real-news verification is blocked: the learner's Gemini key works for plain generation (`gemini-3.5-flash`), but Google Search grounding returns 429 "exceeded your current quota" on every model, which points to a project without billing. Code is committed unticked; the learner chose to continue designing the remaining screens (slices 3–5) while they enable billing. Re-verify slice 2 as soon as Search grounding works.
+- Default model changed from `gemini-3.8-flash` to `gemini-3.5-flash` (overridable with `GEMINI_MODEL`) — 3.8 timed out on a plain call in testing while 3.5 answered.
+- Slices 3 and 5 built and verified except live prices: no `UPSTOX_ANALYTICS_TOKEN` yet, so only the "Prices aren't set up yet" + Retry path was observed. Sample portfolio, Privacy screen, Clear all, edit, merge (45 ITC at ₹497.78 average, earlier date kept) and delete were verified in the browser. Tick 3 and 5 once real Upstox prices show.
+- Layout tightened for narrower windows (220px sidebar below xl, smaller value columns) after the browser check showed horizontal overflow at ~780px.
