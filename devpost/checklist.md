@@ -82,3 +82,5 @@ Activity mode:
 
 ## Revisions
 
+- Slice 2's brief arrives as one response and is revealed section by section with GSAP, instead of streaming from the server — same experience, simpler helper.
+- Slice 2 real-news verification is blocked: the learner's Gemini key works for plain generation (`gemini-3.5-flash`), but Google Search grounding returns 429 "exceeded your current quota" on every model, which points to a project without billing. Code is committed unticked; the learner chose to continue designing the remaining screens (slices 3–5) while they enable billing. Re-verify slice 2 as soon as Search grounding works.

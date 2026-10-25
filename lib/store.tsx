@@ -10,6 +10,7 @@ type StoreData = { holdings: Holding[]; brief?: Brief };
 type Store = StoreData & {
   ready: boolean;
   addHolding: (holding: Omit<Holding, "id">) => void;
+  setBrief: (brief: Brief) => void;
   clearAll: () => void;
 };
 
@@ -57,13 +58,18 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [update],
   );
 
+  const setBrief = useCallback(
+    (brief: Brief) => update((prev) => ({ ...prev, brief })),
+    [update],
+  );
+
   const clearAll = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
     setData({ holdings: [] });
   }, []);
 
   return (
-    <StoreContext.Provider value={{ ...data, ready, addHolding, clearAll }}>
+    <StoreContext.Provider value={{ ...data, ready, addHolding, setBrief, clearAll }}>
       {children}
     </StoreContext.Provider>
   );

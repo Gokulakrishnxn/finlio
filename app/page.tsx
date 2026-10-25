@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { BriefCard } from "@/components/brief/brief-card";
 import { HoldingDialog } from "@/components/holding-dialog";
 import { HoldingsList } from "@/components/holdings-list";
 import { PageHeader } from "@/components/page-header";
@@ -40,15 +41,18 @@ export default function TodayPage() {
       {holdings.length === 0 ? (
         <Welcome onAdd={() => setAdding(true)} />
       ) : (
-        <section className="card-surface p-7">
-          <div className="mb-2 flex items-center justify-between">
-            <h2 className="text-[15px] font-medium text-ink">Your holdings</h2>
-            <Link href="/holdings" className="text-[13px] text-muted-foreground hover:text-ink">
-              Manage
-            </Link>
-          </div>
-          <HoldingsList holdings={holdings} />
-        </section>
+        <div className="flex flex-col gap-4">
+          <BriefCard />
+          <section className="card-surface p-7">
+            <div className="mb-2 flex items-center justify-between">
+              <h2 className="text-[15px] font-medium text-ink">Your holdings</h2>
+              <Link href="/holdings" className="text-[13px] text-muted-foreground hover:text-ink">
+                Manage
+              </Link>
+            </div>
+            <HoldingsList holdings={holdings} />
+          </section>
+        </div>
       )}
 
       <HoldingDialog open={adding} onOpenChange={setAdding} />
