@@ -24,7 +24,7 @@ Source: `scope.md > The Core Loop`, `scope.md > What "Working" Looks Like`.
 ## Screens and Layout
 Layout inspired by Link (`scope.md > Inspiration & Identity`): a left sidebar, a large greeting, rounded cards on a calm background.
 
-- **Sidebar:** Finlio logo; **Dashboard** (home); **Holdings**; **Expenses**; **Assets**; **Insights**; **Privacy**. A small footer note: "Your data stays in this browser."
+- **Sidebar:** Finlio logo; **Dashboard** (home); **Holdings**; **Expenses**; **Assets**; **Analytics**; **Privacy**. A small footer note: "Your data stays in this browser."
 - **Today (home):** greeting ("Good morning" plus date), the brief card with its three sections, and a compact holdings card with the portfolio total and today's change.
 - **Holdings:** a list of all holdings, an **Add stock** button, edit and delete per row.
 - **Holding detail** (panel that slides over the current screen): price, position, gain or loss, "Why it moved", and the list of headlines with links.
@@ -122,7 +122,7 @@ Source: `scope.md > The POC Boundary` (whole-money dashboard, added after approv
 ### Zerodha CSV import
 - [ ] Holdings → Import CSV accepts Zerodha's holdings export, matches each row to its NSE stock, and adds quantity and average cost (buy date is the import date, labelled "Imported"). Unmatched rows are listed, not guessed.
 
-### Insights
+### Analytics
 - [ ] Allocation across stocks, cash, deposits, gold, retirement, property and other, as a bar with percentages.
 - [ ] **Explain my money** asks Gemini for a short plain-English summary from totals only (category totals, allocation percentages, month in and out). No buy/sell advice.
 
@@ -137,7 +137,7 @@ Source: learner's request after approval (India and the United States).
 - [ ] India: ₹, Indian digit grouping and lakh/crore short forms, NSE stocks (Upstox), Apr–Mar financial-year quarters (Q3 FY27), EPF/PPF/NPS/FD accounts, Zerodha CSV import.
 - [ ] United States: $, US number style and K/M/B short forms, NYSE/Nasdaq stocks (Finnhub, with a built-in list of popular stocks when no key is set), calendar quarters (Q4 2026), checking/savings/CD/401(k)/IRA/HSA accounts, mortgage/auto/student loans.
 - [ ] The country can be changed in Settings → Profile; amounts are not converted.
-- [ ] AI features (brief, insights, chat, bank-alert reading) use the person's country.
+- [ ] AI features (brief, analytics, chat, bank-alert reading) use the person's country.
 
 ### Screen tour
 - [ ] Six spotlight steps on the dashboard (net worth, brief, quick add, navigation, Ask Finlio, profile), each with Back, Next and Skip; on phones the card docks to the bottom. Replay from Settings → General.

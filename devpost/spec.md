@@ -126,12 +126,12 @@ PRD ref: `prd.md > Expenses`.
 Sign-in card, Sync, spent this month vs last month, category bars, recent transactions, Disconnect.
 PRD ref: `prd.md > Expenses`.
 
-### Dashboard, assets, entries, import, insights
+### Dashboard, assets, entries, import, analytics
 - **Store** gains `assets: Asset[]`, `entries: Entry[]` (manual income/expense) and `snapshots: { date, netWorth }[]` (one per IST day, last 365).
 - **Net worth** is computed in the browser (`lib/networth.ts`); a snapshot is written when the dashboard loads.
 - **Zerodha CSV** parsed in the browser (`lib/zerodha-csv.ts`); symbols matched through `/api/instruments` exact symbol match.
-- **Insights** `POST /api/insights` with totals only → Gemini plain text (no search tool), explain-only rules.
-PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Insights`.
+- **Analytics** `POST /api/analytics` with totals only → Gemini plain text (no search tool), explain-only rules.
+PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Analytics`.
 
 ### Country, setup, tour and terms
 - `lib/locale.ts` holds both countries (currency, number style, market, market hours, financial-year start, short-form units) and the active country, set by the store from `profile.country`. `lib/format.ts` (`formatMoney`, `compactMoney`, `formatDate`…), `lib/quarters.ts` and `lib/market-hours.ts` read it.

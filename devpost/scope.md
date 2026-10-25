@@ -74,5 +74,5 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 
 ## Scope Revisions
 - Expenses with Google sign-in and Gmail reading moved from Explicitly Cut into the POC at the learner's request, accepting test-mode-only access and deadline risk.
-- Whole-money dashboard (net worth, assets and loans, income, CSV import, allocation, insights) added at the learner's request; the daily brief stays the kernel and the demo's central moment.
+- Whole-money dashboard (net worth, assets and loans, income, CSV import, allocation, analytics) added at the learner's request; the daily brief stays the kernel and the demo's central moment.
 - India and the United States: country chosen at a welcome setup (name, country, Terms acceptance, sample-or-fresh start, optional screen tour); US stocks via Finnhub; plain-English Terms & Conditions; responsive on phones, tablets and desktops. Added at the learner's request after approval.

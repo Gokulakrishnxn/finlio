@@ -6,7 +6,7 @@ import { activity, monthTotals, netWorth } from "@/lib/networth";
 import { useStore } from "@/lib/store";
 import { usePositions } from "@/lib/use-positions";
 
-// Everything the dashboard and insights show, derived from this browser's data.
+// Everything the dashboard and analytics show, derived from this browser's data.
 export function useMoney({ record = false }: { record?: boolean } = {}) {
   const { ready, assets, entries, expenses, snapshots, recordSnapshot } = useStore();
   const positions = usePositions();

@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Insights was renamed to Analytics; keep old links working.
+  async redirects() {
+    return [{ source: "/insights", destination: "/analytics", permanent: true }];
+  },
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

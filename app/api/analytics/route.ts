@@ -5,7 +5,7 @@ import { z } from "zod";
 const MODEL = process.env.GEMINI_MODEL ?? "gemini-3.5-flash";
 
 // Totals only: no transactions, merchants, account names or stock quantities.
-const InsightsRequestSchema = z.object({
+const AnalyticsRequestSchema = z.object({
   country: z.enum(["IN", "US"]).default("IN"),
   netWorth: z.number(),
   assets: z.number(),
@@ -24,10 +24,10 @@ Write 4 to 6 short bullet points, each one sentence, starting with "- ".
 - If a number is zero or missing, don't comment on it.`;
 
 export async function POST(request: Request) {
-  const parsed = InsightsRequestSchema.safeParse(await request.json().catch(() => null));
+  const parsed = AnalyticsRequestSchema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return Response.json({ error: "Send your money totals." }, { status: 400 });
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return Response.json({ error: "Insights aren't set up yet (no Gemini key)." }, { status: 503 });
+  if (!apiKey) return Response.json({ error: "Analytics explanations aren't set up yet (no Gemini key)." }, { status: 503 });
 
   try {
     const ai = new GoogleGenAI({ apiKey });
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       .slice(0, 6);
     return Response.json({ points, createdAt: new Date().toISOString() });
   } catch (err) {
-    console.error("[insights]", err);
+    console.error("[analytics]", err);
     return Response.json({ error: "Couldn't explain your money right now." }, { status: 502 });
   }
 }

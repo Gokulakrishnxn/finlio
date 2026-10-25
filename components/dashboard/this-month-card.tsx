@@ -29,8 +29,8 @@ export function ThisMonthCard({
         <Link href="/expenses" className="text-success hover:underline">
           See expenses →
         </Link>
-        <Link href="/insights" className="text-success hover:underline">
-          Insights →
+        <Link href="/analytics" className="text-success hover:underline">
+          Analytics →
         </Link>
       </div>
     </section>

@@ -26,7 +26,7 @@ function previousMonth(key: string) {
   return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, "0")}`;
 }
 
-export default function InsightsPage() {
+export default function AnalyticsPage() {
   const { ready, assets } = useStore();
   const { worth, items, thisMonth, month } = useMoney();
   const [points, setPoints] = useState<string[] | null>(null);
@@ -75,7 +75,7 @@ export default function InsightsPage() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch("/api/insights", {
+      const res = await fetch("/api/analytics", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -107,7 +107,7 @@ export default function InsightsPage() {
 
   return (
     <>
-      <PageHeader title="Insights" subtitle="Your money, explained in plain words." />
+      <PageHeader title="Analytics" subtitle="Your money, explained in plain words." />
 
       <section className="card-surface overflow-hidden">
         <div className="flex flex-wrap items-start justify-between gap-4 p-6">

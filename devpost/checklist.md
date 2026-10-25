@@ -72,10 +72,10 @@ Build mode: fast
 - [ ] **7. Your whole money picture on one dashboard**
   Becomes usable: Sidebar shell; dashboard with net worth and history, this month in/out/saved, quick add, recent activity and the brief; Assets page; manual income and expenses; Zerodha CSV import; Insights with allocation and a Gemini summary.
   Why now: Added by the learner after approval; built on the finished core so the brief stays intact.
-  PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Insights`
-  Spec ref: `spec.md > Dashboard, assets, entries, import, insights`, `spec.md > Data Model`
-  Build: Store fields and net-worth maths; sidebar redesign; dashboard; assets page; entry dialog; CSV import; insights route and page.
-  Verify (mechanical): `pnpm build` and `pnpm lint` pass; in the browser add an asset, a loan, income and an expense and check net worth and this month; import a sample Zerodha CSV; Insights shows allocation and a Gemini summary.
+  PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Analytics`
+  Spec ref: `spec.md > Dashboard, assets, entries, import, analytics`, `spec.md > Data Model`
+  Build: Store fields and net-worth maths; sidebar redesign; dashboard; assets page; entry dialog; CSV import; analytics route and page.
+  Verify (mechanical): `pnpm build` and `pnpm lint` pass; in the browser add an asset, a loan, income and an expense and check net worth and this month; import a sample Zerodha CSV; Analytics shows allocation and a Gemini summary.
   Learner check: Add your real bank balance and one loan, and see whether the net worth looks right.
   Commit: several commits, one per feature
 
@@ -127,3 +127,4 @@ Activity mode:
 - Company logos added at the learner's request (reverses the earlier no-logos decision for the app): Finlio's helper fetches them from icon.horse (free plan, 1,000 icons a month) or Google's favicon service, keeps the sharper one, refuses anything under 32px and all SVGs, and serves only allow-listed brand domains. A Settings switch turns logos off; it must be off when recording the demo video, because the rules forbid third-party trademarks in it. Category and asset icons replace the generic arrows.
 - Slice 8 (India + United States, welcome setup, tour, Terms, responsive) added at the learner's request after approval. Found and fixed during the build: Settings crashed when opened because the Settings window sat outside the tour provider; profile saves now merge instead of replacing (they would have erased country and setup status); the closed chat panel, parked off-screen, made phones zoom out; grid columns didn't shrink on phones (fixed with Tailwind's `*:min-w-0`, since a global CSS rule was dropped by the Tailwind build).
 - The pending dark-mode redesign left uncommitted by another agent was verified (lint, types, build) and committed in two commits before this work.
+- "Insights" renamed to "Analytics" at the learner's request: the page moved to `/analytics` (and its API to `/api/analytics`); `/insights` permanently redirects there.

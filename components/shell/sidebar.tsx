@@ -14,7 +14,7 @@ import {
   PanelLeftOpen,
   Settings2,
   UserRound,
-  Sparkles,
+  ChartNoAxesCombined,
   Wallet,
   type LucideIcon,
 } from "lucide-react";
@@ -38,7 +38,7 @@ const SECTIONS: { title: string; items: NavItem[] }[] = [
       { href: "/assets", label: "Assets & loans", icon: Landmark },
     ],
   },
-  { title: "Understand", items: [{ href: "/insights", label: "Insights", icon: Sparkles }] },
+  { title: "Understand", items: [{ href: "/analytics", label: "Analytics", icon: ChartNoAxesCombined }] },
   { title: "You", items: [{ href: "/privacy", label: "Privacy", icon: Lock }] },
 ];
 

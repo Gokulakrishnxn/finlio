@@ -72,7 +72,7 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
       <>
         <p>Finlio relies on services run by other companies, each under its own terms:</p>
         <ul className="list-disc space-y-1 pl-5">
-          <li>Google Gemini and Google Search, for the daily brief, insights, chat and reading bank alerts.</li>
+          <li>Google Gemini and Google Search, for the daily brief, analytics, chat and reading bank alerts.</li>
           <li>Upstox (India) and Finnhub (United States), for stock prices and search.</li>
           <li>Gmail, read-only and only if you choose to connect it, for bank and card alerts.</li>
           <li>icon.horse and Google&apos;s favicon service, for company logos (can be turned off).</li>
