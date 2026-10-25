@@ -34,7 +34,7 @@ const SECTIONS: { title: string; items: NavItem[] }[] = [
   {
     title: "Overview",
     items: [
-      { href: "/", label: "Dashboard", icon: LayoutDashboard },
+      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
       { href: "/news", label: "News", icon: Newspaper },
     ],
   },
@@ -52,12 +52,12 @@ const SECTIONS: { title: string; items: NavItem[] }[] = [
 const ALL = SECTIONS.flatMap((s) => s.items);
 
 function isActive(pathname: string, href: string) {
-  return href === "/" ? pathname === "/" : pathname.startsWith(href);
+  return pathname.startsWith(href);
 }
 
 function Brand() {
   return (
-    <Link href="/" className="flex items-center gap-1.5">
+    <Link href="/dashboard" className="flex items-center gap-1.5">
       <Image
         src="/finlio-mark.png"
         alt=""
@@ -137,7 +137,7 @@ export function Sidebar() {
     >
       <div className={cn("flex items-center pt-6 pb-5", collapsed ? "flex-col gap-3 px-2" : "justify-between px-5")}>
         {collapsed ? (
-          <Link href="/" aria-label="Finlio">
+          <Link href="/dashboard" aria-label="Finlio">
             <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-8 mix-blend-multiply dark:mix-blend-screen dark:invert" />
           </Link>
         ) : (

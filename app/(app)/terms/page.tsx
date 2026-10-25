@@ -168,7 +168,7 @@ export default function TermsPage() {
       </div>
 
       <p className="mt-6 text-center text-[13px] text-muted-foreground">
-        <Link href="/" className="underline">
+        <Link href="/dashboard" className="underline">
           Back to Finlio
         </Link>
       </p>

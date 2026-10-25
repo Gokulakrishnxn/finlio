@@ -72,7 +72,7 @@ export function TourProvider({ children }: { children: React.ReactNode }) {
   const { profile, setProfile } = useStore();
 
   const startTour = useCallback(() => {
-    if (pathname !== "/") router.push("/");
+    if (pathname !== "/dashboard") router.push("/dashboard");
     // Wait a beat for the dashboard to render, then keep only steps that exist.
     setTimeout(() => {
       const available = STEPS.filter((s) => findTarget(s.target));
