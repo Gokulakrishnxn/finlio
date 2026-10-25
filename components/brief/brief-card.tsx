@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, Loader2, RefreshCw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { sound } from "@/lib/sound";
 import { useStore } from "@/lib/store";
 import { todayIST } from "@/lib/format";
 import type { Brief, BriefItem } from "@/lib/types";
@@ -57,6 +58,7 @@ export function BriefCard() {
       const body = await res.json();
       if (!res.ok) throw new Error(body.error);
       setBrief(body as Brief);
+      sound("success");
     } catch (err) {
       setError(err instanceof Error && err.message ? err.message : "Couldn't write today's brief.");
     } finally {
