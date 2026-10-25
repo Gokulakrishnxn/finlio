@@ -4,7 +4,7 @@
 
 Finlio Daily turns your financial snapshot into a clear briefing: what changed, what's coming up, and what deserves your attention.
 
-[finlio.app](https://www.finlio.app) · Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com) on Devpost
+**For India 🇮🇳 and the United States 🇺🇸.** · [finlio.app](https://www.finlio.app) · Built for [Build With AI: Basics](https://learn-ai-basics.devpost.com) on Devpost
 
 ---
 
@@ -75,6 +75,7 @@ Open **http://localhost:3000**. Every screen works without keys in a reduced way
 | Variable | Used for | Where to get it |
 |---|---|---|
 | `GEMINI_API_KEY` | Today's brief, reading expense alerts | [Google AI Studio](https://aistudio.google.com/apikey). Google Search grounding needs **billing enabled** on the key's project (the first 5,000 searches a month are free). |
+| `FINNHUB_API_KEY` | US stock search and live prices | [finnhub.io](https://finnhub.io) free plan. Without it, US stocks can be found in a built-in list of popular stocks and are valued at cost. |
 | `UPSTOX_ANALYTICS_TOKEN` | Live NSE prices | [Upstox developer console](https://upstox.com/developer/api-documentation/) → analytics token (read-only market data; needs an Upstox account) |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Expenses (Google sign-in) | [Google Cloud console](https://console.cloud.google.com): enable the **Gmail API**, set the OAuth consent screen to **External / Testing** with your Gmail as a test user, create a **Web application** OAuth client with redirect URI `http://localhost:3000/api/auth/callback/google` |
 | `AUTH_SECRET` | Encrypting the Google session cookie | Any long random string, e.g. `openssl rand -base64 32` |
@@ -83,6 +84,9 @@ Open **http://localhost:3000**. Every screen works without keys in a reduced way
 > Gmail read access is a restricted Google scope. Until Google verifies the app, Expenses works only for the test users you add, and Google shows an "unverified app" notice during sign-in.
 
 ### Trying it
+
+On first visit Finlio asks for your name and country (India or United States), asks you to accept the [Terms](app/terms/page.tsx), and offers sample data and a short tour. Your country sets the currency (₹ or $), the stock market (NSE or NYSE/Nasdaq), quarters (Apr–Mar financial year or calendar year) and account types (EPF/PPF or 401(k)/IRA). Change it any time in Settings → Profile.
+
 
 1. On **Today**, press **Try a sample portfolio** (real NSE stocks, example buy details, labelled *Sample*) or **Add your first stock**.
 2. Press **Get today's brief**, then open any source chip to see the headline behind a sentence.

@@ -13,6 +13,8 @@ Finlio watches **only what you own** and explains **why** it moved, in plain wor
 The learner's belief: *"Your money should be easier to understand."*
 
 ## Who It's For
+Finlio now serves **India and the United States** (learner's decision after approval): each person picks their country during setup, which sets the currency, stock market, financial-year quarters and account types.
+
 A salaried retail investor in India (the August PRD's "Arjun": 26–38, Bengaluru/Mumbai/Chennai) who holds a handful of NSE stocks in Zerodha or Groww. Today, when their money moves, they open the news, ask a friend, and are still confused. In the learner's words: "Your stocks sit in one app. Your mutual funds sit in another. And the news is somewhere else."
 
 ## The Core Loop
@@ -73,3 +75,4 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 ## Scope Revisions
 - Expenses with Google sign-in and Gmail reading moved from Explicitly Cut into the POC at the learner's request, accepting test-mode-only access and deadline risk.
 - Whole-money dashboard (net worth, assets and loans, income, CSV import, allocation, insights) added at the learner's request; the daily brief stays the kernel and the demo's central moment.
+- India and the United States: country chosen at a welcome setup (name, country, Terms acceptance, sample-or-fresh start, optional screen tour); US stocks via Finnhub; plain-English Terms & Conditions; responsive on phones, tablets and desktops. Added at the learner's request after approval.

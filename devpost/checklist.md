@@ -79,6 +79,16 @@ Build mode: fast
   Learner check: Add your real bank balance and one loan, and see whether the net worth looks right.
   Commit: several commits, one per feature
 
+- [x] **8. Finlio for India and the United States, with a welcome setup**
+  Becomes usable: First-visit setup (name, country, Terms, sample or fresh, tour); every amount, quarter, account type, stock market and AI prompt follows the country; US stocks via Finnhub or a built-in list; plain-English Terms page; six-step tour; all screens fit phones, tablets and desktops.
+  Why now: Learner's request after approval (US and India are the target markets).
+  PRD ref: `prd.md > Welcome and setup`, `prd.md > Country`, `prd.md > Screen tour`, `prd.md > Terms & Conditions`, `prd.md > Responsive`
+  Spec ref: `spec.md > Country, setup, tour and terms`
+  Build: Locale module and helpers; US data; onboarding, tour and terms components; responsive fixes.
+  Verify (mechanical): `pnpm lint`, `npx tsc --noEmit`, `pnpm build` pass; quarter and money formats checked for both countries; in the browser, setup completed as a US user (Terms checkbox required, US sample loaded, tour started); every screen measured with no horizontal overflow at 375, 768 and 1280px.
+  Learner check: Clear all data, go through setup as India and as the United States, and take the tour on your phone.
+  Commit: several commits, one per feature
+
 ## Hands-on Checkpoints
 
 - [ ] Early usable behavior explored — after slice 2 (the brief, the kernel)
@@ -115,3 +125,5 @@ Activity mode:
 - Layout changed to rounded cards on a sand background with a collapsible sidebar, at the learner's request; the "Finish setting up" card was removed at the learner's request.
 - Dates are read only after browser data loads, because Next.js 16 refuses `new Date()` during prerendering.
 - Company logos added at the learner's request (reverses the earlier no-logos decision for the app): Finlio's helper fetches them from icon.horse (free plan, 1,000 icons a month) or Google's favicon service, keeps the sharper one, refuses anything under 32px and all SVGs, and serves only allow-listed brand domains. A Settings switch turns logos off; it must be off when recording the demo video, because the rules forbid third-party trademarks in it. Category and asset icons replace the generic arrows.
+- Slice 8 (India + United States, welcome setup, tour, Terms, responsive) added at the learner's request after approval. Found and fixed during the build: Settings crashed when opened because the Settings window sat outside the tour provider; profile saves now merge instead of replacing (they would have erased country and setup status); the closed chat panel, parked off-screen, made phones zoom out; grid columns didn't shrink on phones (fixed with Tailwind's `*:min-w-0`, since a global CSS rule was dropped by the Tailwind build).
+- The pending dark-mode redesign left uncommitted by another agent was verified (lint, types, build) and committed in two commits before this work.

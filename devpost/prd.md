@@ -126,6 +126,28 @@ Source: `scope.md > The POC Boundary` (whole-money dashboard, added after approv
 - [ ] Allocation across stocks, cash, deposits, gold, retirement, property and other, as a bar with percentages.
 - [ ] **Explain my money** asks Gemini for a short plain-English summary from totals only (category totals, allocation percentages, month in and out). No buy/sell advice.
 
+### Welcome and setup
+Source: learner's request after approval (India and the United States).
+- [ ] First visit shows a full-screen welcome: what Finlio does, Get started, Restore a backup.
+- [ ] Step 1 asks for a name (optional). Step 2 picks the country (India or United States), pre-selected from the device's time zone.
+- [ ] Step 3 offers "Explore with sample data" (that country's sample household) or "Start fresh", an optional tour switch, and a required checkbox agreeing to the Terms & Conditions (linked). Enter Finlio is disabled until it's ticked.
+- [ ] Setup is shown once; Clear all my data shows it again.
+
+### Country
+- [ ] India: ₹, Indian digit grouping and lakh/crore short forms, NSE stocks (Upstox), Apr–Mar financial-year quarters (Q3 FY27), EPF/PPF/NPS/FD accounts, Zerodha CSV import.
+- [ ] United States: $, US number style and K/M/B short forms, NYSE/Nasdaq stocks (Finnhub, with a built-in list of popular stocks when no key is set), calendar quarters (Q4 2026), checking/savings/CD/401(k)/IRA/HSA accounts, mortgage/auto/student loans.
+- [ ] The country can be changed in Settings → Profile; amounts are not converted.
+- [ ] AI features (brief, insights, chat, bank-alert reading) use the person's country.
+
+### Screen tour
+- [ ] Six spotlight steps on the dashboard (net worth, brief, quick add, navigation, Ask Finlio, profile), each with Back, Next and Skip; on phones the card docks to the bottom. Replay from Settings → General.
+
+### Terms & Conditions
+- [ ] A plain-English Terms page covering: explains not advises (not SEBI/SEC registered), data stays in the browser, third-party services, Gmail access, no warranty, open source, changes. Marked as a draft for legal review. Linked from setup, Settings and Privacy.
+
+### Responsive
+- [ ] Every screen fits phones (375px), tablets (768px) and desktops without sideways scrolling.
+
 ## States and Boundaries
 - **First use:** the Welcome screen; nothing stored yet.
 - **Empty portfolio:** Today and Holdings show the Welcome actions instead of empty cards.

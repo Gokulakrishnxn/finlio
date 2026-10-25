@@ -52,6 +52,7 @@ Unverified, check in the first build step: the exact Gemini model name (docs cur
 
 ## Where It Runs and How Someone Tries It
 - Runs locally: Node 20+ and pnpm.
+- US prices and search need `FINNHUB_API_KEY` (free at finnhub.io); without it, US stocks are searchable from a built-in list and valued at cost.
 - Needs two keys in `.env.local` (template in `.env.example`; never committed):
   - `GEMINI_API_KEY` — from Google AI Studio.
   - `UPSTOX_ANALYTICS_TOKEN` — from the Upstox developer console (needs an Upstox account).
@@ -131,6 +132,15 @@ PRD ref: `prd.md > Expenses`.
 - **Zerodha CSV** parsed in the browser (`lib/zerodha-csv.ts`); symbols matched through `/api/instruments` exact symbol match.
 - **Insights** `POST /api/insights` with totals only → Gemini plain text (no search tool), explain-only rules.
 PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Insights`.
+
+### Country, setup, tour and terms
+- `lib/locale.ts` holds both countries (currency, number style, market, market hours, financial-year start, short-form units) and the active country, set by the store from `profile.country`. `lib/format.ts` (`formatMoney`, `compactMoney`, `formatDate`…), `lib/quarters.ts` and `lib/market-hours.ts` read it.
+- US stocks: `lib/finnhub.ts` (`/api/v1/search`, `/api/v1/quote`, key `FINNHUB_API_KEY`, server only) and `lib/us-stocks.ts` (built-in list used without a key). Keys look like `US|AAPL`; `/api/quotes` splits NSE (Upstox) and US (Finnhub) keys.
+- AI routes accept `country` and adapt wording (`lib/ai-locale.ts`).
+- `components/onboarding/onboarding.tsx`: full-screen setup over the app until `profile.onboardedAt` is set; stores `name`, `country`, `termsVersion` (`lib/terms.ts`), `tourDone`.
+- `components/tour/tour.tsx`: spotlight tour over elements marked `data-tour`.
+- `app/terms/page.tsx`: static Terms page.
+PRD ref: `prd.md > Welcome and setup`, `prd.md > Country`, `prd.md > Screen tour`, `prd.md > Terms & Conditions`, `prd.md > Responsive`.
 
 ## Data Model
 All in browser `localStorage` under one key, `finlio:v1`:
