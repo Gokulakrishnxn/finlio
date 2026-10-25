@@ -124,6 +124,13 @@ PRD ref: `prd.md > Expenses`.
 Sign-in card, Sync, spent this month vs last month, category bars, recent transactions, Disconnect.
 PRD ref: `prd.md > Expenses`.
 
+### Dashboard, assets, entries, import, insights
+- **Store** gains `assets: Asset[]`, `entries: Entry[]` (manual income/expense) and `snapshots: { date, netWorth }[]` (one per IST day, last 365).
+- **Net worth** is computed in the browser (`lib/networth.ts`); a snapshot is written when the dashboard loads.
+- **Zerodha CSV** parsed in the browser (`lib/zerodha-csv.ts`); symbols matched through `/api/instruments` exact symbol match.
+- **Insights** `POST /api/insights` with totals only → Gemini plain text (no search tool), explain-only rules.
+PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Insights`.
+
 ## Data Model
 All in browser `localStorage` under one key, `finlio:v1`:
 

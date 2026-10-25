@@ -53,6 +53,8 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 - A sample portfolio so the demo never depends on typing under pressure (proposed).
 - **Expenses (added by the learner after approval):** sign in with Google, Finlio reads bank and UPI alert emails from the last 60 days (read-only), and shows where the money went: spent this month, by category, recent transactions. Works in Google's test mode for invited accounts only.
 
+- **Whole-money dashboard (added by the learner after approval):** net worth (stocks + assets − loans) with a history line, this month's money in, out and saved, quick add, recent activity, assets and loans entered by hand, manual income and expenses, Zerodha holdings CSV import, allocation, and a Gemini-written insights summary (explains, never advises). Finlio's own design with a sidebar; feature set inspired by FinBoom.
+
 ## Later
 - Email delivery of the brief, and alerts when a holding moves sharply (proposed: on-screen brief first).
 - Mutual funds (NAV) alongside stocks (proposed: stocks first).
@@ -70,3 +72,4 @@ The "oh, that's cool" beat: jargon headline in, one plain sentence about *your* 
 
 ## Scope Revisions
 - Expenses with Google sign-in and Gmail reading moved from Explicitly Cut into the POC at the learner's request, accepting test-mode-only access and deadline risk.
+- Whole-money dashboard (net worth, assets and loans, income, CSV import, allocation, insights) added at the learner's request; the daily brief stays the kernel and the demo's central moment.

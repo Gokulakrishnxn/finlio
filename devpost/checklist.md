@@ -69,6 +69,16 @@ Build mode: fast
   Learner check: Sign in with your Gmail, press Sync, and check three transactions against your bank alerts.
   Commit: `Add Expenses with Google sign-in and Gmail alerts`
 
+- [ ] **7. Your whole money picture on one dashboard**
+  Becomes usable: Sidebar shell; dashboard with net worth and history, this month in/out/saved, quick add, recent activity and the brief; Assets page; manual income and expenses; Zerodha CSV import; Insights with allocation and a Gemini summary.
+  Why now: Added by the learner after approval; built on the finished core so the brief stays intact.
+  PRD ref: `prd.md > Dashboard`, `prd.md > Assets and loans`, `prd.md > Manual income and expenses`, `prd.md > Zerodha CSV import`, `prd.md > Insights`
+  Spec ref: `spec.md > Dashboard, assets, entries, import, insights`, `spec.md > Data Model`
+  Build: Store fields and net-worth maths; sidebar redesign; dashboard; assets page; entry dialog; CSV import; insights route and page.
+  Verify (mechanical): `pnpm build` and `pnpm lint` pass; in the browser add an asset, a loan, income and an expense and check net worth and this month; import a sample Zerodha CSV; Insights shows allocation and a Gemini summary.
+  Learner check: Add your real bank balance and one loan, and see whether the net worth looks right.
+  Commit: several commits, one per feature
+
 ## Hands-on Checkpoints
 
 - [ ] Early usable behavior explored — after slice 2 (the brief, the kernel)
@@ -98,3 +108,4 @@ Activity mode:
 - Slices 3 and 5 built and verified except live prices: no `UPSTOX_ANALYTICS_TOKEN` yet, so only the "Prices aren't set up yet" + Retry path was observed. Sample portfolio, Privacy screen, Clear all, edit, merge (45 ITC at ₹497.78 average, earlier date kept) and delete were verified in the browser. Tick 3 and 5 once real Upstox prices show.
 - Layout tightened for narrower windows (220px sidebar below xl, smaller value columns) after the browser check showed horizontal overflow at ~780px.
 - Slice 6 (Expenses with Google sign-in and Gmail reading) added at the learner's request after scope approval; scope, PRD and spec updated to match, accepting Google test mode and deadline risk.
+- Slice 7 (whole-money dashboard inspired by FinBoom's features, in Finlio's own design) added at the learner's request after approval.

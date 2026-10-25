@@ -24,7 +24,7 @@ Source: `scope.md > The Core Loop`, `scope.md > What "Working" Looks Like`.
 ## Screens and Layout
 Layout inspired by Link (`scope.md > Inspiration & Identity`): a left sidebar, a large greeting, rounded cards on a calm background.
 
-- **Sidebar:** Finlio logo; **Today** (home); **Holdings**; **Expenses**; **Privacy**. A small footer note: "Your data stays in this browser."
+- **Sidebar:** Finlio logo; **Dashboard** (home); **Holdings**; **Expenses**; **Assets**; **Insights**; **Privacy**. A small footer note: "Your data stays in this browser."
 - **Today (home):** greeting ("Good morning" plus date), the brief card with its three sections, and a compact holdings card with the portfolio total and today's change.
 - **Holdings:** a list of all holdings, an **Add stock** button, edit and delete per row.
 - **Holding detail** (panel that slides over the current screen): price, position, gain or loss, "Why it moved", and the list of headlines with links.
@@ -100,6 +100,30 @@ Source: `scope.md > The POC Boundary` (Expenses, added after approval).
   - [ ] Emails that aren't spends (credits, OTPs, offers) are ignored.
   - [ ] Expenses are saved in this browser; **Sync** refreshes them; **Disconnect** signs out of Google and revokes Finlio's access.
   - [ ] If sign-in is refused or Google isn't set up, a plain message explains what happened.
+
+### Dashboard
+Source: `scope.md > The POC Boundary` (whole-money dashboard, added after approval).
+- As an investor, I want one screen that shows my whole money picture so that I know where I stand at a glance.
+  - [ ] **Net worth** = stocks (live value, or invested amount if prices are unavailable) + assets − loans, with a small line of past values from daily snapshots saved in the browser.
+  - [ ] **This month:** money in (manual income), money out (Gmail and manual expenses), saved (in − out).
+  - [ ] **Quick add** tiles: Expense, Income, Asset or loan, Stock, Import CSV.
+  - [ ] **Recent activity:** the latest expenses and income, newest first.
+  - [ ] Today's brief stays on the dashboard.
+
+### Assets and loans
+- As an investor, I want to add what I own and owe outside the stock market so that net worth is real.
+  - [ ] Add, edit and delete assets (bank, fixed deposit, gold, EPF, PPF, property, other) and loans (home, car, personal, credit card, other) with a name and amount.
+  - [ ] An assets-versus-loans bar shows the split.
+
+### Manual income and expenses
+- [ ] Add an expense or income with amount, date, category and an optional note; it appears in Expenses and Recent activity next to Gmail spends and can be deleted.
+
+### Zerodha CSV import
+- [ ] Holdings → Import CSV accepts Zerodha's holdings export, matches each row to its NSE stock, and adds quantity and average cost (buy date is the import date, labelled "Imported"). Unmatched rows are listed, not guessed.
+
+### Insights
+- [ ] Allocation across stocks, cash, deposits, gold, retirement, property and other, as a bar with percentages.
+- [ ] **Explain my money** asks Gemini for a short plain-English summary from totals only (category totals, allocation percentages, month in and out). No buy/sell advice.
 
 ## States and Boundaries
 - **First use:** the Welcome screen; nothing stored yet.
