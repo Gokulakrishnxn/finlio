@@ -2,11 +2,18 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { SAMPLE_HOLDINGS } from "@/lib/sample";
-import type { Brief, ExpenseSnapshot, Holding } from "@/lib/types";
+import type { Asset, Brief, Entry, ExpenseSnapshot, Holding, Snapshot } from "@/lib/types";
 
 const STORAGE_KEY = "finlio:v1";
 
-type StoreData = { holdings: Holding[]; brief?: Brief; expenses?: ExpenseSnapshot };
+type StoreData = {
+  holdings: Holding[];
+  brief?: Brief;
+  expenses?: ExpenseSnapshot;
+  assets?: Asset[];
+  entries?: Entry[];
+  snapshots?: Snapshot[];
+};
 
 export type NewHolding = Omit<Holding, "id">;
 
@@ -20,6 +27,11 @@ type Store = StoreData & {
   removeSample: () => void;
   setBrief: (brief: Brief) => void;
   setExpenses: (expenses: ExpenseSnapshot | undefined) => void;
+  saveAsset: (asset: Omit<Asset, "id"> & { id?: string }) => void;
+  removeAsset: (id: string) => void;
+  addEntry: (entry: Omit<Entry, "id">) => void;
+  removeEntry: (id: string) => void;
+  recordSnapshot: (snapshot: Snapshot) => void;
   clearAll: () => void;
 };
 
@@ -132,6 +144,54 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [update],
   );
 
+  // Adds a new asset or loan, or replaces the one with the same id.
+  const saveAsset = useCallback(
+    (asset: Omit<Asset, "id"> & { id?: string }) =>
+      update((prev) => {
+        const assets = prev.assets ?? [];
+        if (asset.id && assets.some((a) => a.id === asset.id)) {
+          return { ...prev, assets: assets.map((a) => (a.id === asset.id ? (asset as Asset) : a)) };
+        }
+        return { ...prev, assets: [...assets, { ...asset, id: crypto.randomUUID() }] };
+      }),
+    [update],
+  );
+
+  const removeAsset = useCallback(
+    (id: string) => update((prev) => ({ ...prev, assets: (prev.assets ?? []).filter((a) => a.id !== id) })),
+    [update],
+  );
+
+  const addEntry = useCallback(
+    (entry: Omit<Entry, "id">) =>
+      update((prev) => ({
+        ...prev,
+        entries: [...(prev.entries ?? []), { ...entry, id: crypto.randomUUID() }],
+      })),
+    [update],
+  );
+
+  const removeEntry = useCallback(
+    (id: string) =>
+      update((prev) => ({ ...prev, entries: (prev.entries ?? []).filter((e) => e.id !== id) })),
+    [update],
+  );
+
+  // One net-worth point per day; today's is overwritten as values change. Keeps a year.
+  const recordSnapshot = useCallback(
+    (snapshot: Snapshot) =>
+      update((prev) => {
+        const rest = (prev.snapshots ?? []).filter((s) => s.date !== snapshot.date);
+        const last = prev.snapshots?.find((s) => s.date === snapshot.date);
+        if (last && Math.abs(last.netWorth - snapshot.netWorth) < 0.5) return prev;
+        return {
+          ...prev,
+          snapshots: [...rest, snapshot].sort((a, b) => a.date.localeCompare(b.date)).slice(-365),
+        };
+      }),
+    [update],
+  );
+
   const clearAll = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
     setData({ holdings: [] });
@@ -150,6 +210,11 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         removeSample,
         setBrief,
         setExpenses,
+        saveAsset,
+        removeAsset,
+        addEntry,
+        removeEntry,
+        recordSnapshot,
         clearAll,
       }}
     >

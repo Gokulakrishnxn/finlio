@@ -7,6 +7,7 @@ export type Holding = {
   buyPrice: number; // ₹ per share
   quantity: number;
   sample?: boolean;
+  imported?: boolean; // added from a broker CSV; buy date is the import date
 };
 
 export type Source = { title: string; url: string };
@@ -46,6 +47,50 @@ export type Expense = {
 };
 
 export type ExpenseSnapshot = { account: string; syncedAt: string; expenses: Expense[] };
+
+export const ASSET_KINDS = {
+  bank: "Bank balance",
+  fd: "Fixed deposit",
+  gold: "Gold",
+  epf: "EPF",
+  ppf: "PPF",
+  property: "Property",
+  other: "Other asset",
+} as const;
+
+export const LOAN_KINDS = {
+  "home-loan": "Home loan",
+  "car-loan": "Car loan",
+  "personal-loan": "Personal loan",
+  "credit-card": "Credit card",
+  "other-loan": "Other loan",
+} as const;
+
+export type AssetKind = keyof typeof ASSET_KINDS;
+export type LoanKind = keyof typeof LOAN_KINDS;
+
+// Something owned or owed outside the stock market, entered by hand.
+export type Asset = {
+  id: string;
+  side: "asset" | "loan";
+  kind: AssetKind | LoanKind;
+  name: string;
+  amount: number; // ₹ today
+};
+
+export const INCOME_CATEGORIES = ["Salary", "Freelance", "Interest & dividends", "Rent", "Other income"] as const;
+
+// Income or an expense the user typed in (Gmail spends live in ExpenseSnapshot).
+export type Entry = {
+  id: string;
+  type: "income" | "expense";
+  date: string;
+  amount: number;
+  category: string;
+  note?: string;
+};
+
+export type Snapshot = { date: string; netWorth: number };
 
 export type Instrument = {
   instrumentKey: string;
