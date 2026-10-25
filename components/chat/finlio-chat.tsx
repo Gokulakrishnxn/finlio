@@ -49,7 +49,7 @@ function Formatted({ text }: { text: string }) {
 
 export function FinlioChat() {
   const { open, setOpen } = useChatUI();
-  const { brief, ready } = useStore();
+  const { brief, ready, profile } = useStore();
   const { worth, items, thisMonth, month, positions } = useMoney();
   const { assets } = useStore();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -81,11 +81,12 @@ export function FinlioChat() {
         dayChangePct: p.dayChangePct,
         gainPct: p.gainPct,
       })),
+      profile: profile ? { name: profile.name, goal: profile.goal } : undefined,
       brief: todays
         ? [...todays.changed, ...todays.comingUp, ...todays.attention].map((b) => `${b.symbol ?? ""} ${b.text}`.trim())
         : [],
     };
-  }, [ready, worth, assets, items, month, thisMonth, positions, brief]);
+  }, [ready, worth, assets, items, month, thisMonth, positions, brief, profile]);
 
   async function send(text: string) {
     const question = text.trim();

@@ -2,17 +2,18 @@
 
 import { createContext, useCallback, useContext, useEffect, useState } from "react";
 import { SAMPLE_HOLDINGS } from "@/lib/sample";
-import type { Asset, Brief, Entry, ExpenseSnapshot, Holding, Snapshot } from "@/lib/types";
+import type { Asset, Brief, Entry, ExpenseSnapshot, Holding, Profile, Snapshot } from "@/lib/types";
 
 const STORAGE_KEY = "finlio:v1";
 
-type StoreData = {
+export type StoreData = {
   holdings: Holding[];
   brief?: Brief;
   expenses?: ExpenseSnapshot;
   assets?: Asset[];
   entries?: Entry[];
   snapshots?: Snapshot[];
+  profile?: Profile;
 };
 
 export type NewHolding = Omit<Holding, "id">;
@@ -32,6 +33,8 @@ type Store = StoreData & {
   addEntry: (entry: Omit<Entry, "id">) => void;
   removeEntry: (id: string) => void;
   recordSnapshot: (snapshot: Snapshot) => void;
+  setProfile: (profile: Profile) => void;
+  replaceAll: (data: StoreData) => void;
   clearAll: () => void;
 };
 
@@ -192,6 +195,17 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [update],
   );
 
+  const setProfile = useCallback(
+    (profile: Profile) => update((prev) => ({ ...prev, profile })),
+    [update],
+  );
+
+  // Restores a backup made with Export.
+  const replaceAll = useCallback(
+    (next: StoreData) => update(() => ({ ...next, holdings: next.holdings ?? [] })),
+    [update],
+  );
+
   const clearAll = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
     setData({ holdings: [] });
@@ -215,6 +229,8 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         addEntry,
         removeEntry,
         recordSnapshot,
+        setProfile,
+        replaceAll,
         clearAll,
       }}
     >

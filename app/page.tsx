@@ -37,7 +37,7 @@ function todayLabel() {
 }
 
 export default function DashboardPage() {
-  const { ready, holdings } = useStore();
+  const { ready, holdings, profile } = useStore();
   const { positions, worth, items, thisMonth, month, snapshots, hasData } = useMoney({ record: true });
   const { select, overlays } = useHoldingOverlays(positions);
   const { openAdd, dialogs } = useQuickAdd();
@@ -52,7 +52,10 @@ export default function DashboardPage() {
 
   return (
     <>
-      <PageHeader title={greeting()} subtitle={todayLabel()} />
+      <PageHeader
+        title={profile?.name ? `${greeting()}, ${profile.name.split(" ")[0]}` : greeting()}
+        subtitle={todayLabel()}
+      />
 
       {empty ? (
         <div className="flex flex-col gap-6">

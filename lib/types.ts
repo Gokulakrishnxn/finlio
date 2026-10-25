@@ -92,6 +92,13 @@ export type Entry = {
 
 export type Snapshot = { date: string; netWorth: number };
 
+// Kept in this browser only; used to personalise greetings and the chat.
+export type Profile = {
+  name?: string;
+  city?: string;
+  goal?: string; // e.g. "Buy a home by 2030"
+};
+
 export type Instrument = {
   instrumentKey: string;
   symbol: string;
