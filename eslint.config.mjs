@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored beUI components (MIT, see THIRD_PARTY_NOTICES.md), kept as shipped.
+    "components/agents/**",
+    "components/charts/**",
+    "components/motion/**",
   ]),
 ]);
 
