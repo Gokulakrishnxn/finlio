@@ -16,7 +16,7 @@ export function Welcome({ onAdd }: { onAdd: () => void }) {
           </h2>
           <p className="mt-3 text-[15px] leading-relaxed text-body">
             Add the stocks you own. Every day, Finlio reads the news about them and tells you, in
-            plain words, what changed and why. No account. Your portfolio stays in this browser.
+            plain words, what changed and why. Your portfolio stays in this browser.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">

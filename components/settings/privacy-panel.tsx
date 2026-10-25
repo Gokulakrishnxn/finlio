@@ -10,7 +10,7 @@ const POINTS = [
   {
     icon: HardDrive,
     title: "Stored in this browser",
-    body: "No Finlio account, no Finlio database, no server copy. Your data stays on this device.",
+    body: "You sign in with Google, but there's no Finlio database or server copy. Your money data stays on this device.",
   },
   {
     icon: Lock,

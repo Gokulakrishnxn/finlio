@@ -53,8 +53,8 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
     body: (
       <>
         <p>
-          Finlio has no account system and no Finlio database. What you enter is stored in your own browser on
-          your device. Clearing your browser data, or choosing <em>Sign out</em>, deletes it, and we cannot
+          You sign in with your Google account, which gives Finlio only your name, email and photo. Finlio has no
+          database: what you enter is stored in your own browser on your device. Clearing your browser data, or choosing <em>Sign out</em>, deletes it, and we cannot
           recover it. Use <em>Settings → Data controls → Export backup</em> to keep a copy.
         </p>
         <p id="your-data">

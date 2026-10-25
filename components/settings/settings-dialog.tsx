@@ -73,8 +73,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
     setOpen(true);
   }, []);
 
-  // Finlio has no accounts: signing out disconnects Google and erases this
-  // browser's Finlio data, which brings back the welcome screen.
+  // Signing out ends the Google session and erases this browser's Finlio data,
+  // since the data lives only here.
   async function signOut() {
     setSigningOut(true);
     await fetch("/api/auth/signout", { method: "POST" }).catch(() => undefined);
@@ -143,8 +143,8 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
             </AlertDialogMedia>
             <AlertDialogTitle className="text-[18px] font-semibold tracking-tight">Sign out of Finlio?</AlertDialogTitle>
             <AlertDialogDescription className="text-[14px] leading-relaxed">
-              Finlio has no account, so signing out disconnects Google and erases your stocks, accounts, spending
-              and history from this browser.
+              Signing out ends your Google session and erases your stocks, accounts, spending and history from this
+              browser, since Finlio keeps no copy anywhere else.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
