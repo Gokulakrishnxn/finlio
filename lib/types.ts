@@ -76,6 +76,7 @@ export type Asset = {
   kind: AssetKind | LoanKind;
   name: string;
   amount: number; // ₹ today
+  sample?: boolean;
 };
 
 export const INCOME_CATEGORIES = ["Salary", "Freelance", "Interest & dividends", "Rent", "Other income"] as const;
@@ -88,9 +89,10 @@ export type Entry = {
   amount: number;
   category: string;
   note?: string;
+  sample?: boolean;
 };
 
-export type Snapshot = { date: string; netWorth: number };
+export type Snapshot = { date: string; netWorth: number; sample?: boolean };
 
 // Kept in this browser only; used to personalise greetings and the chat.
 export type Profile = {
