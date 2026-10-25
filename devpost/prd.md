@@ -83,7 +83,7 @@ Source: `scope.md > The Unique Kernel`.
 ### Privacy
 Source: `scope.md > Explicitly Cut`.
 - As an investor, I want to know where my data goes so that I can trust Finlio.
-  - [ ] There is no sign-up; holdings and briefs are saved only in this browser.
+  - [ ] Sign-in is with Google only (name, email, photo); holdings and briefs are still saved only in this browser. *(Changed at the learner's request: originally no sign-up.)*
   - [ ] The AI receives only stock names and news headlines, never quantities, prices or values. **(assumption)**
   - [ ] The Privacy screen says this plainly and offers **Clear all my data**, which empties the app after confirmation.
 
@@ -169,7 +169,7 @@ Source: learner's request after approval (India and the United States).
 - Manual entry with buy date, price and quantity — learner's stated flow.
 - NSE stocks only for now; mutual funds later — approved in scope.
 - Brief on screen, created when asked; email delivery later — approved in scope.
-- No Finlio account or database; data stays in the browser — learner's privacy promise, stated honestly. Google sign-in is only for reading bank alerts.
+- No Finlio database; data stays in the browser — learner's privacy promise, stated honestly. Later, at the learner's request, Google became the sign-in (name, email, photo), with Gmail asked for separately for Expenses.
 - Expenses via Gmail, in Google test mode — learner's decision after scope approval, accepting the deadline risk.
 - Explain, never advise — learner's principle ("Suggest, never execute" in the August PRD) and the hackathon's credibility.
 - Company logos optional behind a Settings switch, off when recording — trademark rule for the demo video.

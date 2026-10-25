@@ -10,7 +10,7 @@ Implements `prd.md` (approved). Items marked (agreed) were Claude's recommendati
 ## How This Works, In Plain Language
 Finlio Daily is a website that runs on your computer. It has two halves:
 
-- **The screen** (in your browser) shows your holdings and your brief. Your holdings are saved in the browser itself, so there is no account and no Finlio database.
+- **The screen** (in your browser) shows your holdings and your brief. You sign in with Google, but your holdings are saved in the browser itself, so there is no Finlio database.
 - **A small helper** (the Next.js server, also on your computer) holds the secret keys and talks to two outside services for you:
   - **Upstox** for live NSE prices. Upstox is an Indian broker with an official API, so we're allowed to use its data.
   - **Gemini** for the brief. Gemini searches Google for today's news about your stocks, writes the plain-English brief, and returns the link to every headline it used.
@@ -261,3 +261,11 @@ finlio/
 - **To verify in build step 1:** Gemini model name and citation format; Upstox token access and cost.
 - **Carried from `prd.md > Open Questions`:** the data source question is answered above, pending agreement.
 - **Eligibility (not technical):** confirm whether Beny Dishon K is part of this entry before submitting.
+
+## Sign-in (added at the learner's request)
+
+- `/sign-in` and `/sign-up` (`components/auth/auth-form.tsx`, `auth-shell.tsx`) offer **Continue with Google** only. `/api/auth/google` asks for `openid email profile`; `/api/auth/google?gmail=1` (Expenses, Settings → Connected apps) adds `gmail.readonly` with offline access. A `next` path (same-site only) brings the person back.
+- `lib/google-session.ts` keeps one encrypted httpOnly cookie (`finlio_google`) with a `gmail` flag. `DELETE /api/auth/gmail` revokes Gmail but keeps the person signed in; sign-out revokes everything and erases the browser data.
+- `proxy.ts` sends visitors without a sign-in cookie from the app's pages to `/sign-in`, and signed-in people from the sign-in screens to `/dashboard`. `components/auth/auth-gate.tsx` checks the cookie is still valid (clearing a broken one) and sends new people to `/setup`, which pre-fills their first name from Google.
+- A copy with no Google keys (e.g. a judge's fresh clone) shows **Open Finlio on this device**, which sets `finlio_local`; `/api/auth/local` refuses it when Google is configured.
+

@@ -51,9 +51,9 @@ flowchart LR
     E -- "alert subject + preview" --> G2[(Gemini<br/>amount, merchant, category)]
 ```
 
-- **No Finlio account and no database.** Holdings, briefs and expenses live in your browser.
+- **Sign in with Google, but no Finlio database.** Signing in shares only your name, email and photo. Holdings, briefs and expenses live in your browser. Without Google keys, a fresh clone offers an "Open Finlio on this device" button instead.
 - **Only stock names and symbols leave your device** for prices and news. Quantities, buy prices and portfolio value never do; gains are worked out in the browser.
-- **Expenses** uses Google sign-in with the read-only Gmail scope. The Google token is kept in an encrypted, httpOnly cookie in your browser. Only bank and UPI alert emails are read, and only their sender, subject and preview go to Gemini. **Disconnect** revokes access.
+- **Expenses** asks separately for the read-only Gmail scope. The Google token is kept in an encrypted, httpOnly cookie in your browser. Only bank and UPI alert emails are read, and only their sender, subject and preview go to Gemini. **Disconnect Gmail** revokes that access; **Sign out** revokes all of it.
 
 The full design lives in [`devpost/spec.md`](devpost/spec.md).
 
@@ -78,8 +78,8 @@ Open **http://localhost:3000** for the landing page, or **/dashboard** for the a
 | `GEMINI_API_KEY` | Today's brief, reading expense alerts | [Google AI Studio](https://aistudio.google.com/apikey). Google Search grounding needs **billing enabled** on the key's project (the first 5,000 searches a month are free). |
 | `FINNHUB_API_KEY` | US stock search and live prices | [finnhub.io](https://finnhub.io) free plan. Without it, US stocks can be found in a built-in list of popular stocks and are valued at cost. |
 | `UPSTOX_ANALYTICS_TOKEN` | Live NSE prices | [Upstox developer console](https://upstox.com/developer/api-documentation/) → analytics token (read-only market data; needs an Upstox account) |
-| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Expenses (Google sign-in) | [Google Cloud console](https://console.cloud.google.com): enable the **Gmail API**, set the OAuth consent screen to **External / Testing** with your Gmail as a test user, create a **Web application** OAuth client with redirect URI `http://localhost:3000/api/auth/callback/google` |
-| `AUTH_SECRET` | Encrypting the Google session cookie | Any long random string, e.g. `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Signing in, and Gmail for Expenses | [Google Cloud console](https://console.cloud.google.com): enable the **Gmail API**, set the OAuth consent screen to **External / Testing** with your Gmail as a test user, create a **Web application** OAuth client with redirect URI `http://localhost:3000/api/auth/callback/google` |
+| `AUTH_SECRET` | Encrypting the sign-in cookie | Any long random string, e.g. `openssl rand -base64 32` |
 | `GEMINI_MODEL` (optional) | Choosing the Gemini model | Defaults to `gemini-3.5-flash` |
 
 > Gmail read access is a restricted Google scope. Until Google verifies the app, Expenses works only for the test users you add, and Google shows an "unverified app" notice during sign-in.
