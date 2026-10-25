@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { HoldingDialog } from "@/components/holding-dialog";
-import { HoldingSheet } from "@/components/holding-sheet";
+import { HoldingDetail } from "@/components/holding-detail";
 import type { Position } from "@/lib/portfolio";
 
-// The add/edit dialog and the detail sheet, shared by Today and Holdings.
+// The add/edit dialog and the detail card, shared by Today and Holdings.
 export function useHoldingOverlays(positions: Position[]) {
   const [adding, setAdding] = useState(false);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export function useHoldingOverlays(positions: Position[]) {
         editing={editing}
         onOpenChange={(open) => !open && setEditingId(null)}
       />
-      <HoldingSheet
+      <HoldingDetail
         position={selected}
         onClose={() => setSelectedId(null)}
         onEdit={(id) => {

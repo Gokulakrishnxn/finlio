@@ -198,7 +198,7 @@ finlio/
 │   ├── welcome.tsx
 │   ├── holding-dialog.tsx    # add / edit
 │   ├── holdings-table.tsx
-│   ├── holding-sheet.tsx     # detail panel
+│   ├── holding-detail.tsx    # detail card (centred)
 │   ├── brief/                # brief card, sections, source chip, states
 │   ├── initial-badge.tsx
 │   └── ui/                   # shadcn components
