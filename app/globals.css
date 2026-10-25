@@ -191,3 +191,66 @@
   font-family: var(--font-geist-mono);
   font-variant-numeric: tabular-nums;
 }
+
+/* Landing page ------------------------------------------------------------ */
+
+/* The hero settles in once on load. */
+@keyframes land-rise {
+  from {
+    opacity: 0;
+    translate: 0 14px;
+    filter: blur(4px);
+  }
+}
+
+@utility land-rise {
+  animation: land-rise 0.7s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes land-float {
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+@utility land-float {
+  animation: land-float 6s ease-in-out infinite;
+}
+
+/* Story words start dim and sharpen as they scroll into view. Only the `from`
+   state is declared, so without scroll timelines the text is simply shown. */
+@keyframes land-word {
+  from {
+    opacity: 0.22;
+  }
+}
+
+@keyframes land-reveal {
+  from {
+    opacity: 0;
+    translate: 0 16px;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .land-word {
+      animation: land-word linear both;
+      animation-timeline: view();
+      animation-range: entry 60% cover 45%;
+    }
+
+    .land-reveal {
+      animation: land-reveal both cubic-bezier(0.32, 0.72, 0, 1);
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .land-rise,
+  .land-float {
+    animation: none;
+  }
+}

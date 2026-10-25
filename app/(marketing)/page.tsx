@@ -1,170 +1,65 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  ArrowDown,
   ArrowRight,
-  ChartNoAxesCombined,
-  ChevronDown,
-  HardDrive,
+  Briefcase,
+  ChartLine,
+  ChevronRight,
   Landmark,
-  Lock,
-  Mail,
-  MessageCircle,
   Newspaper,
-  ShieldCheck,
+  PiggyBank,
+  Plus,
+  Rss,
+  Wallet,
   type LucideIcon,
 } from "lucide-react";
-import { BeforeAfter } from "@/components/landing/before-after";
+import { HeroDecor, HeroDecorMobile } from "@/components/landing/hero-decor";
+import { RotatingWord } from "@/components/landing/rotating-word";
 import { cn } from "@/lib/utils";
 
 const REPO = "https://github.com/Gokulakrishnxn/finlio";
 
-const FEATURES: { icon: LucideIcon; title: string; body: string; tint: string }[] = [
-  {
-    icon: Newspaper,
-    title: "A daily brief",
-    body: "What changed for the stocks you own, in plain English, with the source for every line.",
-    tint: "bg-info-soft text-info",
-  },
-  {
-    icon: Landmark,
-    title: "The whole picture",
-    body: "Stocks, bank accounts, property, gold and loans add up to one net worth, by quarter.",
-    tint: "bg-success-soft text-success",
-  },
-  {
-    icon: Mail,
-    title: "Spending from Gmail",
-    body: "Bank and card alerts become a tidy list of where your money went. Read-only, your choice.",
-    tint: "bg-warning-soft text-warning",
-  },
-  {
-    icon: ChartNoAxesCombined,
-    title: "Analytics",
-    body: "Where income goes, what you own by type, and how this month compares to the last.",
-    tint: "bg-purple-soft text-purple",
-  },
-  {
-    icon: MessageCircle,
-    title: "Ask Finlio",
-    body: "“Why is my total down today?” Answers that know your numbers. Press ⌘L anywhere.",
-    tint: "bg-pink-soft text-pink",
-  },
-  {
-    icon: Lock,
-    title: "Private by design",
-    body: "No Finlio account and no Finlio database. Everything lives in your browser.",
-    tint: "bg-neutral-soft text-neutral",
-  },
-];
-
-const STEPS = [
-  { title: "Tell Finlio what you own", body: "Add stocks by name, import a CSV, or start with sample data." },
-  { title: "Read your brief", body: "Each morning, the few things that changed and why they matter to you." },
-  { title: "Ask anything", body: "Follow up in Finlio chat. It explains; the decisions stay yours." },
-];
-
-const MARKETS = [
-  {
-    flag: "🇮🇳",
-    name: "India",
-    points: ["Indian stock prices in rupees", "₹ lakh and crore formats", "Financial-year quarters (Apr–Mar)", "Savings, FD, PPF and gold"],
-  },
-  {
-    flag: "🇺🇸",
-    name: "United States",
-    points: ["US stock prices in dollars", "$ formats and calendar quarters", "Checking, savings and 401(k)", "Mortgages, auto and student loans"],
-  },
-];
-
 const FAQ = [
   {
-    q: "Is Finlio financial advice?",
-    a: "No. Finlio explains what happened to what you own and why. It never tells you to buy, sell or hold, and it isn't a licensed advisor.",
+    q: "What is Finlio?",
+    a: "A free web app that explains your money in plain English. Tell it what you own, and each day it reads the news about those stocks and tells you what changed and why. It also adds up your bank accounts, property, gold and loans into one net worth, and shows where your spending goes.",
   },
   {
-    q: "Where is my data stored?",
-    a: "In your browser, on this device. There's no Finlio account or server copy. You can download a backup at any time, and signing out erases it.",
+    q: "How is this different from a news app?",
+    a: "A news app shows everyone the same headlines. Finlio reads only the news about what you own, and says what it means for you, in short, simple sentences with a link to every source.",
   },
   {
-    q: "What leaves my device?",
-    a: "Only what's needed: stock symbols for prices and news, and your question when you ask Finlio chat. Quantities, balances and transactions are never sent for prices or news.",
+    q: "Will Finlio tell me what to buy or sell?",
+    a: "No. Finlio explains what happened and why. It never says buy, sell or hold, and it isn't a licensed financial advisor. The decisions stay yours.",
   },
   {
-    q: "Do I have to connect Gmail?",
-    a: "No. Gmail is optional and read-only, used only to find bank and card alerts. You can add spending by hand or skip it entirely.",
+    q: "Does it work outside India?",
+    a: "Yes. Finlio works for India and the United States: rupees or dollars, Indian or US stocks, financial-year or calendar quarters, and the account types each country uses.",
   },
   {
-    q: "What does it cost?",
-    a: "Finlio is free and open source under the MIT licence.",
+    q: "Where is my data kept?",
+    a: "In your browser, on your device. There's no Finlio account and no Finlio database. Only stock names and symbols are sent to fetch prices and news, never your quantities or balances.",
+  },
+  {
+    q: "Do I have to link my bank or broker?",
+    a: "No. Add stocks by name or import a CSV, and add accounts by hand. Connecting Gmail to read bank and card alerts is optional and read-only.",
+  },
+  {
+    q: "Is Finlio free?",
+    a: "Yes. Finlio is free and open source under the MIT licence.",
   },
 ];
 
 export default function Landing() {
   return (
     <>
-      <Nav />
+      <Header />
       <main>
         <Hero />
-        <Section id="see" eyebrow="The difference" title="Less noise. More meaning.">
-          <BeforeAfter />
-        </Section>
-        <Section id="features" eyebrow="Features" title="Everything you own, explained.">
-          <ul className="grid gap-4 *:min-w-0 sm:grid-cols-2 lg:grid-cols-3">
-            {FEATURES.map(({ icon: Icon, title, body, tint }) => (
-              <li key={title} className="card-surface p-6">
-                <span className={cn("mb-4 flex size-10 items-center justify-center rounded-xl", tint)}>
-                  <Icon className="size-5" strokeWidth={1.75} />
-                </span>
-                <h3 className="text-[16px] font-semibold text-ink">{title}</h3>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-body">{body}</p>
-              </li>
-            ))}
-          </ul>
-        </Section>
-        <Section id="how" eyebrow="How it works" title="Three steps. Two minutes a day.">
-          <ol className="grid gap-4 *:min-w-0 md:grid-cols-3">
-            {STEPS.map((s, i) => (
-              <li key={s.title} className="rounded-2xl border border-line p-6">
-                <span className="nums text-[13px] text-muted-foreground">0{i + 1}</span>
-                <h3 className="mt-3 text-[18px] font-semibold tracking-tight text-ink">{s.title}</h3>
-                <p className="mt-1.5 text-[14px] leading-relaxed text-body">{s.body}</p>
-              </li>
-            ))}
-          </ol>
-        </Section>
-        <Section id="markets" eyebrow="Built for two markets" title="Made for India and the United States.">
-          <div className="grid gap-4 *:min-w-0 md:grid-cols-2">
-            {MARKETS.map((m) => (
-              <div key={m.name} className="card-surface p-6 sm:p-8">
-                <p className="text-[32px] leading-none">{m.flag}</p>
-                <h3 className="mt-4 text-[20px] font-semibold tracking-tight text-ink">{m.name}</h3>
-                <ul className="mt-4 grid gap-2">
-                  {m.points.map((p) => (
-                    <li key={p} className="flex items-center gap-2.5 text-[14px] text-body">
-                      <span className="size-1.5 rounded-full bg-success" />
-                      {p}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </Section>
-        <Privacy />
-        <Section id="faq" eyebrow="Questions" title="Good questions.">
-          <div className="mx-auto max-w-2xl divide-y divide-line border-y border-line">
-            {FAQ.map((f) => (
-              <details key={f.q} className="group py-4">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-medium text-ink [&::-webkit-details-marker]:hidden">
-                  {f.q}
-                  <ChevronDown className="size-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180" />
-                </summary>
-                <p className="mt-2 pr-8 text-[15px] leading-relaxed text-body">{f.a}</p>
-              </details>
-            ))}
-          </div>
-        </Section>
-        <FinalCta />
+        <Story />
+        <Faq />
+        <Closing />
       </main>
       <Footer />
     </>
@@ -184,225 +79,354 @@ function Mark({ className }: { className?: string }) {
   );
 }
 
-function Nav() {
+function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line/60 bg-cream/80 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-40 bg-card/80 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-1.5">
-          <Mark className="size-8" />
-          <span className="text-xl font-semibold tracking-tight text-ink">Finlio</span>
+          <Mark className="size-7" />
+          <span className="text-[17px] font-semibold tracking-tight text-ink">Finlio</span>
         </Link>
-        <nav className="hidden items-center gap-7 text-[14px] text-body md:flex">
-          <a href="#features" className="hover:text-ink">Features</a>
-          <a href="#how" className="hover:text-ink">How it works</a>
-          <a href="#privacy" className="hover:text-ink">Privacy</a>
-          <a href="#faq" className="hover:text-ink">FAQ</a>
+        <nav className="hidden items-center gap-8 text-[14px] text-body sm:flex">
+          <a href="#how" className="transition-colors hover:text-ink">
+            How it works
+          </a>
+          <a href="#faqs" className="transition-colors hover:text-ink">
+            FAQs
+          </a>
         </nav>
-        <PrimaryLink href="/dashboard" small>
+        <Link
+          href="/dashboard"
+          className="inline-flex h-9 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-cream transition-opacity hover:opacity-90"
+        >
           Open Finlio
-        </PrimaryLink>
+        </Link>
       </div>
     </header>
-  );
-}
-
-function PrimaryLink({ href, children, small }: { href: string; children: React.ReactNode; small?: boolean }) {
-  return (
-    <Link
-      href={href}
-      className={cn(
-        "group inline-flex shrink-0 items-center gap-1.5 rounded-full bg-ink font-medium text-cream transition-opacity hover:opacity-90",
-        small ? "h-9 px-4 text-[14px]" : "h-12 px-6 text-[15px]",
-      )}
-    >
-      {children}
-      <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-    </Link>
   );
 }
 
 function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(60%_60%_at_50%_0%,var(--info-soft),transparent)]"
-      />
-      <div className="relative mx-auto max-w-6xl px-4 pt-16 pb-12 text-center sm:px-6 sm:pt-24">
-        <p className="mx-auto mb-6 w-fit rounded-full border border-line bg-card px-3 py-1 text-[13px] text-body">
-          For India 🇮🇳 and the United States 🇺🇸
-        </p>
-        <h1 className="mx-auto max-w-3xl text-[44px] leading-[1.05] font-semibold tracking-tight text-balance text-ink sm:text-[64px] lg:text-[76px]">
-          Your money, explained.
+      <HeroDecor />
+      <div className="relative z-10 mx-auto max-w-3xl px-4 pt-32 pb-20 text-center sm:px-6 sm:pt-40 sm:pb-28 lg:pb-32">
+        <Link
+          href="/dashboard"
+          className="group land-rise mb-7 inline-flex items-center gap-2 rounded-full bg-card py-1.5 pr-3 pl-2.5 text-[13px] font-medium text-body ring-1 ring-line transition-colors hover:text-ink"
+        >
+          <span className="relative flex size-2">
+            <span className="absolute inset-0 animate-ping rounded-full bg-success opacity-60" />
+            <span className="relative size-2 rounded-full bg-success" />
+          </span>
+          Free for India 🇮🇳 and the United States 🇺🇸
+          <ChevronRight className="size-3.5 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+        </Link>
+        <h1
+          className="land-rise text-[clamp(2.75rem,9vw,4.5rem)] leading-[1.08] font-medium tracking-[-0.04em] text-balance text-ink"
+          style={{ animationDelay: "100ms" }}
+        >
+          Know why your money <RotatingWord />.
         </h1>
-        <p className="mx-auto mt-6 max-w-xl text-[17px] leading-relaxed text-pretty text-body sm:text-[19px]">
-          Finlio reads the news about what you own and tells you, in plain English, what changed and why it
-          matters to you. Every morning. In two minutes.
+        <p
+          className="land-rise mx-auto mt-6 max-w-lg text-[16px] leading-[1.55] font-medium tracking-[-0.01em] text-pretty text-body sm:text-[17px]"
+          style={{ animationDelay: "200ms" }}
+        >
+          Every morning, Finlio tells you in simple words why the stocks you own went up or down, and adds up
+          everything else you own into one honest number.
         </p>
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <PrimaryLink href="/dashboard">Get started free</PrimaryLink>
-          <a
-            href="#see"
-            className="inline-flex h-12 items-center rounded-full border border-line bg-card px-6 text-[15px] font-medium text-ink hover:bg-sand"
+        <div
+          className="land-rise mt-9 flex flex-wrap items-center justify-center gap-3"
+          style={{ animationDelay: "300ms" }}
+        >
+          <Link
+            href="/dashboard"
+            className="group inline-flex h-12 items-center gap-2 rounded-full bg-ink px-6 text-[15px] font-medium text-cream transition-opacity hover:opacity-90"
           >
-            See the difference
+            Open Finlio
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+          <a
+            href="#how"
+            className="inline-flex h-12 items-center rounded-full bg-sand px-6 text-[15px] font-medium text-ink ring-1 ring-line transition-colors hover:bg-muted"
+          >
+            How it works
           </a>
         </div>
-        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[13px] text-muted-foreground">
-          <li className="flex items-center gap-1.5">
-            <HardDrive className="size-3.5" /> Stays on your device
-          </li>
-          <li className="flex items-center gap-1.5">
-            <ShieldCheck className="size-3.5" /> Explains, never advises
-          </li>
-          <li className="flex items-center gap-1.5">
-            <Lock className="size-3.5" /> No account needed
-          </li>
-        </ul>
-
-        <ProductPreview />
+        <p className="land-rise mt-4 text-[13px] text-muted-foreground" style={{ animationDelay: "400ms" }}>
+          No sign-up. Try it with sample data.
+        </p>
+        <HeroDecorMobile />
       </div>
     </section>
   );
 }
 
-// A drawn preview of the dashboard, so the page needs no screenshots.
-const BARS = [38, 44, 41, 52, 58, 63, 71, 78];
+// Splits a sentence into words that sharpen one by one as you scroll.
+function Words({ children }: { children: string }) {
+  return children
+    .trim()
+    .split(/\s+/)
+    .map((word, i) => (
+      <span key={i} className="land-word">
+        {word}{" "}
+      </span>
+    ));
+}
 
-function ProductPreview() {
+function Icons({ items }: { items: { icon: LucideIcon; tint: string }[] }) {
   return (
-    <div className="mx-auto mt-16 max-w-4xl rounded-[28px] border border-line bg-sand p-2 text-left shadow-[0_30px_80px_-30px_rgba(0,0,0,0.25)] sm:p-3">
-      <div className="grid gap-2 *:min-w-0 sm:gap-3 md:grid-cols-[1.4fr_1fr]">
-        <div className="card-surface p-5 sm:p-6">
-          <p className="eyebrow">Net worth · ₹ INR</p>
-          <p className="nums mt-2 text-[30px] font-semibold tracking-tight text-ink sm:text-[38px]">₹48,62,310</p>
-          <p className="mt-1 text-[13px] text-success">+₹1,24,800 this quarter</p>
-          <div className="mt-6 flex h-28 items-end gap-2">
-            {BARS.map((h, i) => (
-              <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
-                <div
-                  className={cn("w-full rounded-md", i === BARS.length - 1 ? "bg-ink" : "bg-line")}
-                  style={{ height: `${h}%` }}
-                />
-              </div>
-            ))}
-          </div>
-          <div className="nums mt-2 flex justify-between text-[11px] text-muted-foreground">
-            <span>Q1 FY25</span>
-            <span>Q4 FY26</span>
-          </div>
-        </div>
-        <div className="grid gap-2 sm:gap-3">
-          <div className="card-surface p-5">
-            <p className="eyebrow mb-3">Today&apos;s brief</p>
-            <p className="text-[14px] font-medium text-ink">Your largest stock fell 2.4%</p>
-            <p className="mt-1 text-[13px] leading-relaxed text-body">
-              Results showed slower growth. It moved your total by about −0.7%.
+    <span aria-hidden className="ml-1.5 inline-flex translate-y-[-3px] gap-1 align-middle sm:ml-2.5 sm:gap-1.5">
+      {items.map(({ icon: Icon, tint }, i) => (
+        <span
+          key={i}
+          className={cn("land-word inline-flex size-7 items-center justify-center rounded-lg sm:size-8", tint)}
+        >
+          <Icon className="size-4" strokeWidth={1.75} />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+function Story() {
+  return (
+    <section id="how" className="scroll-mt-16 bg-cream">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,300px)_minmax(0,1fr)] lg:gap-16 lg:py-32">
+        <div>
+          <div className="lg:sticky lg:top-28">
+            <p className="text-[12px] font-semibold tracking-[0.16em] text-info uppercase">How it works</p>
+            <h2 className="mt-2 text-[28px] leading-[1.1] font-medium tracking-[-0.03em] text-ink">
+              Why Finlio exists
+            </h2>
+            <p className="mt-3 hidden max-w-[16rem] text-[14px] leading-normal text-body/70 sm:block">
+              For everyone who has ever opened their portfolio and wondered why.
             </p>
           </div>
-          <div className="card-surface p-5">
-            <p className="eyebrow mb-3">Spending · this month</p>
-            {[
-              { label: "Food", v: 72, c: "bg-warning" },
-              { label: "Bills", v: 48, c: "bg-info" },
-              { label: "Travel", v: 30, c: "bg-purple" },
-            ].map((r) => (
-              <div key={r.label} className="mb-2 flex items-center gap-3 text-[13px] last:mb-0">
-                <span className="w-12 text-body">{r.label}</span>
-                <span className="h-2 flex-1 rounded-full bg-sand">
-                  <span className={cn("block h-2 rounded-full", r.c)} style={{ width: `${r.v}%` }} />
-                </span>
-              </div>
-            ))}
-          </div>
         </div>
+
+        <div className="space-y-6 text-[22px] leading-[1.35] font-medium tracking-[-0.02em] text-ink sm:space-y-8 sm:text-2xl lg:text-3xl lg:leading-[1.3]">
+          <p>
+            <Words>It starts with one simple problem.</Words>
+          </p>
+          <div className="space-y-3">
+            <p>
+              <Words>Your stocks sit in one app.</Words>
+              <Icons
+                items={[
+                  { icon: ChartLine, tint: "bg-info text-white" },
+                  { icon: Briefcase, tint: "bg-purple text-white" },
+                ]}
+              />
+            </p>
+            <p>
+              <Words>Your savings sit in another.</Words>
+              <Icons
+                items={[
+                  { icon: Landmark, tint: "bg-success text-white" },
+                  { icon: PiggyBank, tint: "bg-warning text-white" },
+                ]}
+              />
+            </p>
+            <p>
+              <Words>And the news is somewhere else.</Words>
+              <Icons
+                items={[
+                  { icon: Newspaper, tint: "bg-ink text-cream" },
+                  { icon: Rss, tint: "bg-loss text-white" },
+                ]}
+              />
+            </p>
+          </div>
+          <p>
+            <Words>
+              One morning your money goes down. You don&apos;t know why. You read the headlines. You ask a friend.
+              You&apos;re still confused.
+            </Words>
+          </p>
+          <p>
+            <Words>So Finlio reads only the news about the stocks you own. Nothing else.</Words>
+          </p>
+          <p>
+            <Words>
+              Then it tells you what changed, what&apos;s coming up, and what deserves your attention. In short, easy
+              sentences, with a link to every source.
+            </Words>
+          </p>
+          <p>
+            <Words>
+              Your money is more than your stocks, so Finlio holds the whole picture too. Your bank, your gold, your
+              home, your loans. One honest number for what you&apos;re worth.
+            </Words>
+          </p>
+          <p>
+            <Words>It shows where your money goes each month, and answers your questions about it whenever you ask.</Words>
+          </p>
+          <p>
+            <Words>It explains. It never tells you what to buy or sell. And everything stays on your device.</Words>
+            <Icons items={[{ icon: Wallet, tint: "bg-success text-white" }]} />
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Faq() {
+  return (
+    <section id="faqs" className="scroll-mt-16">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)] lg:gap-16 lg:py-32">
+        <div className="land-reveal">
+          <p className="text-[14px] font-semibold text-warning">FAQs</p>
+          <h2 className="mt-3 text-[clamp(1.75rem,5.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.04em] text-balance text-ink">
+            Frequently asked questions
+          </h2>
+        </div>
+        <div className="land-reveal min-w-0 divide-y divide-line border-y border-line">
+          {FAQ.map((f, i) => (
+            <details key={f.q} open={i === 0} className="group py-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-[16px] font-medium text-ink sm:text-[17px] [&::-webkit-details-marker]:hidden">
+                {f.q}
+                <Plus className="size-4 shrink-0 text-warning transition-transform duration-300 group-open:rotate-45" />
+              </summary>
+              <p className="mt-3 max-w-xl pr-8 text-[15px] leading-relaxed text-body">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Closing() {
+  return (
+    <section className="bg-cream">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 sm:py-24 md:grid-cols-2 lg:gap-16 lg:py-28">
+        <div className="land-reveal">
+          <p className="text-[14px] font-semibold text-success">Get started</p>
+          <h2 className="mt-3 text-[clamp(1.75rem,5.5vw,2.75rem)] leading-[1.1] font-medium tracking-[-0.04em] text-balance text-ink">
+            Stop guessing.
+            <br />
+            Start knowing.
+          </h2>
+          <p className="mt-5 max-w-md text-[16px] leading-[1.55] font-medium text-pretty text-body sm:text-[17px]">
+            Add the stocks you own and get your first brief in a minute. Free, private, and in simple words.
+          </p>
+          <Link
+            href="/dashboard"
+            className="group mt-6 inline-flex min-h-11 items-center gap-2 text-[17px] font-medium text-info transition-opacity hover:opacity-80"
+          >
+            Open Finlio
+            <ArrowRight className="size-[18px] transition-transform group-hover:translate-x-1" />
+          </Link>
+        </div>
+        <BriefCompare />
+      </div>
+    </section>
+  );
+}
+
+// The same news, twice: the headline, and what Finlio makes of it.
+function BriefCompare() {
+  return (
+    <div className="land-reveal mx-auto w-full max-w-md rounded-3xl bg-card p-6 ring-1 ring-line sm:p-7">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-[13px] font-medium text-muted-foreground">Today&apos;s brief · 7:30 am</p>
+        <span className="rounded-full bg-cream px-2.5 py-1 text-[11px] font-semibold tracking-[0.05em] text-muted-foreground uppercase ring-1 ring-line">
+          Example
+        </span>
+      </div>
+      <div className="mt-5 rounded-2xl bg-cream p-4 ring-1 ring-line">
+        <p className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+          <Newspaper className="size-3.5" />
+          What you read elsewhere
+        </p>
+        <p className="mt-2 text-[14px] leading-normal text-body">
+          &ldquo;Q2 net profit up 8.3% YoY, beats street estimates on robust BFSI demand; margins expand 60 bps.&rdquo;
+        </p>
+      </div>
+      <div className="flex justify-center py-1.5">
+        <span className="flex size-7 items-center justify-center rounded-full bg-card ring-1 ring-line">
+          <ArrowDown className="size-3.5 text-muted-foreground" />
+        </span>
+      </div>
+      <div className="rounded-2xl bg-success-soft/60 p-4 ring-1 ring-success/25">
+        <div className="flex items-center justify-between gap-2">
+          <p className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.05em] text-success uppercase">
+            <span className="size-1.5 rounded-full bg-success" />
+            What Finlio tells you
+          </p>
+          <span className="nums rounded-full bg-success/10 px-2 py-0.5 text-[12px] font-semibold text-success">
+            +1.8%
+          </span>
+        </div>
+        <p className="mt-2 text-[15px] leading-normal font-medium text-ink">
+          Your largest stock earned more than expected last quarter, mostly from banking clients. That&apos;s why it
+          rose 1.8% today.
+        </p>
       </div>
     </div>
   );
 }
 
-function Section({
-  id,
-  eyebrow,
-  title,
-  children,
-}: {
-  id: string;
-  eyebrow: string;
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} className="scroll-mt-20 py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="eyebrow mb-3 text-center">{eyebrow}</p>
-        <h2 className="mx-auto mb-12 max-w-2xl text-center text-[32px] leading-tight font-semibold tracking-tight text-balance text-ink sm:text-[44px]">
-          {title}
-        </h2>
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function Privacy() {
-  const points = [
-    { title: "No account", body: "Nothing to sign up for. Open it and start." },
-    { title: "No database", body: "Finlio has no server copy of your money. Your browser is the only place it lives." },
-    { title: "No selling", body: "No ads, no tracking, no data sold. Ever." },
+function Footer() {
+  const product = [
+    { label: "How it works", href: "#how" },
+    { label: "FAQs", href: "#faqs" },
+    { label: "Open Finlio", href: "/dashboard" },
+  ];
+  const more = [
+    { label: "Terms", href: "/terms" },
+    { label: "GitHub", href: REPO },
+    { label: "Devpost", href: "https://learn-ai-basics.devpost.com" },
   ];
   return (
-    <section id="privacy" className="scroll-mt-20 px-4 py-16 sm:px-6 sm:py-24">
-      <div className="mx-auto max-w-6xl rounded-[32px] bg-ink px-6 py-14 text-cream sm:px-12 dark:border dark:border-line dark:bg-card dark:text-ink sm:py-20">
-        <ShieldCheck className="mb-6 size-10" strokeWidth={1.5} />
-        <h2 className="max-w-2xl text-[32px] leading-tight font-semibold tracking-tight text-balance sm:text-[44px]">
-          Your money is your business. Not ours.
-        </h2>
-        <p className="mt-4 max-w-xl text-[16px] leading-relaxed opacity-70">
-          Quantities, balances and transactions never leave your device for prices or news. Your gains and net
-          worth are worked out right here.
+    <footer className="bg-cream px-4 pb-4 sm:px-6 sm:pb-6">
+      <div className="mx-auto max-w-6xl rounded-3xl bg-card p-6 ring-1 ring-line sm:p-10">
+        <div className="grid gap-10 sm:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <Link href="/" className="flex items-center gap-1.5">
+              <Mark className="size-7" />
+              <span className="text-[17px] font-semibold tracking-tight text-ink">Finlio</span>
+            </Link>
+            <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-body">
+              Know why your money moved, in plain English.
+            </p>
+            <p className="mt-4 flex items-center gap-2 text-[14px] font-medium text-ink">
+              <span className="size-2 rounded-full bg-success" />
+              Free and open source
+            </p>
+          </div>
+          <FooterLinks title="Product" links={product} />
+          <FooterLinks title="More" links={more} />
+        </div>
+        <p className="mt-10 border-t border-line pt-6 text-[13px] text-muted-foreground">
+          © 2026 Finlio. Information and education, not investment advice.
         </p>
-        <ul className="mt-10 grid gap-6 *:min-w-0 sm:grid-cols-3">
-          {points.map((p) => (
-            <li key={p.title} className="border-t border-cream/20 pt-5 dark:border-line">
-              <p className="text-[16px] font-semibold">{p.title}</p>
-              <p className="mt-1.5 text-[14px] leading-relaxed opacity-70">{p.body}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-function FinalCta() {
-  return (
-    <section className="px-4 py-20 text-center sm:px-6 sm:py-28">
-      <Mark className="mx-auto mb-6 size-14" />
-      <h2 className="mx-auto max-w-2xl text-[36px] leading-tight font-semibold tracking-tight text-balance text-ink sm:text-[52px]">
-        Understand your money in two minutes a day.
-      </h2>
-      <div className="mt-9 flex justify-center">
-        <PrimaryLink href="/dashboard">Get started free</PrimaryLink>
-      </div>
-      <p className="mt-4 text-[13px] text-muted-foreground">Try it with sample data. No sign-up.</p>
-    </section>
-  );
-}
-
-function Footer() {
-  return (
-    <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-[13px] text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6">
-        <p>Finlio explains; it never advises. Not a licensed financial advisor.</p>
-        <nav className="flex gap-5">
-          <Link href="/terms" className="hover:text-ink">Terms</Link>
-          <a href={REPO} target="_blank" rel="noreferrer" className="hover:text-ink">GitHub</a>
-          <a href="https://learn-ai-basics.devpost.com" target="_blank" rel="noreferrer" className="hover:text-ink">
-            Devpost
-          </a>
-        </nav>
       </div>
     </footer>
+  );
+}
+
+function FooterLinks({ title, links }: { title: string; links: { label: string; href: string }[] }) {
+  return (
+    <div>
+      <p className="text-[12px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">{title}</p>
+      <ul className="mt-4 flex flex-col gap-3">
+        {links.map((l) => (
+          <li key={l.label}>
+            {l.href.startsWith("http") ? (
+              <a href={l.href} target="_blank" rel="noreferrer" className="text-[15px] text-body hover:text-ink">
+                {l.label}
+              </a>
+            ) : (
+              <Link href={l.href} className="text-[15px] text-body hover:text-ink">
+                {l.label}
+              </Link>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
