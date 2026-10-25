@@ -11,6 +11,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogMedia,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
@@ -135,34 +136,42 @@ export function SettingsProvider({ children }: { children: React.ReactNode }) {
       </Dialog>
 
       <AlertDialog open={confirmSignOut} onOpenChange={setConfirmSignOut}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Sign out of Finlio?</AlertDialogTitle>
-            <AlertDialogDescription>
+        <AlertDialogContent className="gap-5 rounded-2xl p-6 data-[size=default]:max-w-[calc(100%-2rem)] data-[size=default]:sm:max-w-[440px]">
+          <AlertDialogHeader className="place-items-start text-left">
+            <AlertDialogMedia className="size-11 rounded-full bg-danger-soft text-loss">
+              <LogOut className="size-5" />
+            </AlertDialogMedia>
+            <AlertDialogTitle className="text-[18px] font-semibold tracking-tight">Sign out of Finlio?</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px] leading-relaxed">
               Finlio has no account, so signing out disconnects Google and erases your stocks, accounts, spending
-              and history from this browser. Download a backup first if you want to come back to them; restore it
-              from the welcome screen.
+              and history from this browser.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter className="gap-2 sm:justify-between">
+
+          <div className="flex flex-col gap-3 rounded-xl bg-sand p-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <p className="text-[14px] font-medium text-ink">Keep a copy first</p>
+              <p className="text-[13px] text-muted-foreground">Restore it later from the welcome screen.</p>
+            </div>
             <Button
               variant="outline"
               onClick={() => {
                 downloadBackup(snapshotOf(store));
                 sound("success");
               }}
-              className="rounded-xl"
+              className="h-9 shrink-0 rounded-xl bg-card"
             >
               <Download className="size-4" />
               Download backup
             </Button>
-            <div className="flex gap-2">
-              <AlertDialogCancel>Stay signed in</AlertDialogCancel>
-              <Button variant="destructive" onClick={signOut} disabled={signingOut}>
-                <LogOut className="size-4" />
-                {signingOut ? "Signing out…" : "Sign out"}
-              </Button>
-            </div>
+          </div>
+
+          <AlertDialogFooter className="-mx-6 -mb-6 rounded-b-2xl px-6 py-4">
+            <AlertDialogCancel className="h-10 rounded-xl px-4">Stay signed in</AlertDialogCancel>
+            <Button variant="destructive" onClick={signOut} disabled={signingOut} className="h-10 rounded-xl px-4">
+              <LogOut className="size-4" />
+              {signingOut ? "Signing out…" : "Sign out"}
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
