@@ -76,13 +76,25 @@ function Brand() {
 export function Sidebar() {
   const pathname = usePathname();
   const { profile } = useStore();
-  const [collapsed, setCollapsed] = useState(false);
+  const { open: chatOpen } = useChatUI();
+  const [preferCollapsed, setPreferCollapsed] = useState(false); // the saved choice
+  const [expandedForChat, setExpandedForChat] = useState(false);
+
+  // Finlio chat takes the right side, so the sidebar folds to icons while it's
+  // open and returns when it closes. Opening the sidebar by hand overrides that
+  // until the chat closes; the saved choice is never changed.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!chatOpen) setExpandedForChat(false);
+  }, [chatOpen]);
+  const autoCollapsed = chatOpen && !expandedForChat;
+  const collapsed = preferCollapsed || autoCollapsed;
 
   // Remember the choice per browser; Settings can change it too.
   useEffect(() => {
     const read = () => {
       try {
-        setCollapsed(window.localStorage.getItem(COLLAPSE_KEY) === "1");
+        setPreferCollapsed(window.localStorage.getItem(COLLAPSE_KEY) === "1");
       } catch {
         // Storage blocked: start expanded.
       }
@@ -93,8 +105,21 @@ export function Sidebar() {
   }, []);
 
   function toggle() {
-    const next = !collapsed;
-    setCollapsed(next);
+    if (collapsed && !preferCollapsed) {
+      // Folded only because the chat is open: open it for now without saving.
+      setExpandedForChat(true);
+      sound("open");
+      return;
+    }
+    if (!collapsed && chatOpen) {
+      // Folding again while the chat is open just undoes the override.
+      setExpandedForChat(false);
+      sound("close");
+      return;
+    }
+    const next = !preferCollapsed;
+    setPreferCollapsed(next);
+    if (!next && chatOpen) setExpandedForChat(true);
     sound(next ? "close" : "open");
     try {
       window.localStorage.setItem(COLLAPSE_KEY, next ? "1" : "0");
