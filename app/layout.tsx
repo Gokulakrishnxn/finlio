@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ChatProvider } from "@/components/chat/chat-context";
 import { ChatLauncher, FinlioChat } from "@/components/chat/finlio-chat";
+import { SettingsProvider } from "@/components/settings/settings-dialog";
 import { MobileNav, Sidebar } from "@/components/shell/sidebar";
+import { SoundRoot } from "@/components/sound-root";
 import { PricesProvider } from "@/lib/prices";
 import { StoreProvider } from "@/lib/store";
 import "./globals.css";
@@ -33,17 +35,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <StoreProvider>
           <PricesProvider>
             <ChatProvider>
-              <div className="flex min-h-screen flex-col md:flex-row md:gap-2 md:p-2">
-                <Sidebar />
-                <MobileNav />
-                <main className="min-w-0 flex-1 bg-cream md:rounded-3xl md:border md:border-line">
-                  <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:px-8 md:py-10 xl:px-12">
-                    {children}
-                  </div>
-                </main>
-                <FinlioChat />
-              </div>
-              <ChatLauncher />
+              <SettingsProvider>
+                <div className="flex min-h-screen flex-col md:flex-row md:gap-2 md:p-2">
+                  <Sidebar />
+                  <MobileNav />
+                  <main className="min-w-0 flex-1 bg-cream md:rounded-3xl md:border md:border-line">
+                    <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:px-8 md:py-10 xl:px-12">
+                      {children}
+                    </div>
+                  </main>
+                  <FinlioChat />
+                </div>
+                <ChatLauncher />
+                <SoundRoot />
+              </SettingsProvider>
             </ChatProvider>
           </PricesProvider>
         </StoreProvider>
