@@ -8,11 +8,13 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <header className="mb-10 flex items-end justify-between gap-6">
+    <header className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-10 md:gap-6">
       <div>
-        <h1 className="text-[40px] leading-tight font-semibold tracking-tight text-ink">{title}</h1>
+        <h1 className="text-[30px] leading-tight font-semibold tracking-tight text-ink md:text-[40px]">
+          {title}
+        </h1>
         {subtitle && (
-          <p className="text-[40px] leading-tight font-semibold tracking-tight text-[#a8a7a3]">
+          <p className="text-[30px] leading-tight font-semibold tracking-tight text-[#a8a7a3] md:text-[40px]">
             {subtitle}
           </p>
         )}

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { HoldingsList } from "@/components/holdings-list";
 import { useHoldingOverlays } from "@/components/holding-overlays";
 import { PageHeader } from "@/components/page-header";
+import { PageSkeleton } from "@/components/page-skeleton";
 import { PortfolioSummary } from "@/components/portfolio-summary";
 import { SampleBanner } from "@/components/sample-banner";
 import { Welcome } from "@/components/welcome";
@@ -16,7 +17,7 @@ export default function HoldingsPage() {
   const positions = usePositions();
   const { openAdd, select, overlays } = useHoldingOverlays(positions);
 
-  if (!ready) return null;
+  if (!ready) return <PageSkeleton />;
 
   return (
     <>

@@ -17,7 +17,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="sticky top-0 flex h-screen w-[220px] shrink-0 flex-col px-4 py-8 xl:w-[280px] xl:px-5">
+    <aside className="sticky top-0 hidden h-screen w-[220px] shrink-0 flex-col px-4 py-8 md:flex xl:w-[280px] xl:px-5">
       <Link href="/" className="flex items-center gap-1.5 px-3">
         <Image
           src="/finlio-mark.png"
@@ -54,5 +54,37 @@ export function Sidebar() {
         Your data stays in this browser.
       </div>
     </aside>
+  );
+}
+
+// Small screens: logo and the same four links in a bar across the top.
+export function MobileNav() {
+  const pathname = usePathname();
+
+  return (
+    <header className="sticky top-0 z-30 flex items-center justify-between gap-3 bg-sand/90 px-4 py-3 backdrop-blur md:hidden">
+      <Link href="/" className="flex items-center gap-1">
+        <Image src="/finlio-mark.png" alt="" width={1024} height={1024} className="size-7 mix-blend-multiply" />
+        <span className="text-lg font-semibold tracking-tight text-ink">Finlio</span>
+      </Link>
+      <nav className="flex gap-1">
+        {NAV.map(({ href, label, icon: Icon }) => {
+          const active = href === "/" ? pathname === "/" : pathname.startsWith(href);
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-label={label}
+              className={cn(
+                "flex size-9 items-center justify-center rounded-xl text-body",
+                active && "bg-line/80 text-ink",
+              )}
+            >
+              <Icon className="size-[18px]" strokeWidth={1.75} />
+            </Link>
+          );
+        })}
+      </nav>
+    </header>
   );
 }

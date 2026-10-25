@@ -10,8 +10,8 @@ export function PortfolioSummary({ positions }: { positions: Position[] }) {
   const t = totals(positions);
 
   return (
-    <section className="card-surface p-8">
-      <div className="flex items-center justify-between gap-4">
+    <section className="card-surface p-6 md:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
         <h2 className="text-[15px] font-medium text-ink">Your portfolio</h2>
         <PriceStatus />
       </div>

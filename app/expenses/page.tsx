@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/count-up";
 import { InitialBadge } from "@/components/initial-badge";
 import { PageHeader } from "@/components/page-header";
+import { PageSkeleton } from "@/components/page-skeleton";
 import { formatDate, formatINR, formatTime, todayIST } from "@/lib/format";
 import { useStore } from "@/lib/store";
 import { EXPENSE_CATEGORIES, type Expense, type ExpenseSnapshot } from "@/lib/types";
@@ -77,7 +78,7 @@ export default function ExpensesPage() {
     setExpenses(undefined);
   }
 
-  if (!ready || !session) return null;
+  if (!ready || !session) return <PageSkeleton />;
 
   return (
     <>
