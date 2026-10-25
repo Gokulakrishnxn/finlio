@@ -16,7 +16,7 @@ coverage/
 *.pem
 
 # Devpost Learn: private learner profile stays local
-devpost/learner-profile.md
+/devpost/learner-profile.md
 
 # OS and editor
 .DS_Store
@@ -27,3 +27,6 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Duplicate skill copy installed for other agents (canonical copy is .agents/skills)
+/agent/
