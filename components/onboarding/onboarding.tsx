@@ -1,9 +1,9 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Check, FileUp, Lock, Newspaper, PieChart, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
 const FEATURES = [
   { icon: Newspaper, title: "A daily brief", body: "Why the stocks you own moved, in plain words, with sources." },
   { icon: PieChart, title: "Your whole picture", body: "Stocks, savings, loans, income and spending in one place." },
-  { icon: Lock, title: "Private by design", body: "No Finlio account. Your money data stays in this browser." },
+  { icon: Lock, title: "Private by design", body: "You sign in with Google. Your money data stays in this browser, with no Finlio database." },
 ];
 
 // First visit: welcome, name, country, then terms and how to start.
@@ -25,6 +25,14 @@ const FEATURES = [
 export function Onboarding() {
   const { ready, profile } = useStore();
   const pathname = usePathname();
+  const router = useRouter();
+  const done = ready && Boolean(profile?.onboardedAt);
+
+  // On /setup, a finished set-up continues to the dashboard.
+  useEffect(() => {
+    if (done && pathname === "/setup") router.replace("/dashboard");
+  }, [done, pathname, router]);
+
   if (!ready || profile?.onboardedAt || pathname.startsWith("/terms")) {
     return null;
   }
@@ -42,6 +50,17 @@ function Flow() {
   const [agreed, setAgreed] = useState(false);
   const [restoreError, setRestoreError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Start with the first name from the Google account, if there is one.
+  useEffect(() => {
+    fetch("/api/auth/session")
+      .then((r) => r.json())
+      .then((s: { name?: string }) => {
+        const first = s.name?.trim().split(/\s+/)[0];
+        if (first) setName((current) => current || first);
+      })
+      .catch(() => undefined);
+  }, []);
 
   const next = () => {
     sound("tap");

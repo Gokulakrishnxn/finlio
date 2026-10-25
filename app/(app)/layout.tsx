@@ -1,12 +1,12 @@
 import { ChatLauncher, FinlioChat } from "@/components/chat/finlio-chat";
-import { Onboarding } from "@/components/onboarding/onboarding";
+import { AuthGate } from "@/components/auth/auth-gate";
 import { MobileNav, Sidebar } from "@/components/shell/sidebar";
 
 // The app shell: sidebar, page card and the Finlio chat. The landing page at /
 // lives outside it.
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <AuthGate>
       <div className="flex min-h-screen flex-col md:flex-row md:gap-2 md:p-2">
         <Sidebar />
         <MobileNav />
@@ -16,7 +16,6 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
         <FinlioChat />
       </div>
       <ChatLauncher />
-      <Onboarding />
-    </>
+    </AuthGate>
   );
 }

@@ -3,7 +3,7 @@
 // The sections of the Settings window (opened from the profile menu).
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Download, ImageIcon, LogOut, Mail, Monitor, Moon, PanelLeftClose, Sun, Upload, Volume2 } from "lucide-react";
+import { Download, ImageIcon, LogOut, Mail, Monitor, Moon, PanelLeftClose, Sun, Upload, UserRound, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Field, Select } from "@/components/form";
@@ -17,7 +17,15 @@ import { COLLAPSE_KEY, logosOn, setLogosOn, SIDEBAR_EVENT } from "@/lib/ui-prefs
 import { cn } from "@/lib/utils";
 import { activeLocale, COUNTRIES, isCountry, LOCALES, type Country } from "@/lib/locale";
 
-type Session = { configured: boolean; signedIn: boolean; email?: string; name?: string; picture?: string };
+type Session = {
+  configured: boolean;
+  signedIn: boolean;
+  local?: boolean;
+  gmail?: boolean;
+  email?: string;
+  name?: string;
+  picture?: string;
+};
 
 function Card({ title, children, className }: { title: string; children: React.ReactNode; className?: string }) {
   return (
@@ -342,39 +350,54 @@ export function Accounts() {
       .catch(() => setSession({ configured: false, signedIn: false }));
   }, []);
 
-  async function disconnect() {
-    await fetch("/api/auth/signout", { method: "POST" });
-    setSession((s) => (s ? { ...s, signedIn: false, email: undefined } : s));
+  // Stops Gmail reading only; signing out is under Settings → Sign out.
+  async function disconnectGmail() {
+    await fetch("/api/auth/gmail", { method: "DELETE" });
+    setSession((s) => (s ? { ...s, gmail: false } : s));
     sound("close");
   }
 
   return (
     <Card title="Connected accounts">
       <div className="flex items-center gap-3">
+        {session?.picture ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={session.picture} alt="" referrerPolicy="no-referrer" className="size-10 rounded-xl object-cover" />
+        ) : (
+          <span className="flex size-10 items-center justify-center rounded-xl bg-sand">
+            <UserRound className="size-4 text-ink" />
+          </span>
+        )}
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-medium text-ink">Google account</p>
+          <p className="truncate text-[13px] text-muted-foreground">
+            {!session ? "Checking…" : session.local ? "Not signed in (this device only)" : (session.email ?? "Signed in")}
+          </p>
+        </div>
+        {session?.signedIn && !session.local && (
+          <span className="rounded-full bg-success-soft px-2.5 py-1 text-[12px] font-medium text-success">Signed in</span>
+        )}
+      </div>
+
+      <div className="mt-4 flex items-center gap-3 border-t border-line pt-4">
         <span className="flex size-10 items-center justify-center rounded-xl bg-sand">
           <Mail className="size-4 text-ink" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="text-[14px] font-medium text-ink">Google (Gmail, read-only)</p>
+          <p className="text-[14px] font-medium text-ink">Gmail, read-only</p>
           <p className="truncate text-[13px] text-muted-foreground">
-            {!session
-              ? "Checking…"
-              : session.signedIn
-                ? session.email
-                : session.configured
-                  ? "Not connected"
-                  : "Not set up on this copy"}
+            {!session ? "Checking…" : session.gmail ? "Connected" : session.configured ? "Not connected" : "Not set up on this copy"}
           </p>
         </div>
-        {session?.signedIn ? (
-          <Button variant="outline" onClick={disconnect} className="h-9 rounded-xl">
+        {session?.gmail ? (
+          <Button variant="outline" onClick={disconnectGmail} className="h-9 rounded-xl">
             <LogOut className="size-4" />
             Disconnect
           </Button>
         ) : (
           session?.configured && (
             <a
-              href="/api/auth/google"
+              href="/api/auth/google?gmail=1"
               className="inline-flex h-9 items-center rounded-xl px-3 text-[14px] font-medium text-ink ring-1 ring-line hover:bg-sand"
             >
               Connect
@@ -383,11 +406,11 @@ export function Accounts() {
         )}
       </div>
       <p className="mt-4 text-[12px] leading-relaxed text-muted-foreground">
-        Used only to read bank and UPI alerts for{" "}
+        Gmail is used only to read bank and UPI alerts for{" "}
         <Link href="/expenses" className="text-ink underline">
           Expenses
         </Link>
-        . Disconnecting revokes Finlio&apos;s access in your Google account.
+        . Disconnecting revokes Finlio&apos;s Gmail access in your Google account; you stay signed in.
       </p>
     </Card>
   );
