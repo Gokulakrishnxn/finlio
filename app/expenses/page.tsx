@@ -127,7 +127,7 @@ export default function ExpensesPage() {
         <p className="mb-4 rounded-2xl bg-card px-5 py-3 text-[14px] text-body ring-1 ring-line">{notice}</p>
       )}
 
-      <div className="grid gap-4 lg:grid-cols-12">
+      <div className="grid gap-4 *:min-w-0 lg:grid-cols-12">
         <section className="card-surface p-6 lg:col-span-5">
           <p className="eyebrow">Spent in {monthName(month)}</p>
           <CountUp

@@ -98,7 +98,7 @@ function Flow() {
 
         <main className="flex flex-1 items-center py-8">
           {step === 0 && (
-            <div className="grid w-full items-center gap-10 lg:grid-cols-[1.1fr_1fr]">
+            <div className="grid w-full items-center gap-10 *:min-w-0 lg:grid-cols-[1.1fr_1fr]">
               <div>
                 <p className="eyebrow">Welcome to Finlio</p>
                 <h1 className="mt-3 text-[38px] leading-[1.05] font-semibold tracking-tight text-ink sm:text-[52px]">

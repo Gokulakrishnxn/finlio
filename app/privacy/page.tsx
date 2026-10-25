@@ -43,7 +43,7 @@ export default function PrivacyPage() {
     <>
       <PageHeader title="Privacy" subtitle="Your money is your business. Here is exactly what Finlio does with it." />
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 *:min-w-0 lg:grid-cols-3">
         <Point
           icon={HardDrive}
           title="Stored in this browser"

@@ -137,7 +137,7 @@ export default function InsightsPage() {
         )}
       </section>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid gap-4 *:min-w-0 lg:grid-cols-2">
         <section className="card-surface p-6">
           <p className="eyebrow mb-5">Where your money sits</p>
           {alloc.length ? (

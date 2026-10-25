@@ -49,7 +49,7 @@ export default function AssetsPage() {
         }
       />
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 *:min-w-0 md:grid-cols-3">
         <Summary label="Net worth" value={worth.netWorth} strong />
         <Summary label="You own" value={worth.assets} note={`incl. ${compactMoney(worth.stocks)} in stocks`} />
         <Summary label="You owe" value={worth.loans} />
@@ -60,7 +60,7 @@ export default function AssetsPage() {
         <WealthBar assets={worth.assets} loans={worth.loans} />
       </section>
 
-      <div className="mt-4 grid gap-4 lg:grid-cols-2">
+      <div className="mt-4 grid gap-4 *:min-w-0 lg:grid-cols-2">
         <Group
           title="Assets"
           tone="asset"

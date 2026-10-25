@@ -142,9 +142,10 @@ export function FinlioChat() {
       className={cn(
         "flex flex-col overflow-hidden border-line bg-card",
         // Docked card on wide screens, full-height sheet over the page otherwise.
-        "fixed inset-y-0 right-0 z-40 w-full max-w-[420px] border-l shadow-2xl transition-transform duration-300",
+        "fixed inset-y-0 right-0 z-40 w-full max-w-[420px] border-l shadow-2xl",
         "xl:sticky xl:top-2 xl:z-auto xl:h-[calc(100vh-1rem)] xl:w-[380px] xl:shrink-0 xl:rounded-3xl xl:border xl:shadow-none",
-        open ? "translate-x-0" : "translate-x-full xl:hidden",
+        // Removed from the page when closed: an off-screen panel would make phones zoom out.
+        open ? "animate-in slide-in-from-right duration-300 xl:animate-none" : "hidden",
       )}
     >
       <header className="flex items-center justify-between border-b border-line px-5 py-4">

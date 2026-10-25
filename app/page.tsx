@@ -64,7 +64,7 @@ export default function DashboardPage() {
         <div className="flex flex-col gap-4">
           <SampleBanner />
 
-          <div className="grid gap-4 lg:grid-cols-12">
+          <div className="grid gap-4 *:min-w-0 lg:grid-cols-12">
             <div className="flex flex-col gap-4 lg:col-span-7">
               <NetWorthCard
                 netWorth={worth.netWorth}
@@ -83,7 +83,7 @@ export default function DashboardPage() {
 
           {holdings.length > 0 && <BriefCard />}
 
-          <div className="grid gap-4 lg:grid-cols-12">
+          <div className="grid gap-4 *:min-w-0 lg:grid-cols-12">
             <section className="card-surface px-6 pt-5 pb-2 lg:col-span-7">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <p className="eyebrow">Your stocks</p>
