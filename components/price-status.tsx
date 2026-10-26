@@ -10,7 +10,7 @@ export function PriceStatus() {
 
   if (error) {
     return (
-      <span className="flex items-center gap-2 text-[13px] text-muted-foreground">
+      <span data-demo-hide className="flex items-center gap-2 text-[13px] text-muted-foreground">
         <span className="size-1.5 rounded-full bg-loss" />
         {error}
         <button

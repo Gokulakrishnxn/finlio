@@ -78,7 +78,7 @@ export function HoldingDetail({
               </header>
 
               <div className="min-h-0 flex-1 overflow-y-auto px-6 pb-6">
-                <div className="rounded-xl bg-sand p-4">
+                <div data-demo-hide={position.quote ? undefined : ""} className="rounded-xl bg-sand p-4">
                   <p className="eyebrow">Price today</p>
                   {position.quote ? (
                     <div className="mt-1.5 flex flex-wrap items-baseline gap-x-3 gap-y-1">

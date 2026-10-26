@@ -28,7 +28,7 @@ export function HoldingsList({
               <p className="flex items-center gap-2 font-medium text-ink">
                 {p.holding.symbol}
                 {p.holding.sample && (
-                  <span className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-muted-foreground ring-1 ring-line">
+                  <span data-demo-hide className="rounded-full bg-sand px-2 py-0.5 text-[11px] font-medium text-muted-foreground ring-1 ring-line">
                     Sample
                   </span>
                 )}

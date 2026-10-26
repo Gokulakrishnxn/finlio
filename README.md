@@ -57,6 +57,8 @@ flowchart LR
 
 The full design lives in [`devpost/spec.md`](devpost/spec.md).
 
+**Recording a demo?** Open any page with `?demo=1` to hide set-up notices, sample labels and company logos (no banner says so); `?demo=0` turns it off. Prices and news stay real.
+
 ## Getting started
 
 **Requirements:** Node.js 20+ and pnpm.

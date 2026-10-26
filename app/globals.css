@@ -255,3 +255,10 @@
     animation: none;
   }
 }
+
+/* Demo mode (lib/demo-mode.ts): hide set-up notices, sample labels and the
+   Next.js dev badge while recording. */
+html[data-demo] [data-demo-hide],
+html[data-demo] nextjs-portal {
+  display: none !important;
+}

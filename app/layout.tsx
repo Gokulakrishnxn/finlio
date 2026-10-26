@@ -7,6 +7,7 @@ import { SoundRoot } from "@/components/sound-root";
 import { ThemeRoot } from "@/components/theme-root";
 import { PricesProvider } from "@/lib/prices";
 import { StoreProvider } from "@/lib/store";
+import { demoScript } from "@/lib/demo-mode";
 import { themeScript } from "@/lib/theme";
 import "./globals.css";
 
@@ -35,6 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: demoScript }} />
       </head>
       <body className="min-h-full bg-sand text-ink">
         <ThemeRoot />
