@@ -84,7 +84,8 @@ export function demoBrief(positions: Position[], country: "IN" | "US"): Brief | 
 export function useTodaysBrief(positions: Position[], country: "IN" | "US") {
   const { brief } = useStore();
   const demo = useDemoMode();
-  if (brief?.date === todayLocal()) return { brief, demo: false };
+  // Dates are read only when there is a brief: Next.js prerenders without them.
+  if (brief && brief.date === todayLocal()) return { brief, demo: false };
   if (demo) return { brief: demoBrief(positions, country), demo: true };
   return { brief: undefined, demo: false };
 }
