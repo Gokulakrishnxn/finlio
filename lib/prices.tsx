@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { demoQuote, useDemoMode } from "@/lib/demo-data";
 import { useStore } from "@/lib/store";
 import type { Quote } from "@/lib/portfolio";
 
@@ -65,8 +66,18 @@ export function PricesProvider({ children }: { children: React.ReactNode }) {
     return () => clearInterval(timer);
   }, [ready, keys, refresh, unconfigured]);
 
+  // Demo mode: sample stocks without a live price get a steady demo one.
+  const demo = useDemoMode();
+  const value = useMemo(() => {
+    if (!demo) return { quotes, updatedAt, loading, error, refresh };
+    const filled = { ...quotes };
+    for (const h of holdings) if (h.sample && !filled[h.instrumentKey]) filled[h.instrumentKey] = demoQuote(h);
+    const covered = holdings.every((h) => filled[h.instrumentKey]);
+    return { quotes: filled, updatedAt: updatedAt ?? (covered ? new Date().toISOString() : undefined), loading, error: covered ? null : error, refresh };
+  }, [demo, quotes, holdings, updatedAt, loading, error, refresh]);
+
   return (
-    <PricesContext.Provider value={{ quotes, updatedAt, loading, error, refresh }}>
+    <PricesContext.Provider value={value}>
       {children}
     </PricesContext.Provider>
   );

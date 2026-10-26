@@ -20,7 +20,10 @@ import { BrandLogo } from "@/components/brand-logo";
 import { InitialBadge } from "@/components/initial-badge";
 import { stockDomain } from "@/lib/brands";
 import { formatDate, formatMoney, todayLocal } from "@/lib/format";
+import { useTodaysBrief } from "@/lib/demo-data";
+import { activeLocale } from "@/lib/locale";
 import { useStore } from "@/lib/store";
+import { usePositions } from "@/lib/use-positions";
 import type { Position } from "@/lib/portfolio";
 import type { BriefItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -35,7 +38,9 @@ export function HoldingDetail({
   onClose: () => void;
   onEdit: (id: string) => void;
 }) {
-  const { brief, removeHolding } = useStore();
+  const { removeHolding } = useStore();
+  const positions = usePositions();
+  const { brief } = useTodaysBrief(positions, activeLocale().country);
   const [confirming, setConfirming] = useState(false);
   const h = position?.holding;
 

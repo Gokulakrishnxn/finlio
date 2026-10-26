@@ -57,7 +57,7 @@ flowchart LR
 
 The full design lives in [`devpost/spec.md`](devpost/spec.md).
 
-**Recording a demo?** Open any page with `?demo=1` to hide set-up notices, sample labels and company logos (no banner says so); `?demo=0` turns it off. Prices and news stay real.
+**Recording a demo?** Open any page with `?demo=1` to hide set-up notices, sample labels and company logos (no banner says so); `?demo=0` turns it off. In demo mode the sample stocks get steady demo prices and a brief, and the chat's six suggested questions are answered instantly from your own numbers. Your own stocks always show real prices.
 
 ## Getting started
 

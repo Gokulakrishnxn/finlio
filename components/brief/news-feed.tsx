@@ -23,6 +23,9 @@ import { stockDomain } from "@/lib/brands";
 import { formatPct, formatShortDate, formatTime, todayLocal } from "@/lib/format";
 import { position } from "@/lib/portfolio";
 import { usePrices } from "@/lib/prices";
+import { useTodaysBrief } from "@/lib/demo-data";
+import { activeLocale } from "@/lib/locale";
+import { usePositions } from "@/lib/use-positions";
 import { useStore } from "@/lib/store";
 import type { Brief, BriefItem, Holding } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -63,7 +66,11 @@ const SECTIONS: { key: SectionKey; title: string; short: string; hint: string; i
 ];
 
 export function NewsFeed() {
-  const { holdings, brief } = useStore();
+  const { holdings, brief: saved } = useStore();
+  const positions = usePositions();
+  // In demo mode a brief about the sample stocks fills in until a real one exists.
+  const { brief: todays, demo } = useTodaysBrief(positions, activeLocale().country);
+  const brief = todays ?? saved;
   const { write, loading, error } = useBriefWriter();
   const [stock, setStock] = useState<string | null>(null);
   const feed = useRef<HTMLDivElement>(null);
@@ -104,7 +111,7 @@ export function NewsFeed() {
                 </Button>
               </div>
             )}
-            {error && <ErrorNote error={error} onRetry={write} />}
+            {error && !demo && <ErrorNote error={error} onRetry={write} />}
             <Overview brief={brief} />
             <StockFilter brief={brief} bySymbol={bySymbol} value={stock} onChange={setStock} />
             <Stories brief={brief} stock={stock} bySymbol={bySymbol} />
@@ -120,7 +127,7 @@ export function NewsFeed() {
             <p className="mt-1.5 text-[15px] font-medium text-ink">
               {today ? "Today" : formatShortDate(brief.date)} at {formatTime(brief.createdAt)}
             </p>
-            <Button variant="outline" onClick={write} className="mt-4 h-9 w-full rounded-xl">
+            <Button variant="outline" onClick={write} data-demo-hide={demo ? "" : undefined} className="mt-4 h-9 w-full rounded-xl">
               <RefreshCw className="size-3.5" />
               {today ? "Refresh" : "Get today's brief"}
             </Button>
