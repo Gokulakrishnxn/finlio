@@ -10,7 +10,9 @@ import {
   Newspaper,
   PieChart,
   PiggyBank,
+  Scale,
   SquarePen,
+  TrendingUp,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -18,6 +20,7 @@ import { MessageScroller } from "@/components/agents/message";
 import { PromptInput } from "@/components/agents/prompt-input";
 import { ThinkingShimmer } from "@/components/agents/loading-states/thinking-shimmer";
 import { useChatUI } from "@/components/chat/chat-context";
+import { answer, QUESTIONS, useDemoMode, useTodaysBrief } from "@/lib/demo-data";
 import { todayLocal } from "@/lib/format";
 import { activeLocale } from "@/lib/locale";
 import { allocation } from "@/lib/networth";
@@ -28,19 +31,8 @@ import { cn } from "@/lib/utils";
 
 type ChatMessage = { id: string; role: "user" | "assistant"; content: string; error?: boolean };
 
-const STARTERS: { icon: LucideIcon; text: string }[] = [
-  { icon: Newspaper, text: "Why did my stocks move today?" },
-  { icon: PieChart, text: "Where did most of my money go this month?" },
-  { icon: PiggyBank, text: "How much did I save this month?" },
-  { icon: Landmark, text: "Explain my net worth in simple words" },
-];
-
-const FOLLOW_UPS = [
-  "What changed since last month?",
-  "Which category grew the most?",
-  "How are my loans compared with my assets?",
-  "Summarise this in one line",
-];
+const ICONS: LucideIcon[] = [Newspaper, PieChart, PiggyBank, Landmark, Scale, TrendingUp];
+const STARTERS = QUESTIONS.map((text, i) => ({ icon: ICONS[i], text }));
 
 // **bold** inside a line of model text (no HTML from the model is ever rendered).
 function Inline({ text }: { text: string }) {
@@ -155,8 +147,10 @@ function CopyButton({ text }: { text: string }) {
 
 export function FinlioChat() {
   const { open, setOpen } = useChatUI();
-  const { brief, ready, profile, assets } = useStore();
+  const { ready, profile, assets = [] } = useStore();
   const { worth, items, thisMonth, month, positions } = useMoney();
+  const demo = useDemoMode();
+  const { brief } = useTodaysBrief(positions, activeLocale().country);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [draft, setDraft] = useState("");
   const [busy, setBusy] = useState(false);
@@ -218,6 +212,23 @@ export function FinlioChat() {
     const write = (content: string, error = false) =>
       setMessages((all) => all.map((m) => (m.id === replyId ? { ...m, content, error } : m)));
 
+    // Demo mode answers the suggested questions straight from this data,
+    // revealed a few words at a time like a streamed reply.
+    const canned = demo ? answer(question, { positions, assets, items, month, thisMonth, worth, brief: todays }) : undefined;
+    if (canned) {
+      const words = canned.split(/(\s+)/);
+      await new Promise((r) => setTimeout(r, 650));
+      for (let i = 0; i <= words.length; i += 3) {
+        if (abort.current.signal.aborted) break;
+        write(words.slice(0, i).join(""));
+        await new Promise((r) => setTimeout(r, 28));
+      }
+      write(canned);
+      sound("ready");
+      setBusy(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
@@ -252,7 +263,7 @@ export function FinlioChat() {
   }
 
   const asked = new Set(messages.filter((m) => m.role === "user").map((m) => m.content));
-  const followUps = FOLLOW_UPS.filter((f) => !asked.has(f)).slice(0, 3);
+  const followUps = QUESTIONS.filter((f) => !asked.has(f)).slice(0, 3);
   const last = messages[messages.length - 1];
   const firstName = profile?.name?.trim().split(" ")[0];
 
